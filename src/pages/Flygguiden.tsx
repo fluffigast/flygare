@@ -7,7 +7,7 @@ import { useFlyingGuide } from "@/hooks/useCMS";
 import { richTextToPlain } from "../lib/payload";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline } from "react-leaflet";
+import { MapContainer, TileLayer, Circle, Popup, Polyline } from "react-leaflet";
 import L from "leaflet";
 
 // Fix Leaflet icon issue with Vite
@@ -39,17 +39,18 @@ function angularDistance(a: number, b: number): number {
 
 function isZoneActive(zone: ThermalZone, weather: CurrentWeather): boolean {
   const pc = zone.preferredConditions;
-  let matches = 0;
-  if (weather.wind <= pc.maxWind) matches++;
-  if (angularDistance(weather.direction, pc.avgWindDirection) <= pc.windDirectionSpread + 30) matches++;
-  if (weather.temp >= pc.minTemp - 5) matches++;
-  return matches >= 2;
+  const windOk = weather.wind <= pc.maxWind;
+  const dirOk = angularDistance(weather.direction, pc.avgWindDirection) <= pc.windDirectionSpread + 30;
+  const tempOk = weather.temp >= pc.minTemp - 5;
+  // Direction is a hard requirement — wrong direction = no thermal regardless
+  return dirOk && windOk && tempOk;
 }
 
 function zoneColor(strength: number): string {
-  if (strength < 2.5) return "#33bb99";
-  if (strength < 4) return "#e89020";
-  return "#d04030";
+  if (strength < 1.5) return "#5bc0a0";   // light green — weak lift
+  if (strength < 3.0) return "#f0a030";   // amber — moderate
+  if (strength < 5.0) return "#e06030";   // orange — strong
+  return "#c03020";                        // red — powerful
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -107,7 +108,7 @@ export default function Flygguiden() {
     direction: weatherHook.direction,
     temp: weatherHook.temp,
   };
-  const [showKK7, setShowKK7] = useState(false);
+  const [showKK7] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState<ScrapedFlight | null>(null);
 
   const { flights, loading: flightsLoading, error: flightsError } = useFlights();
@@ -241,24 +242,22 @@ export default function Flygguiden() {
         <Separator style={{ background: T.border, margin: "24px 0 32px" }} />
 
         <Fade>
-          <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-            <button
-              onClick={() => setShowKK7(!showKK7)}
-              style={{
-                fontFamily: T.sans,
-                fontSize: 13,
-                fontWeight: 500,
-                padding: "8px 16px",
-                borderRadius: 8,
-                border: `1px solid ${showKK7 ? T.accent : T.border}`,
-                background: showKK7 ? T.accentBg : T.bg,
-                color: showKK7 ? T.accent : T.ink3,
-                cursor: "pointer",
-                transition: "all .2s",
-              }}
-            >
-              {showKK7 ? "Dölj" : "Visa"} thermal.kk7.ch
-            </button>
+          <p style={{ fontFamily: T.sans, fontSize: 14, color: T.ink3, lineHeight: 1.7, maxWidth: 720, marginBottom: 24 }}>
+            Kartan visar {zones.length} termikzoner identifierade från GPS-spår i 177 flygningar nära Åre (2021–2026, 50 piloter).
+            Cirkelns storlek visar styrka, färgen intensitet. Klicka för detaljer — månader, höjdvinst och vindvillkor.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
+            {[
+              { color: "#5bc0a0", label: "< 1.5 m/s" },
+              { color: "#f0a030", label: "1.5–3" },
+              { color: "#e06030", label: "3–5" },
+              { color: "#c03020", label: "> 5 m/s" },
+            ].map(item => (
+              <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: item.color, opacity: 0.6 }} />
+                <span style={{ fontFamily: T.sans, fontSize: 11, color: T.ink3 }}>{item.label}</span>
+              </div>
+            ))}
           </div>
         </Fade>
 
@@ -287,63 +286,54 @@ export default function Flygguiden() {
                 const pc = zone.preferredConditions;
 
                 // Condition match details
-                const windOk = weather.wind <= pc.maxWind;
-                const dirOk = angularDistance(weather.direction, pc.avgWindDirection) <= pc.windDirectionSpread + 30;
-                const tempOk = weather.temp >= pc.minTemp - 5;
-
                 return (
-                  <CircleMarker
+                  <Circle
                     key={i}
                     center={[zone.lat, zone.lon]}
-                    radius={Math.min(8 + zone.frequency * 2, 24)}
+                    radius={80 + zone.strength * 40}
                     pathOptions={{
-                      color,
-                      fillColor: color,
-                      fillOpacity: active ? 0.85 : 0.5,
-                      weight: active ? 3 : 1.5,
+                      color: active ? "#2e7d32" : color,
+                      fillColor: active ? "#4caf50" : color,
+                      fillOpacity: active ? 0.45 : 0.2,
+                      weight: active ? 2 : 0.8,
                       className: active ? "thermal-active" : undefined,
                     }}
                   >
                     <Popup>
-                      <div style={{ fontFamily: T.sans, fontSize: 13, lineHeight: 1.6 }}>
-                        <strong style={{ fontSize: 14, color: T.ink }}>
-                          Styrka: {zone.strength.toFixed(1)} / {zone.maxStrength.toFixed(1)} m/s
-                        </strong>
-                        <span style={{ display: "block", color: T.ink3, fontSize: 12 }}>(medel / max)</span>
-                        <br />
-                        Frekvens: {zone.frequency} observationer
-                        <br />
-                        GPS-höjd vid termik: {Math.round(zone.avgAltitude)}m
-                        <br />
-                        <br />
-                        {!weatherHook.loading && !weatherHook.error ? (
-                          <>
-                            <span
-                              style={{
-                                display: "inline-block",
-                                padding: "2px 10px",
-                                borderRadius: 6,
-                                fontSize: 12,
-                                fontWeight: 600,
-                                background: active ? "#d4edda" : "#e9ecef",
-                                color: active ? "#155724" : "#6c757d",
-                                marginBottom: 6,
-                              }}
-                            >
-                              {active ? "Troligen aktiv" : "Inaktiv"}
-                            </span>
-                            <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>
-                              <div>Vind: {windOk ? "OK" : "ej"} ({weather.wind.toFixed(1)} m/s, max {pc.maxWind})</div>
-                              <div>Riktning: {dirOk ? "OK" : "ej"} ({weather.direction}° vs {pc.avgWindDirection}°)</div>
-                              <div>Temp: {tempOk ? "OK" : "ej"} ({weather.temp.toFixed(1)}°C, min {pc.minTemp - 5}°C)</div>
+                      <div style={{ fontFamily: T.sans, fontSize: 12, lineHeight: 1.6, minWidth: 180 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: T.ink }}>
+                          {zone.strength.toFixed(1)} – {zone.maxStrength.toFixed(1)} m/s
+                        </div>
+
+                        <table style={{ fontSize: 11, color: T.ink3, marginTop: 6, borderSpacing: "0 2px" }}>
+                          <tbody>
+                            <tr><td style={{ color: T.muted, paddingRight: 8 }}>Höjdvinst</td><td>{zone.minAltGain ?? 0}–{zone.maxAltGain ?? 0}m</td></tr>
+                            {zone.startAltRange && <tr><td style={{ color: T.muted, paddingRight: 8 }}>Starthöjd</td><td>{zone.startAltRange[0]}–{zone.startAltRange[1]}m</td></tr>}
+                            {zone.topAltRange && <tr><td style={{ color: T.muted, paddingRight: 8 }}>Topphöjd</td><td>{zone.topAltRange[0]}–{zone.topAltRange[1]}m</td></tr>}
+                            <tr><td style={{ color: T.muted, paddingRight: 8 }}>Temp</td><td>{pc.minTemp}–{pc.maxTemp}°C</td></tr>
+                            <tr><td style={{ color: T.muted, paddingRight: 8 }}>Vind</td><td>&le;{pc.maxWind} m/s, {Math.round(pc.avgWindDirection)}°</td></tr>
+                          </tbody>
+                        </table>
+
+                        {zone.months && zone.months.length > 0 && (
+                          <div style={{ marginTop: 8, borderTop: `1px solid ${T.borderL}`, paddingTop: 6 }}>
+                            <div style={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+                              {zone.months.map(([m, c]) => (
+                                <span key={m} style={{
+                                  fontSize: 10, padding: "1px 5px", borderRadius: 3,
+                                  background: c >= 10 ? "#e8f5e9" : c >= 5 ? "#fff8e1" : "#f5f5f5",
+                                  color: c >= 10 ? "#2e7d32" : c >= 5 ? "#f57f17" : T.muted,
+                                  fontWeight: c >= 5 ? 600 : 400,
+                                }}>
+                                  {["jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"][m-1]} {c}
+                                </span>
+                              ))}
                             </div>
-                          </>
-                        ) : (
-                          <span style={{ fontSize: 12, color: T.muted }}>Väderdata ej tillgänglig</span>
+                          </div>
                         )}
                       </div>
                     </Popup>
-                  </CircleMarker>
+                  </Circle>
                 );
               })}
               {/* Selected flight track */}
