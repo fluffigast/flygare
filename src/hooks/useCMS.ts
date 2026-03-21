@@ -36,7 +36,7 @@ function useCMSData<T>(fetcher: () => Promise<T>) {
       .then(setData)
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false))
-  }, [])
+  }, [fetcher])
 
   return { data, loading, error }
 }

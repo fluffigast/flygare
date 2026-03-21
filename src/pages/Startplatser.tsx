@@ -43,37 +43,28 @@ export default function Startplatser() {
 
   const loading = launchesLoading || otherSitesLoading;
 
-  const LAUNCHES = (launchesData || []).map(l => ({
-    name: l.name,
-    type: l.type,
-    dir: l.direction || "",
-    elev: l.elevation || "",
-    coords: l.coords || "",
-    desc: richTextToPlain(l.description),
-    extra: richTextToPlain(l.extra),
-  }));
-
-  const OTHER_SITES = (otherSitesData || []).map(s => ({
-    name: s.name,
-    dir: s.direction || "",
-    elev: s.elevationDrop || "",
-    desc: richTextToPlain(s.description),
-    coords: s.coords,
-  }));
-  const mapMarkers = useMemo(() => {
+  const { LAUNCHES, OTHER_SITES, mapMarkers } = useMemo(() => {
+    const launches = (launchesData || []).map(l => ({
+      name: l.name, type: l.type, dir: l.direction || "", elev: l.elevation || "",
+      coords: l.coords || "", desc: richTextToPlain(l.description), extra: richTextToPlain(l.extra),
+    }));
+    const otherSites = (otherSitesData || []).map(s => ({
+      name: s.name, dir: s.direction || "", elev: s.elevationDrop || "",
+      desc: richTextToPlain(s.description), coords: s.coords,
+    }));
     const markers: { name: string; type: string; elev: string; dir: string; pos: [number, number] }[] = [];
-    for (const l of LAUNCHES) {
+    for (const l of launches) {
       const pos = parseCoords(l.coords);
       if (pos) markers.push({ name: l.name, type: l.type, elev: l.elev, dir: l.dir, pos });
     }
-    for (const s of OTHER_SITES) {
+    for (const s of otherSites) {
       if (s.coords) {
         const pos = parseCoords(s.coords);
         if (pos) markers.push({ name: s.name, type: "Starter", elev: s.elev, dir: s.dir, pos });
       }
     }
-    return markers;
-  }, [LAUNCHES, OTHER_SITES]);
+    return { LAUNCHES: launches, OTHER_SITES: otherSites, mapMarkers: markers };
+  }, [launchesData, otherSitesData]);
 
   return (
     <>

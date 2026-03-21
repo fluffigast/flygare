@@ -260,7 +260,7 @@ export function richTextToPlain(node: unknown): string {
   if (Array.isArray(n.children)) {
     return (n.children as unknown[])
       .map((child) => richTextToPlain(child))
-      .join(n.type === 'paragraph' || n.type === 'heading' ? '\n' : '')
+      .join(n.type === 'root' ? '\n\n' : '')
   }
 
   // Payload v3 wraps in { root: { children: [...] } }

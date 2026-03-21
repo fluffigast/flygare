@@ -23,6 +23,13 @@ function richText(text: string) {
 async function seed() {
   const payload = await getPayload({ config })
 
+  // ── Idempotency check ─────────────────────────────────────────────
+  const existing = await payload.find({ collection: 'news', limit: 1 })
+  if (existing.totalDocs > 0) {
+    console.log('Database already seeded, skipping.')
+    process.exit(0)
+  }
+
   // ── Admin user ──────────────────────────────────────────────────────
   await payload.create({
     collection: 'users',
