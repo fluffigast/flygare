@@ -1,13 +1,19 @@
-import type { AdminViewProps } from 'payload'
-import { DefaultTemplate } from '@payloadcms/next/templates'
-import { importMap } from '../importMap'
+/* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
+/* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
+import type { Metadata } from 'next'
 import config from '@payload-config'
-
-export { generatePageMetadata as generateMetadata } from '@payloadcms/next/views'
-
 import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
+import { importMap } from '../importMap'
 
-const Page = ({ params, searchParams }: AdminViewProps) =>
+type Args = {
+  params: Promise<{ segments: string[] }>
+  searchParams: Promise<{ [key: string]: string | string[] }>
+}
+
+export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
+  generatePageMetadata({ config, params, searchParams })
+
+const Page = ({ params, searchParams }: Args) =>
   RootPage({ config, params, searchParams, importMap })
 
 export default Page
