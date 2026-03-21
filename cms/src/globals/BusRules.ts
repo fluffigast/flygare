@@ -4,6 +4,7 @@ export const BusRules: GlobalConfig = {
   slug: 'bus-rules',
   access: {
     read: () => true,
+    update: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
     {

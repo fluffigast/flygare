@@ -4,6 +4,7 @@ export const FlyingGuide: GlobalConfig = {
   slug: 'flying-guide',
   access: {
     read: () => true,
+    update: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
     {

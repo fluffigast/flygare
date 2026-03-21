@@ -4,6 +4,7 @@ export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   access: {
     read: () => true,
+    update: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
     {

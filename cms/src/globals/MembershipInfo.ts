@@ -4,6 +4,7 @@ export const MembershipInfo: GlobalConfig = {
   slug: 'membership-info',
   access: {
     read: () => true,
+    update: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
     {
