@@ -3,73 +3,28 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ExternalLink } from "lucide-react";
 import { T, IMG, Fade, Wrap,  PageHero } from "../shared";
-
-const COMPETITIONS = [
-  {
-    name: "Åre PPC",
-    subtitle: "PoängPlockarCupen",
-    status: "Aktiv",
-    desc: "Årlig poängtävling skapad 2015 av Staffan Rolfsson och Magnus Hjelm. Flyg till utplacerade punkter och samla poäng under hela säsongen.",
-    rules: [
-      "De flesta punkter har en cylinderstorlek (diameter) på 400 m — du måste flyga inom 200 m från målet.",
-      "Punkterna kan tas i valfri ordning och sekvens.",
-      "Varje punkt räknas bara en gång per flyg, även om du passerar den flera gånger.",
-      "Poäng räknas bara för flyg loggade med GPS-tracklog via Flightlog.",
-      "Tävlingen pågår t.o.m. augusti. Vinnare utses när september börjar.",
-      "Anmälan: maila Staffan Rolfsson med namn och Flightlog-ID.",
-    ],
-    img: IMG.areHike,
-  },
-  {
-    name: "Larsa Open",
-    subtitle: "Fridistanstävling till Lars-Anders Jonssons minne",
-    status: "Aktiv",
-    desc: "Fridistanstävling startad 2018 till minne av Lars-Anders Jonsson. Vinnaren bestäms av det längsta 2-punktsflygningen med start från Åreskutan.",
-    rules: [
-      "Flyg måste loggas på flightlog.org med GPS. Alla flyg under kalenderåret räknas.",
-      "Bara omotordrivet skärmflyg kvalificerar.",
-      "Start från Åreskutan, landning var som helst (respektera luftrum).",
-      "Piloter från andra klubbar är välkomna. Ingen anmälan krävs.",
-    ],
-    winners: [
-      { year: "2020", name: "Gillis Bengtsson", dist: "99,0 km" },
-      { year: "2019", name: "Andreas Florén", dist: "46,1 km" },
-      { year: "2018", name: "Patrik Nietlisbach", dist: "91,1 km" },
-    ],
-    img: IMG.areHike,
-  },
-  {
-    name: "Topplandning",
-    subtitle: "Första termiken på säsongen",
-    status: "Aktiv",
-    desc: "Tävlingen markerar starten på termiksäsongen. Starta från valfri plats på Åreskutan, flyg söder om den gröna zonen, stig i termik och landa säkert i topplandningsområdet.",
-    rules: [
-      "Start från valfri startplats på Åreskutan.",
-      "Flyg söder om den gröna zonen (Ullådalstugan → Rödkulleliften → Åre Ski Inn → Hummelstugan → Fjällgårdsexpressen).",
-      "Stig i termik till nödvändig höjd.",
-      "Glid till topplandningsområdet och landa säkert.",
-      "Vittne, foto/film eller tracklog som bevis.",
-      "Tävlingen testar att termiken är aktiv — inte att man kan flyga i hård vind.",
-      "Första lyckade landningen vinner champagne (Moët) från klubben.",
-      "Bara medlemmar i Åre Skärm- och Drakflygklubb kan vinna priset.",
-    ],
-    winners: [
-      { year: "2020", name: "Love Lundgren", dist: "10 mars" },
-      { year: "2019", name: "Andreas Florén", dist: "26 mars" },
-      { year: "2015", name: "Patrik Nietlisbach", dist: "21 feb" },
-      { year: "2005", name: "Lars A Jonsson", dist: "21 mars" },
-    ],
-    img: IMG.arePier,
-  },
-];
+import { useCompetitions } from "@/hooks/useCMS";
+import { richTextToPlain } from "../lib/payload";
 
 export default function Tavlingar() {
   const [showRules, setShowRules] = useState<Record<string, boolean>>({});
+  const { data: competitionsData, loading } = useCompetitions();
+
+  const COMPETITIONS = (competitionsData || []).map(c => ({
+    name: c.name,
+    subtitle: c.subtitle || "",
+    status: c.status,
+    desc: richTextToPlain(c.description),
+    rules: (c.rules || []).map(r => r.text),
+    winners: (c.winners || []).map(w => ({ year: String(w.year), name: w.name, dist: w.result })),
+    img: IMG.areHike,
+  }));
   return (
     <>
       <PageHero img={IMG.jamtlandCamp} title="Tävlingar" subtitle="Klubbtävlingar med tradition — från distansflygning till topplandning." height="clamp(280px, 40vh, 420px)" />
 
       <Wrap bg={T.bg}>
+        {loading && <p style={{ fontFamily: T.sans, fontSize: 15, color: T.muted, padding: "20px 0" }}>Laddar...</p>}
         <Fade>
           <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, maxWidth: 720, marginBottom: 8 }}>
             Larsa Open och Åre PPC körs som vanligt. Alla flyg loggas via{" "}

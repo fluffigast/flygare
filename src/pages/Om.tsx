@@ -1,31 +1,22 @@
 
 import { Separator } from "@/components/ui/separator";
 import { T, IMG, Fade, Wrap,  PageHero } from "../shared";
-
-const MILESTONES = [
-  { year: "1975", text: "Åre Drakflygklubb bildas" },
-  { year: "1988", text: "Åre Skärmflygklubb bildas" },
-  { year: "1995", text: "Klubbarna slås ihop" },
-  { year: "2023", text: "1000m-projektet slutförs" },
-  { year: "2026", text: "~100 aktiva medlemmar" },
-];
-
-const BOARD = [
-  { name: "Therese Bärfenheim", role: "Ordförande" },
-  { name: "Vladimir Gutic", role: "Vice ordförande" },
-  { name: "Alexander Kinde", role: "Ledamot" },
-  { name: "Linda Kits", role: "Kassör" },
-  { name: "Pontus Karlsson", role: "Ledamot" },
-  { name: "Johan Bernalt", role: "Suppleant" },
-  { name: "Elias Evertsson", role: "Suppleant" },
-];
+import { useBoardMembers, useMilestones } from "@/hooks/useCMS";
 
 export default function Om() {
+  const { data: boardData, loading: boardLoading } = useBoardMembers();
+  const { data: milestonesData, loading: milestonesLoading } = useMilestones();
+
+  const BOARD = (boardData || []).map(m => ({ name: m.name, role: m.role }));
+  const MILESTONES = (milestonesData || []).map(m => ({ year: String(m.year), text: m.text }));
+
+  const loading = boardLoading || milestonesLoading;
   return (
     <>
       <PageHero img={IMG.jamtlandSummer} title="Om klubben" subtitle="Åre Skärm- och Drakflygklubb — sedan 1975." height="clamp(280px, 40vh, 420px)" />
 
       <Wrap bg={T.bg}>
+        {loading && <p style={{ fontFamily: T.sans, fontSize: 15, color: T.muted, padding: "20px 0" }}>Laddar...</p>}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48 }}>
           <Fade>
             <div>

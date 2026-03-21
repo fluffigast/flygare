@@ -1,70 +1,23 @@
 import { useState } from "react";
 
 import { T, IMG, Fade, Wrap,  PageHero } from "../shared";
+import { useNews } from "@/hooks/useCMS";
+import { richTextToPlain, PAYLOAD_URL } from "../lib/payload";
 
 const NEWS_CATS = ["Alla", "Aktiviteter", "Information", "Tävlingar"];
 
-const NEWS = [
-  {
-    title: "Välkommen till PPC Åre 2026",
-    cat: "Tävlingar",
-    date: "20 Mars, 2026",
-    img: IMG.skyGlide,
-    desc: "PoängPlockarCupen och XC Lindholm är igång. Bygg din egen rutt, samla poäng och utveckla ditt flygande. Gratis att delta — logga flyg på flightlog.org.",
-  },
-  {
-    title: "Klubbuss Kampanj",
-    cat: "Aktiviteter",
-    date: "16 Mars, 2026",
-    img: IMG.launchPrep,
-    desc: "Klubben ska köpa ny buss. Max 180 000 kr, 4WD, minst 7 platser. Skicka förslag till info@flygare.nu. Stöd via Swish 123 083 11 98 märkt \"NY BUSS\".",
-  },
-  {
-    title: "Ny webbshop",
-    cat: "Information",
-    date: "23 Januari, 2026",
-    img: IMG.snowRange,
-    desc: "Klubben har öppnat en ny webbshop med merchandise. Besök asdfkstore.myspreadshop.se.",
-  },
-  {
-    title: "Ansök om tävlingsstipendium",
-    cat: "Aktiviteter",
-    date: "20 Januari, 2026",
-    img: IMG.rockyGlide,
-    desc: "Klubben erbjuder tävlingsstipendium. Ansök via formuläret på klubbens hemsida.",
-  },
-  {
-    title: "Kallelse till Årsmöte 2026",
-    cat: "Information",
-    date: "12 Januari, 2026",
-    img: IMG.arePier,
-    desc: "Årsmötet 2026 närmar sig. Verksamhetsplan, ekonomiska rapporter och andra handlingar finns under dokument på hemsidan.",
-  },
-  {
-    title: "Viktig info till alla flygare",
-    cat: "Information",
-    date: "17 Juli, 2025",
-    img: IMG.soaringSunset,
-    desc: "Styrelsen har tecknat avtal med Skistar. Alla piloter i Åre måste läsa och följa reglerna. Företräde i liftkö gäller enbart kommersiella aktörer. Varsam körning till Hummeln.",
-  },
-  {
-    title: "Vinnare av topplandningstävlingen",
-    cat: "Tävlingar",
-    date: "12 April, 2025",
-    img: IMG.areMullfjallet,
-    desc: "Fredrik Lindholm vann Pilot 2-tävlingen 21 mars. Start från 1000m, termik vid Tegetornet, topplandning på Åreskutan efter 3,5 timmars flygning.",
-  },
-  {
-    title: "1000m projektet avslutat",
-    cat: "Aktiviteter",
-    date: "12 April, 2025",
-    img: IMG.areSky,
-    desc: "Projektet är klart — godkännande från Jordbruksverket och finansiering på plats. Skylt ska monteras i början av sommaren. Tack till alla som bidragit.",
-  },
-];
-
 export default function Nyheter() {
   const [cat, setCat] = useState("Alla");
+  const { data: newsData, loading } = useNews();
+
+  const NEWS = (newsData || []).map(n => ({
+    title: n.title,
+    cat: n.category,
+    date: n.date ? new Date(n.date).toLocaleDateString("sv-SE", { day: "numeric", month: "long", year: "numeric" }) : "",
+    img: n.image?.url ? `${PAYLOAD_URL}${n.image.url}` : IMG.areSky,
+    desc: richTextToPlain(n.description),
+  }));
+
   const filtered = cat === "Alla" ? NEWS : NEWS.filter(n => n.cat === cat);
 
   return (
@@ -72,6 +25,7 @@ export default function Nyheter() {
       <PageHero img={IMG.areSky} title="Nyheter" subtitle="Senaste nytt från Åre Skärm- och Drakflygklubb." height="clamp(280px, 40vh, 420px)" />
 
       <Wrap bg={T.bg}>
+        {loading && <p style={{ fontFamily: T.sans, fontSize: 15, color: T.muted, padding: "20px 0" }}>Laddar...</p>}
         {/* FILTER */}
         <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 40 }}>
           {NEWS_CATS.map(c => (

@@ -1,7 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 import { T, IMG, Fade, Wrap,  PageHero } from "../shared";
+import { useBusRules } from "@/hooks/useCMS";
+import { richTextToPlain } from "../lib/payload";
 
-const RULES = [
+const RULES_FALLBACK = [
   "Man måste vara fullvärdig klubbmedlem för att åka med.",
   "Max fyra passagerare plus en förare.",
   "Passagerare betalar 20 kr per tur (Swish till föraren under resan).",
@@ -16,16 +18,22 @@ const RULES = [
 ];
 
 export default function Klubbuss() {
+  const { data: busData, loading } = useBusRules();
+
+  const introText = busData?.intro ? richTextToPlain(busData.intro) : null;
+  const RULES = busData?.rules?.length
+    ? busData.rules.map(r => r.text)
+    : RULES_FALLBACK;
   return (
     <>
       <PageHero img={IMG.areWinter} title="Klubbussen" subtitle="Gemensam transport upp på berget för alla medlemmar." height="clamp(280px, 40vh, 420px)" />
 
       <Wrap bg={T.bg}>
+        {loading && <p style={{ fontFamily: T.sans, fontSize: 15, color: T.muted, padding: "20px 0" }}>Laddar...</p>}
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <Fade>
-            <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 8 }}>
-              Klubben har en buss som kör medlemmar upp till startplatserna. Alla kostnader täcks av klubben —
-              passagerare betalar en symbolisk avgift per tur.
+            <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 8, whiteSpace: introText ? "pre-line" : undefined }}>
+              {introText || "Klubben har en buss som kör medlemmar upp till startplatserna. Alla kostnader täcks av klubben — passagerare betalar en symbolisk avgift per tur."}
             </p>
           </Fade>
           <Separator style={{ background: T.border, margin: "32px 0" }} />
