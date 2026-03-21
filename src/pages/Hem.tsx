@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ArrowRight } from "lucide-react";
 import { T, IMG, Fade, Wrap, SH } from "../shared";
+import { useNews, useSiteSettings } from "@/hooks/useCMS";
+import { richTextToPlain, PAYLOAD_URL } from "../lib/payload";
 
 const INFO_CARDS = [
   {
@@ -26,21 +28,25 @@ const INFO_CARDS = [
   },
 ];
 
-const NEWS_PREVIEW = [
-  { title: "Välkommen till PPC Åre 2026", cat: "Tävlingar", date: "20 Mars, 2026", img: IMG.skyGlide, desc: "PoängPlockarCupen är igång — samla poäng genom hela flygsäsongen." },
-  { title: "Klubbuss Kampanj", cat: "Aktiviteter", date: "16 Mars, 2026", img: IMG.launchPrep, desc: "Klubbens buss är genomgången och klar för användning under säsongen." },
-  { title: "Uppdaterad information om starter", cat: "Information", date: "25 Januari, 2026", img: IMG.rockyGlide, desc: "Arbetet med att samla och strukturera information om startplatserna på Åreskutan fortsätter." },
-];
-
-const STATS = [
-  { value: "1975", label: "Grundat" },
-  { value: "~100", label: "Aktiva medlemmar" },
-  { value: "230 km", label: "Distansrekord (skärm)" },
-  { value: "9", label: "Startplatser" },
-];
-
 export default function Hem() {
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const { data: news } = useNews();
+  const { data: settings } = useSiteSettings();
+
+  const newsPreview = (news || []).slice(0, 3).map(n => ({
+    title: n.title,
+    cat: n.category,
+    date: n.date ? new Date(n.date).toLocaleDateString("sv-SE", { day: "numeric", month: "long", year: "numeric" }) : "",
+    img: n.image?.url ? `${PAYLOAD_URL}${n.image.url}` : IMG.skyGlide,
+    desc: richTextToPlain(n.description),
+  }));
+
+  const STATS = [
+    { value: settings?.foundedYear?.toString() ?? "1975", label: "Grundat" },
+    { value: settings?.statsMembers ?? "~100", label: "Aktiva medlemmar" },
+    { value: settings?.statsDistanceRecord ?? "230 km", label: "Distansrekord (skärm)" },
+    { value: settings?.statsLaunchSites ?? "9", label: "Startplatser" },
+  ];
 
   return (
     <>
@@ -167,15 +173,23 @@ export default function Hem() {
             <div>
               <p style={{ fontFamily: T.serif, fontStyle: "italic", fontSize: 15, color: T.accent, marginBottom: 8 }}>Om klubben</p>
               <h2 style={{ fontFamily: T.serif, fontSize: "clamp(26px, 3vw, 36px)", fontWeight: 400, color: T.ink, letterSpacing: "-.02em", lineHeight: 1.15, marginBottom: 20 }}>
-                50 år av flygning från Skutan
+                {settings?.aboutTitle || "50 år av flygning från Skutan"}
               </h2>
-              <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 14 }}>
-                Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits.
-                Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.
-              </p>
-              <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 24 }}>
-                Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun.
-              </p>
+              {settings?.aboutText ? (
+                <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 24, whiteSpace: "pre-line" }}>
+                  {richTextToPlain(settings.aboutText)}
+                </p>
+              ) : (
+                <>
+                  <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 14 }}>
+                    Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits.
+                    Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.
+                  </p>
+                  <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, marginBottom: 24 }}>
+                    Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun.
+                  </p>
+                </>
+              )}
               <Link to="/om" style={{
                 fontFamily: T.sans, fontSize: 14, fontWeight: 500, color: T.accent, textDecoration: "none",
                 borderBottom: `1px solid ${T.accent}`, paddingBottom: 3,
@@ -202,7 +216,7 @@ export default function Hem() {
         <Separator style={{ background: T.border, margin: "28px 0 40px" }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 28 }}>
-          {NEWS_PREVIEW.map((n, i) => (
+          {newsPreview.map((n, i) => (
             <Fade key={n.title} delay={i * 0.1}>
               <Link to="/nyheter" style={{ textDecoration: "none", display: "block" }}>
                 <div style={{ cursor: "pointer", transition: "transform .35s" }}

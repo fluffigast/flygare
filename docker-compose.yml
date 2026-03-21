@@ -1,0 +1,31 @@
+services:
+  cms:
+    build:
+      context: ./cms
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=file:./data/flygare.db
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?Set PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=${CMS_URL:-http://localhost:3001}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:5173}
+      - NODE_ENV=production
+    volumes:
+      - cms-data:/app/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: "1.0"
+
+volumes:
+  cms-data:

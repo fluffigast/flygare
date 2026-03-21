@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ExternalLink } from "lucide-react";
 import { T, IMG, Fade, Wrap,  PageHero } from "../shared";
+import { useMembershipInfo } from "@/hooks/useCMS";
 
-const INCLUDED = [
+const INCLUDED_FALLBACK = [
   "Tillgång till alla startplatser på Åreskutan",
   "Tillgång till landningsplatsen Draklanda",
   "Räddningsbåt vid Draklanda",
@@ -15,25 +16,39 @@ const INCLUDED = [
   "Sommarklippning av Draklanda",
 ];
 
-const LICENSE_REQS = [
+const LICENSE_REQS_FALLBACK = [
   { level: "Elevlicens", req: "Minst 10 flygningar" },
   { level: "Pilot 1", req: "Minst 10 flygningar" },
   { level: "Pilot 2", req: "Minst 10 höjdflyg + 5 timmar flygtid" },
 ];
 
 export default function BliMedlem() {
+  const { data: membership, loading } = useMembershipInfo();
+
+  const INCLUDED = membership?.benefits?.length
+    ? membership.benefits.map(b => b.text)
+    : INCLUDED_FALLBACK;
+
+  const LICENSE_REQS = membership?.licenseRequirements?.length
+    ? membership.licenseRequirements.map(l => ({ level: l.level, req: l.requirements }))
+    : LICENSE_REQS_FALLBACK;
+
+  const price = membership?.price || "600 kr / år";
+  const validity = membership?.validity || "Giltigt t.o.m. 31 december 2026";
+  const shopUrl = membership?.shopUrl || "https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/";
   return (
     <>
       <PageHero img={IMG.skyGlide} title="Bli medlem" subtitle="Gå med i Åre Skärm- och Drakflygklubb — 600 kr/år." height="clamp(280px, 40vh, 420px)" />
 
       <Wrap bg={T.bg}>
+        {loading && <p style={{ fontFamily: T.sans, fontSize: 15, color: T.muted, padding: "20px 0" }}>Laddar...</p>}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48 }}>
           <Fade>
             <div>
-              <p style={{ fontFamily: T.sans, fontSize: 28, fontWeight: 600, color: T.accent, marginBottom: 4 }}>600 kr / år</p>
-              <p style={{ fontFamily: T.sans, fontSize: 14, color: T.muted, marginBottom: 24 }}>Giltigt t.o.m. 31 december 2026</p>
+              <p style={{ fontFamily: T.sans, fontSize: 28, fontWeight: 600, color: T.accent, marginBottom: 4 }}>{price}</p>
+              <p style={{ fontFamily: T.sans, fontSize: 14, color: T.muted, marginBottom: 24 }}>{validity}</p>
 
-              <a href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/" target="_blank" rel="noopener noreferrer">
+              <a href={shopUrl} target="_blank" rel="noopener noreferrer">
                 <Button style={{
                   fontFamily: T.sans, fontWeight: 500, fontSize: 14, height: 44, padding: "0 28px",
                   borderRadius: 6, background: T.accent, color: "#fff", marginBottom: 32,

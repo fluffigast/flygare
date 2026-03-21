@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
-import { ExternalLink, CloudRain, Droplets, ArrowUp, Compass } from "lucide-react";
+import { ExternalLink, CloudRain, Droplets, ArrowUp, Compass, Wind, AlertTriangle } from "lucide-react";
 import { T, IMG, Fade, Wrap, SH, PageHero } from "../shared";
+import { useCurrentWeather } from "@/hooks/useCurrentWeather.ts";
+import type { PredictionData, MetricsData, PredictionEntry } from "@/types.ts";
+import { useWeatherLinks } from "@/hooks/useCMS";
 
 /* ═══════════════════════════════════════════════════════════
    WEATHER SYMBOLS — SVG icons for Yr.no symbol_code
@@ -214,7 +217,41 @@ function useForecast() {
   return { days, loading, error };
 }
 
-const WEATHER_LINKS = [
+/* ═══════════════════════════════════════════════════════════
+   FLYABILITY + PREDICTIONS HELPERS
+   ═══════════════════════════════════════════════════════════ */
+
+function flyabilityBadge(wind: number, direction: number) {
+  const westerly = direction >= 220 && direction <= 300;
+  const bonus = westerly ? 2 : 0;
+  const greenMax = 6 + bonus;
+  const yellowMax = 10 + bonus;
+
+  if (wind < greenMax) return { label: "Flygbart", color: "#22a66a", bg: "#e6f7ef" };
+  if (wind < yellowMax) return { label: "Marginellt", color: "#c49012", bg: "#fef6e0" };
+  return { label: "Ej flygbart", color: "#c44022", bg: "#fde8e3" };
+}
+
+function filterPredictions(entries: PredictionEntry[]): PredictionEntry[] {
+  const now = new Date().getHours();
+  const next6 = entries.filter(e => {
+    const h = parseInt(e.hour);
+    return ((h - now + 24) % 24) <= 6 && ((h - now + 24) % 24) > 0;
+  });
+  return next6.length >= 3 ? next6 : entries.slice(0, 6);
+}
+
+function windColor(ms: number): string {
+  if (ms < 6) return "#22a66a";
+  if (ms < 10) return "#c49012";
+  return "#c44022";
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LINKS
+   ═══════════════════════════════════════════════════════════ */
+
+const WEATHER_LINKS_FALLBACK = [
   { label: "SMHI Fjällväder", url: "https://www.smhi.se/vader/prognoser/fjallvader/areskutan" },
   { label: "Yr.no Åreskutan", url: "https://www.yr.no/nb/v%C3%A6rvarsel/daglig-tabell/2-6539391/Sverige/%C3%84re%20kommun/%C3%85reskutan" },
   { label: "XCMeteo", url: "http://www.xcmeteo.net/?p=13.092x63.431" },
@@ -226,14 +263,216 @@ const WEATHER_LINKS = [
   { label: "SMHI Satellit", url: "https://www.smhi.se/vader/observationer/satellitbilder" },
 ];
 
+/* ═══════════════════════════════════════════════════════════
+   PREDICTIONS COLUMN
+   ═══════════════════════════════════════════════════════════ */
+
+function PredictionColumn({ title, entries }: { title: string; entries: PredictionEntry[] }) {
+  const filtered = filterPredictions(entries);
+  const maxHigh = Math.max(...filtered.map(e => e.high), 1);
+
+  return (
+    <div style={{ flex: 1, minWidth: 200 }}>
+      <p style={{ fontFamily: T.sans, fontSize: 13, fontWeight: 600, color: T.ink2, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 16 }}>
+        {title}
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {filtered.map(e => {
+          const barWidth = Math.max((e.high / maxHigh) * 100, 8);
+          const lowWidth = Math.max((e.low / maxHigh) * 100, 2);
+          const color = windColor(e.wind_ms);
+          return (
+            <div key={e.hour} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{ fontFamily: T.sans, fontSize: 13, color: T.muted, width: 42, flexShrink: 0 }}>{e.hour}</span>
+              <div style={{ flex: 1, position: "relative", height: 20, background: T.bg, borderRadius: 4, overflow: "hidden" }}>
+                <div style={{
+                  position: "absolute", left: `${lowWidth}%`, width: `${barWidth - lowWidth}%`,
+                  top: 0, bottom: 0, background: color, opacity: 0.25, borderRadius: 4,
+                }} />
+                <div style={{
+                  position: "absolute", left: `${(e.wind_ms / maxHigh) * 100}%`,
+                  top: 2, bottom: 2, width: 3, background: color, borderRadius: 2,
+                  transform: "translateX(-50%)",
+                }} />
+              </div>
+              <span style={{ fontFamily: T.sans, fontSize: 14, fontWeight: 600, color, width: 50, textAlign: "right", flexShrink: 0 }}>
+                {e.wind_ms.toFixed(1)}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE
+   ═══════════════════════════════════════════════════════════ */
+
 export default function Vader() {
   const { days, loading, error } = useForecast();
   const today = days[0];
   const rest = days.slice(1);
 
+  const cw = useCurrentWeather();
+  const [predictions, setPredictions] = useState<PredictionData | null>(null);
+  const [metrics, setMetrics] = useState<MetricsData | null>(null);
+
+  const { data: weatherLinksData } = useWeatherLinks();
+  const WEATHER_LINKS = weatherLinksData?.length
+    ? weatherLinksData.map(l => ({ label: l.label, url: l.url }))
+    : WEATHER_LINKS_FALLBACK;
+
+  useEffect(() => {
+    fetch("/predictions.json")
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(d => setPredictions(d as PredictionData))
+      .catch(() => {});
+    fetch("/metrics.json")
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(d => setMetrics(d as MetricsData))
+      .catch(() => {});
+  }, []);
+
+  const badge = flyabilityBadge(cw.wind, cw.direction);
+  const westerly = cw.direction >= 220 && cw.direction <= 300;
+
+  // Staleness check: generated_at > 6h ago
+  const stale = predictions ? (Date.now() - new Date(predictions.generated_at).getTime()) > 6 * 3600 * 1000 : false;
+
+  // Pick area — use first available
+  const areaKey = predictions ? Object.keys(predictions.areas)[0] : null;
+  const area = areaKey ? predictions!.areas[areaKey] : null;
+
   return (
     <>
       <PageHero img={IMG.arePier} title="Väder & vind" subtitle="Aktuella förhållanden och prognoser för Åreskutan." height="clamp(280px, 40vh, 420px)" />
+
+      {/* ── CURRENT CONDITIONS (Section A) ── */}
+      <Wrap bg={T.white}>
+        <SH italic="Just nu" title="Aktuella förhållanden" />
+        <Separator style={{ background: T.border, margin: "28px 0 40px" }} />
+
+        {cw.loading && <p style={{ fontFamily: T.sans, color: T.muted, padding: "20px 0" }}>Laddar aktuellt väder...</p>}
+        {cw.error && <p style={{ fontFamily: T.sans, color: T.muted, padding: "20px 0" }}>Kunde inte ladda aktuellt väder.</p>}
+
+        {!cw.loading && !cw.error && (
+          <Fade>
+            {/* Flyability badge — prominent at top */}
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 12,
+              padding: "12px 24px", borderRadius: 10,
+              background: badge.bg, border: `1px solid ${badge.color}22`,
+              marginBottom: 36,
+            }}>
+              <Wind size={20} style={{ color: badge.color }} />
+              <span style={{ fontFamily: T.sans, fontSize: 18, fontWeight: 700, color: badge.color, letterSpacing: ".02em" }}>
+                {badge.label}
+              </span>
+              {westerly && (
+                <span style={{ fontFamily: T.sans, fontSize: 12, color: "#22a66a", marginLeft: 8 }}>
+                  Gynnsam vindriktning
+                </span>
+              )}
+            </div>
+
+            {/* Main weather display */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 48, alignItems: "flex-end" }}>
+              {/* Temperature */}
+              <div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+                  <span style={{ fontFamily: T.sans, fontSize: 72, fontWeight: 200, letterSpacing: "-.04em", color: T.ink, lineHeight: 1 }}>
+                    {Math.round(cw.temp) > 0 ? "+" : ""}{Math.round(cw.temp)}
+                  </span>
+                  <span style={{ fontFamily: T.sans, fontSize: 24, fontWeight: 300, color: T.muted }}>&deg;C</span>
+                </div>
+              </div>
+
+              {/* Wind */}
+              <div style={{ minWidth: 200 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                  <ArrowUp size={18} style={{ color: T.accent, transform: `rotate(${cw.direction}deg)`, flexShrink: 0 }} />
+                  <span style={{ fontFamily: T.sans, fontSize: 32, fontWeight: 400, color: T.ink2, letterSpacing: "-.02em" }}>
+                    {cw.wind.toFixed(1)}
+                  </span>
+                  <span style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 300, color: T.muted }}>m/s</span>
+                </div>
+                <p style={{ fontFamily: T.sans, fontSize: 14, color: T.ink3, marginBottom: 4 }}>
+                  {degToName(cw.direction)} ({Math.round(cw.direction)}&deg;)
+                </p>
+                <p style={{ fontFamily: T.sans, fontSize: 13, color: T.muted }}>
+                  Byar {cw.gusts.toFixed(1)} m/s
+                </p>
+              </div>
+            </div>
+          </Fade>
+        )}
+      </Wrap>
+
+      {/* ── AI PREDICTIONS (Section B) ── */}
+      {area && (
+        <Wrap bg={T.bg}>
+          <SH italic="AI-prognos" title="Vindprediktion" />
+          <Separator style={{ background: T.border, margin: "28px 0 40px" }} />
+
+          {stale && (
+            <Fade>
+              <div style={{
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "12px 18px", borderRadius: 8,
+                background: "#fef6e0", border: "1px solid #c4901233",
+                marginBottom: 28,
+              }}>
+                <AlertTriangle size={16} style={{ color: "#c49012", flexShrink: 0 }} />
+                <span style={{ fontFamily: T.sans, fontSize: 13, color: "#c49012" }}>
+                  Prediktionerna genererades f&ouml;r mer &auml;n 6 timmar sedan och kan vara inaktuella.
+                </span>
+              </div>
+            </Fade>
+          )}
+
+          <Fade>
+            <div style={{ display: "flex", gap: 48, flexWrap: "wrap" }}>
+              <PredictionColumn title="Topp" entries={area.top} />
+              <PredictionColumn title="Dal" entries={area.valley} />
+            </div>
+          </Fade>
+
+          {/* Metrics badge */}
+          {metrics && (
+            <Fade delay={0.1}>
+              <div style={{
+                marginTop: 36, padding: "16px 20px", borderRadius: 10,
+                background: T.white, border: `1px solid ${T.border}`,
+                display: "flex", flexWrap: "wrap", alignItems: "center", gap: 20,
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{
+                    fontFamily: T.sans, fontSize: 12, fontWeight: 600, color: T.white,
+                    background: T.accent, borderRadius: 4, padding: "3px 8px",
+                    textTransform: "uppercase", letterSpacing: ".06em",
+                  }}>MAE</span>
+                  <span style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 600, color: T.ink2 }}>{metrics.mae} m/s</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{
+                    fontFamily: T.sans, fontSize: 12, fontWeight: 600, color: T.white,
+                    background: "#22a66a", borderRadius: 4, padding: "3px 8px",
+                    textTransform: "uppercase", letterSpacing: ".06em",
+                  }}>{Math.round(metrics.improvement_pct)}% b&auml;ttre</span>
+                  <span style={{ fontFamily: T.sans, fontSize: 13, color: T.muted }}>
+                    &auml;n persistensprognos
+                  </span>
+                </div>
+              </div>
+              <p style={{ fontFamily: T.sans, fontSize: 11, color: T.muted, marginTop: 12 }}>
+                LightGBM, {(metrics.samples / 1000).toFixed(0)}k observationer, MAE {metrics.mae} m/s ({Math.round(metrics.improvement_pct)}% b&auml;ttre &auml;n persistensprognos)
+              </p>
+            </Fade>
+          )}
+        </Wrap>
+      )}
 
       {/* ── TODAY ── */}
       <Wrap bg={T.white}>

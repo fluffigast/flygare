@@ -1,86 +1,120 @@
 import { Badge } from "@/components/ui/badge";
+import { useMemo } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 import { Wind, Mountain, MapPin } from "lucide-react";
 import { T, IMG, Fade, Wrap,  PageHero } from "../shared";
+import { useLaunches, useOtherSites } from "@/hooks/useCMS";
+import { richTextToPlain } from "../lib/payload";
 
-function coordsToMapsUrl(coords: string): string | null {
+function parseCoords(coords: string): [number, number] | null {
   const match = coords.match(/(\d+)°(\d+)'(\d+)"?N,?\s*(\d+)°(\d+)'(\d+)"?E/);
   if (!match) return null;
   const lat = parseInt(match[1]) + parseInt(match[2])/60 + parseInt(match[3])/3600;
   const lon = parseInt(match[4]) + parseInt(match[5])/60 + parseInt(match[6])/3600;
-  return `https://www.google.com/maps/search/?api=1&query=${lat.toFixed(6)},${lon.toFixed(6)}`;
+  return [lat, lon];
 }
 
-const LAUNCHES = [
-  {
-    name: "1000m starten", type: "Starter", dir: "SO–S (skärm), SO–SV (hängflyg)", elev: "1000 m",
-    coords: "Nås via Kabinbanan",
-    desc: "Gemensamt startområde för hängflyg och skärmflyg. Höjdskillnad till Draklanda: 905 m. Trärampen (sommar) enbart för hängflyg — skärmflygare startar öster om rampen. Håll säkerhetsavstånd till kabinbanans linor och se till att startfältet är fritt från skidåkare.",
-    extra: "Nödlandning: öster om Tusenmeter Dal, innan västra ravinen.",
-  },
-  {
-    name: "Tväråvalvet", type: "Starter", dir: "NV (skärm), V–NV (hängflyg)", elev: "~1050 m",
-    coords: "63°25'48\"N, 13°04'57\"E",
-    desc: "Ca 200 m norr om Kabinbanans toppstation. Trärampen enbart för hängflyg. Höjdskillnad till Draklanda: 925 m, till Tväråvalvets liftstation: 370 m. Vintertid kan man landa vid liftens bottenstation och åka upp igen med miniskidor.",
-    extra: "Bedöm: klarar du liftvajrarna och har reservhöjd till Draklanda?",
-  },
-  {
-    name: "Mörvikshummeln Väst", type: "Starter", dir: "S–SV", elev: "~900 m",
-    coords: "63°24'43\"N, 13°04'41\"E",
-    desc: "Lokalt kallad 'Hummeln väst'. Ca 150 m väster om Hummelstugan, under kabinbanans linor. Höjdskillnad till Draklanda: 525 m. Alltid motvind mot Draklanda — inga alternativa landningsplatser.",
-    extra: "Vindmätardata från Hummelstugan kan vara missvisande p.g.a. rotoreffekter bakom Svartberget.",
-  },
-  {
-    name: "Mörvikshummeln Syd", type: "Starter", dir: "S", elev: "~900 m",
-    coords: "63°24'38\"N, 13°04'59\"E",
-    desc: "Lokalt kallad 'Hummeln syd'. Bra termikstartplats senvår/sommar. Höjdskillnad till Draklanda: 525 m. Flyg söderut mot Åre by, passera Stötta 1 till höger, sväng sedan västerut mot Draklanda (~1,5 km).",
-    extra: "Sommar: ingen säker nödlandning om du inte klarar järnvägen.",
-  },
-  {
-    name: "Mörvikshummeln Ost", type: "Starter", dir: "O–SO", elev: "~900 m",
-    coords: "63°24'39\"N, 13°05'02\"E",
-    desc: "Lokalt kallad 'Hummeln Ost/Sydost'. Ca 50 m sydost om Hummelliften toppstation. Höjdskillnad: 510 m, avstånd: 1,9 km till Draklanda. Sväng söderut så snart som möjligt efter start.",
-    extra: "Undvik skidpister vintertid.",
-  },
-  {
-    name: "Mörvikshummeln Nordost", type: "Starter", dir: "NO–N", elev: "~900 m",
-    coords: "63°24'40\"N, 13°05'04\"E",
-    desc: "Lokalt kallad 'Pelikan'. Ca 20 m nordost om Hummelliften toppstation. Höjdskillnad: 510 m till Draklanda. Dalen nedanför har ofta sjunkande luft — flyg söderut parallellt med liften för att vinna höjd.",
-    extra: "Erfarna piloter med rätt certifikat kan nyttja kantlyft i närliggande raviner.",
-  },
-  {
-    name: "Röda Rappet Väst", type: "Starter", dir: "SV–V", elev: "~950 m",
-    coords: "63°25'34\"N, 13°04'13\"E",
-    desc: "Ca 500 m från Kabinbanans toppstation. Höjdskillnad till Draklanda: 825 m, till Olympiagondolen: 370 m. Stora stenblock gör starten krävande vid svag vind. Sommartid krävs vandring ned till lägre startplats.",
-    extra: "Brant kant under övre starten — turbulens från närliggande ås möjlig.",
-  },
-  {
-    name: "Långspannet", type: "Starter", dir: "SO–O", elev: "~1000 m",
-    coords: "Mellan stötta 3 och 4",
-    desc: "Inofficiell start — INTE klubbrekommenderad. Endast piloter med minst P2 och god lokal erfarenhet. Piloter måste kunna flyga under kabinbanans vajrar säkert och kabinbanan ska stå stilla vid passage.",
-    extra: "Begränsad kapacitet — trångt luftrum vid flera samtidiga starter.",
-  },
-  {
-    name: "Draklanda", type: "Landning", dir: "Alla", elev: "~380 m",
-    coords: "1 km väster om torget",
-    desc: "Enda officiella landningsplatsen. Belägen nedanför VM8:an, mellan järnvägen och Åresjön. Arrenderas av Åre kommun och Skistar. Klubbstugan ligger här. Minst 25 höjdflyg krävs för sommarlandning utan instruktör.",
-    extra: "Vinter: sjöisen intill kan användas vid nödlandning, men isen vid utloppet nedom Lake Lodge är MYCKET svag.",
-  },
-];
+function coordsToMapsUrl(coords: string): string | null {
+  const parsed = parseCoords(coords);
+  if (!parsed) return null;
+  return `https://www.google.com/maps/search/?api=1&query=${parsed[0].toFixed(6)},${parsed[1].toFixed(6)}`;
+}
 
-const OTHER_SITES = [
-  { name: "Välliste, Trillevallen", dir: "O–SO", elev: "~50 m drop", desc: "Avfart E14 vid Undersåker. 20–25 min promenad. Fyrpersonslift gör Välliste lämpligt för vinterflygning.", coords: "63°16'20\"N, 13°08'32\"E" },
-  { name: "Getryggen, Snasahögarna", dir: "O–SO", elev: "Hike & fly", desc: "Kör till Storulvåns fjällstation. Ca 45 min promenad. Enbart skärmflyg. Landa på parkeringen eller närliggande myr.", coords: "63°10'52\"N, 12°19'03\"E" },
-  { name: "Tossön, Järpen", dir: "S", elev: "~50 m drop", desc: "En av Åres mest använda backglidekullar. Nyligen röjd av Åre kommun. Obs: en del träd kvar vid landningsområdet — scouta noga innan flygning." },
-  { name: "Rännberg, Gevsjön", dir: "SSV–SSO", elev: "~50 m drop", desc: "Populär skolningsplats. Backglid fungerar väl på Rännberg." },
-];
+const starterIcon = new L.DivIcon({
+  html: `<div style="width:28px;height:28px;border-radius:50%;background:${T.accent};border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>`,
+  className: "",
+  iconSize: [28, 28],
+  iconAnchor: [14, 14],
+});
+
+const landningIcon = new L.DivIcon({
+  html: `<div style="width:28px;height:28px;border-radius:50%;background:#b07d3a;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>`,
+  className: "",
+  iconSize: [28, 28],
+  iconAnchor: [14, 14],
+});
 
 export default function Startplatser() {
+  const { data: launchesData, loading: launchesLoading } = useLaunches();
+  const { data: otherSitesData, loading: otherSitesLoading } = useOtherSites();
+
+  const loading = launchesLoading || otherSitesLoading;
+
+  const { LAUNCHES, OTHER_SITES, mapMarkers } = useMemo(() => {
+    const launches = (launchesData || []).map(l => ({
+      name: l.name, type: l.type, dir: l.direction || "", elev: l.elevation || "",
+      coords: l.coords || "", desc: richTextToPlain(l.description), extra: richTextToPlain(l.extra),
+    }));
+    const otherSites = (otherSitesData || []).map(s => ({
+      name: s.name, dir: s.direction || "", elev: s.elevationDrop || "",
+      desc: richTextToPlain(s.description), coords: s.coords,
+    }));
+    const markers: { name: string; type: string; elev: string; dir: string; pos: [number, number] }[] = [];
+    for (const l of launches) {
+      const pos = parseCoords(l.coords);
+      if (pos) markers.push({ name: l.name, type: l.type, elev: l.elev, dir: l.dir, pos });
+    }
+    for (const s of otherSites) {
+      if (s.coords) {
+        const pos = parseCoords(s.coords);
+        if (pos) markers.push({ name: s.name, type: "Starter", elev: s.elev, dir: s.dir, pos });
+      }
+    }
+    return { LAUNCHES: launches, OTHER_SITES: otherSites, mapMarkers: markers };
+  }, [launchesData, otherSitesData]);
+
   return (
     <>
       <PageHero img={IMG.areSky} title="Startplatser" subtitle="Åreskutans start- och landningsområden." height="clamp(280px, 40vh, 420px)" />
 
+      {mapMarkers.length > 0 && (
+        <section style={{ background: T.white, padding: "48px clamp(20px, 5vw, 40px) 0" }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <Fade>
+              <div style={{ borderRadius: 12, overflow: "hidden", border: `1px solid ${T.border}`, boxShadow: "0 2px 12px rgba(0,0,0,.08)" }}>
+                <MapContainer
+                  center={[63.41, 13.07]}
+                  zoom={13}
+                  style={{ height: "clamp(320px, 45vw, 500px)", width: "100%" }}
+                  scrollWheelZoom={false}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  {mapMarkers.map(m => (
+                    <Marker key={m.name} position={m.pos} icon={m.type === "Landning" ? landningIcon : starterIcon}>
+                      <Popup>
+                        <div style={{ fontFamily: T.sans, minWidth: 140 }}>
+                          <strong style={{ fontSize: 14, color: T.ink }}>{m.name}</strong>
+                          <div style={{ fontSize: 12, color: T.ink3, marginTop: 4 }}>{m.elev} · {m.dir}</div>
+                          <div style={{ fontSize: 11, color: m.type === "Landning" ? "#b07d3a" : T.accent, marginTop: 2, fontWeight: 600 }}>{m.type}</div>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MapContainer>
+                <div style={{ padding: "10px 16px", background: T.bg, display: "flex", gap: 20, alignItems: "center", borderTop: `1px solid ${T.borderL}` }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 12, height: 12, borderRadius: "50%", background: T.accent, border: "1.5px solid #fff", boxShadow: "0 1px 3px rgba(0,0,0,.2)" }} />
+                    <span style={{ fontFamily: T.sans, fontSize: 12, color: T.ink3 }}>Starter</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#b07d3a", border: "1.5px solid #fff", boxShadow: "0 1px 3px rgba(0,0,0,.2)" }} />
+                    <span style={{ fontFamily: T.sans, fontSize: 12, color: T.ink3 }}>Landning</span>
+                  </div>
+                </div>
+              </div>
+            </Fade>
+          </div>
+        </section>
+      )}
+
       <Wrap bg={T.bg}>
+        {loading && <p style={{ fontFamily: T.sans, fontSize: 15, color: T.muted, padding: "20px 0" }}>Laddar...</p>}
         <Fade>
           <p style={{ fontFamily: T.sans, fontSize: 15, color: T.ink3, lineHeight: 1.7, maxWidth: 720, marginBottom: 4 }}>
             Alla väderstreck är orienterade som om Kabinbanan ligger i rak nord-sydlig riktning.
