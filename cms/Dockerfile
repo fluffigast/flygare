@@ -15,6 +15,25 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
+# ── Seed stage ───────────────────────────────────────────
+# Run seed at build time so the production image ships a populated DB
+FROM node:22-alpine AS seeder
+
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+ENV PAYLOAD_SECRET=build-time-seed-secret
+ENV NODE_ENV=production
+
+# Start from the schema-only seed.db (has tables, no data)
+RUN cp data/seed.db data/seeded.db
+
+ENV DATABASE_URL=file:./data/seeded.db
+
+RUN npx tsx src/seed/index.ts
+
 # ── Production stage ─────────────────────────────────────
 FROM node:22-alpine AS runner
 
@@ -34,14 +53,10 @@ COPY --from=builder --chown=payload:payload /app/.next/static ./.next/static
 COPY --from=builder --chown=payload:payload /app/node_modules ./node_modules
 COPY --from=builder --chown=payload:payload /app/package.json ./
 
-# Source files needed for seed script
-COPY --from=builder --chown=payload:payload /app/src ./src
-COPY --from=builder --chown=payload:payload /app/tsconfig.json ./tsconfig.json
-
 RUN mkdir -p /app/data && chown payload:payload /app/data
 
-# Schema-only DB stored outside data dir (data dir may be an Azure Files mount)
-COPY --chown=payload:payload data/seed.db /app/seed.db
+# Pre-seeded DB from build (stored outside /app/data which may be an Azure Files mount)
+COPY --from=seeder --chown=payload:payload /app/data/seeded.db /app/seed.db
 COPY --chown=payload:payload start.sh ./
 RUN chmod +x start.sh
 

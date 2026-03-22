@@ -47,67 +47,59 @@ async function seed() {
       title: 'Välkommen till PPC Åre 2026',
       category: 'Tävlingar' as const,
       date: '2026-03-20',
-      description: richText(
+      description:
         'Årets upplaga av PoängPlockarCupen (PPC) startar i och med att första termiken hittas! Läs reglerna under Tävlingar. Nytt för i år: klubbtröjor och merchandise finns på asdfkstore.myspreadshop.se.',
-      ),
       featured: true,
     },
     {
       title: 'Klubbuss Kampanj',
       category: 'Aktiviteter' as const,
       date: '2026-03-16',
-      description: richText(
+      description:
         'Vi letar efter en ny klubbuss! Budget: max 180 000 kr. Krav: 4WD, minst 7 platser, dragkrok. Tips? Swish 123 083 11 98 till kassan.',
-      ),
       featured: true,
     },
     {
       title: 'Ny webbshop',
       category: 'Information' as const,
       date: '2026-01-23',
-      description: richText(
+      description:
         'SSFF:s webbshop har uppdaterats. Medlemskap och licenser köps nu via cloud.paragliding.se.',
-      ),
     },
     {
       title: 'Ansök om tävlingsstipendium',
       category: 'Aktiviteter' as const,
       date: '2026-01-20',
-      description: richText(
+      description:
         'Klubben delar ut stipendier för tävlingsdeltagande. Ansök via styrelsen senast 15 mars.',
-      ),
     },
     {
       title: 'Kallelse till Årsmöte 2026',
       category: 'Information' as const,
       date: '2026-01-12',
-      description: richText(
+      description:
         'Årsmöte hålls 22 februari kl 18:00 på Åre Fjällsätra. Dagordning och motioner skickas ut via e-post.',
-      ),
     },
     {
       title: 'Viktig info till alla flygare',
       category: 'Information' as const,
       date: '2025-07-17',
-      description: richText(
+      description:
         'Påminnelse: Skistar-avtalet gäller — all körning på Skistarvägar sker på deras villkor. Maxhastighet 40 km/h. Hummeln: kör bara uppför i markerad stig.',
-      ),
     },
     {
       title: 'Vinnare av topplandningstävlingen',
       category: 'Tävlingar' as const,
       date: '2025-04-12',
-      description: richText(
+      description:
         'Love Lundgren vann vårens topplandningstävling. Champagnen väntar!',
-      ),
     },
     {
       title: '1000m projektet avslutat',
       category: 'Aktiviteter' as const,
       date: '2025-04-12',
-      description: richText(
+      description:
         'Jordbruksverkets tillstånd för 1000m-starten är nu klart. Starten är officiellt godkänd och öppen.',
-      ),
     },
   ]
 
