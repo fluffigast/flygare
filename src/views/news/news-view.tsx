@@ -15,7 +15,7 @@ const NewsView: React.FC<NewsViewProps> = ({}) => {
           <NewsGrid
             news={news.map((newsItem) => ({
               ...newsItem,
-              imageUrl: getPlaceholderImage(article.id),
+              imageUrl: getPlaceholderImage(newsItem.id),
             }))}
           />
         </section>
