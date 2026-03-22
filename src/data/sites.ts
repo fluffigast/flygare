@@ -305,3 +305,28 @@ export const sites: TakeoffSite[] = sitesRaw.map((s) => ({
 
 export type Site = TakeoffSite & { imageUrl?: string };
 export type Sites = Site[];
+
+export type SiteArea = {
+  title: string;
+  description: string;
+};
+
+export const sitesIntro = {
+  title: "Åreskutans start- och landningsområden",
+  rules: [
+    "Alla väderstreck är orienterade som om Kabinbanan ligger i rak nord-sydlig riktning. Draklanda är den officiella landningsplatsen — alla andra landningar betraktas som utelandningar vid XC-flyg.",
+    "Vajrarna passeras söder om Stötta 1 vid nedflyg utan höjdvinst. Nya och halverfarna piloter ska alltid följa denna regel. Vajrarna hänger minimum 60 m ovan mark.",
+  ],
+  areas: [
+    {
+      title: "Åreskutan",
+      description:
+        "Huvudmassivet med de flesta startplatserna. Nås via Kabinbanan eller till fots. Kontrollera alltid aktuell vindprognos och NOTAM innan start.",
+    },
+    {
+      title: "Andra flygområden",
+      description:
+        "Tegefjäll och Mörvikshummeln erbjuder alternativ vid annan vindexponering. Kontakta klubben för aktuell status på dessa platser.",
+    },
+  ] as SiteArea[],
+};
