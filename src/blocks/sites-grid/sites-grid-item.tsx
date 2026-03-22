@@ -1,6 +1,6 @@
 import React from "react";
 import type { Site } from "../../data/sites";
-import { getRandomPlaceholderImage } from "../../utils/placeholder";
+import { getPlaceholderImage } from "../../utils/placeholder";
 import { Link } from "react-router";
 
 export interface SitesGridItemProps {
@@ -13,7 +13,7 @@ const SitesGridItem: React.FC<SitesGridItemProps> = ({ site }) => {
     <article className="flex flex-col gap-2">
       <Link to={`/startplatser/${site.slug}`} key={site.id}>
         <img
-          src={getRandomPlaceholderImage()}
+          src={getPlaceholderImage(site.id)}
           alt={title}
           className="w-full aspect-3/4 object-cover"
         />

@@ -4,61 +4,53 @@ import Separator from "./separator";
 
 export interface FooterProps {}
 
+const linkClass =
+  "text-muted-foreground hover:text-foreground transition-colors";
+
 const Footer: React.FC<FooterProps> = ({}) => {
   return (
     <div className="flex flex-col gap-16 max-w-2xl mx-auto px-4 w-full @container mt-16">
       <Separator />
       <footer className="mx-auto w-full">
-        <div className="flex gap-8">
+        <div className="flex flex-col gap-8 @sm:flex-row">
           <div className="flex flex-1 flex-col gap-2">
             <h4>Flyga i Åre</h4>
             <ul className="flex flex-col gap-2">
               <li>
-                <Link
-                  to="/regler"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Regler
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/riktlinjer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Riktlinjer
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/startplatser"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
+                <Link to="/startplatser" className={linkClass}>
                   Startplatser
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/landningar"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Landningar
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/luftrum"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  to="/information/luftrum-are"
+                  className={linkClass}
                 >
                   Luftrum
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/nordinformation"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  to="/information/sakerhet-och-ansvar"
+                  className={linkClass}
+                >
+                  Säkerhet och ansvar
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/information/nodinformation"
+                  className={linkClass}
                 >
                   Nödinformation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/information/etik-och-hansyn"
+                  className={linkClass}
+                >
+                  Etik och hänsyn
                 </Link>
               </li>
             </ul>
@@ -68,27 +60,21 @@ const Footer: React.FC<FooterProps> = ({}) => {
             <h4>Klubben</h4>
             <ul className="flex flex-col gap-2">
               <li>
-                <Link
-                  to="/bli-medlem"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Bli medlem
+                <Link to="/nyheter" className={linkClass}>
+                  Nyheter
+                </Link>
+              </li>
+              <li>
+                <Link to="/information" className={linkClass}>
+                  Information
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/dokument"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  to="/information/klubbbussen"
+                  className={linkClass}
                 >
-                  Dokument
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/kontakt"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Kontakt
+                  Klubbbussen
                 </Link>
               </li>
             </ul>

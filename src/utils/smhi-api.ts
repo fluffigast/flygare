@@ -158,7 +158,8 @@ export function transformSMHIData(
     // Calculate averages for the day
     let totalTemp = 0;
     let totalWindSpeed = 0;
-    let totalWindDir = 0;
+    let windDirSinSum = 0;
+    let windDirCosSum = 0;
     let totalPrecipitation = 0;
     let tempCount = 0;
     let windCount = 0;
@@ -179,7 +180,9 @@ export function transformSMHIData(
         windCount++;
       }
       if (windDirParam && windDirParam.values.length > 0) {
-        totalWindDir += windDirParam.values[0];
+        const rad = (windDirParam.values[0] * Math.PI) / 180;
+        windDirSinSum += Math.sin(rad);
+        windDirCosSum += Math.cos(rad);
       }
       if (precipParam && precipParam.values.length > 0) {
         totalPrecipitation += precipParam.values[0];
@@ -190,7 +193,8 @@ export function transformSMHIData(
     if (tempCount > 0) {
       const avgTemp = Math.round(totalTemp / tempCount);
       const avgWindSpeed = windCount > 0 ? totalWindSpeed / windCount : 0;
-      const avgWindDir = windCount > 0 ? totalWindDir / windCount : 0;
+      const avgWindDirRad = Math.atan2(windDirSinSum, windDirCosSum);
+      const avgWindDir = windCount > 0 ? ((avgWindDirRad * 180) / Math.PI + 360) % 360 : 0;
       const totalPrecip =
         precipCount > 0 ? Math.round(totalPrecipitation * 10) / 10 : 0;
 

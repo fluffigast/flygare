@@ -73,7 +73,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
       date: new Date(2026, 1, 3),
       windDirection: {
         degrees: 0,
-        label: "Sydlig",
+        label: "Nordlig",
       },
       windStrength: "2-6 m/s",
       temperature: "12°C",

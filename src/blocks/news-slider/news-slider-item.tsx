@@ -1,6 +1,7 @@
 import React from "react";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { Link } from "react-router";
 
 export interface NewsSliderItemProps {
   id: string;
@@ -15,6 +16,7 @@ export interface NewsSliderItemProps {
 const NewsSliderItem: React.FC<NewsSliderItemProps> = ({
   title,
   publishedAt,
+  slug,
   imageUrl,
 }) => {
   const formatDate = (dateString: string) => {
@@ -22,7 +24,7 @@ const NewsSliderItem: React.FC<NewsSliderItemProps> = ({
     return format(date, "d MMMM, yyyy", { locale: sv });
   };
 
-  return (
+  const content = (
     <article className="flex gap-4 flex-1 min-w-0">
       <div className="w-32 h-28 overflow-hidden">
         <img
@@ -38,6 +40,12 @@ const NewsSliderItem: React.FC<NewsSliderItemProps> = ({
       </div>
     </article>
   );
+
+  if (slug) {
+    return <Link to={`/nyheter/${slug}`}>{content}</Link>;
+  }
+
+  return content;
 };
 
 export default NewsSliderItem;

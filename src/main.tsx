@@ -1,5 +1,7 @@
 import "@fontsource-variable/karla";
+import "@fontsource-variable/karla/wght-italic.css";
 import "@fontsource-variable/source-serif-4";
+import "@fontsource-variable/source-serif-4/wght-italic.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
@@ -12,6 +14,7 @@ import ArticlesView from "./views/articles/articles-view.tsx";
 import ArticlesSingleView from "./views/articles/articles-single/articles-single-view.tsx";
 import SitesView from "./views/sites/sites-view.tsx";
 import SitesSingleView from "./views/sites/sites-single/sites-single-view.tsx";
+import NotFoundView from "./views/not-found-view.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -31,6 +34,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<SitesView />} />
             <Route path=":slug" element={<SitesSingleView />} />
           </Route>
+          <Route path="*" element={<NotFoundView />} />
         </Route>
       </Routes>
     </BrowserRouter>

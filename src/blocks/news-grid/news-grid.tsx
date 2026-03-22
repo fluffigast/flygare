@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import NewsGridItem from "./news-grid-item";
-import { getRandomPlaceholderImage } from "../../utils/placeholder";
+import { getPlaceholderImage } from "../../utils/placeholder";
 import type { NewsItems } from "../../data/news";
 import Pagination from "../../components/pagination";
 import Separator from "../../components/separator";
@@ -93,7 +93,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
               ref={scrollContainerRef}
               className="flex items-center gap-8 overflow-x-auto overflow-y-hidden scrollbar-hide flex-1"
             >
-              <Link className="text-nowrap" to="/news">
+              <Link className="text-nowrap" to="/nyheter">
                 Alla kategorier
               </Link>
               {[...new Set(news.map((n) => n.category.toLowerCase()))]
@@ -102,7 +102,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
                   <Link
                     key={category}
                     className="text-nowrap"
-                    to={`/news?category=${category}`}
+                    to={`/nyheter?category=${category}`}
                   >
                     {category.charAt(0).toUpperCase() + category.slice(1)}
                   </Link>
@@ -131,7 +131,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
               publishedAt={article.publishedAt}
               title={article.title}
               description={article.excerpt}
-              image={getRandomPlaceholderImage()}
+              image={getPlaceholderImage(article.id)}
             />
           ))}
         </div>
@@ -139,7 +139,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            basePath="/news"
+            basePath="/nyheter"
           />
         )}
       </section>

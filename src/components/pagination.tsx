@@ -13,7 +13,7 @@ export interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
-  basePath = "/news",
+  basePath = "/nyheter",
   onPageChange,
 }) => {
   const isFirstPage = currentPage === 1;

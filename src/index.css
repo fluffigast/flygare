@@ -1,10 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 :root {
-  --font-serif: "Source Serif 4", "Source Serif 4 Variable", serif;
-  --font-sans: "Karla", "Karla Variable", sans-serif;
+  --font-serif: "Source Serif 4 Variable", serif;
+  --font-sans: "Karla Variable", sans-serif;
 
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -195,4 +194,20 @@
   box-shadow:
     0 4px 6px -1px oklch(0 0 0 / 0.08),
     0 2px 4px -2px oklch(0 0 0 / 0.06);
+}
+.sites-map-popup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.sites-map-popup.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.sites-map-popup.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-bottom-color: var(--popover);
+}
+.sites-map-popup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.sites-map-popup.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.sites-map-popup.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-top-color: var(--popover);
+}
+.sites-map-popup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: var(--popover);
+}
+.sites-map-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: var(--popover);
 }
