@@ -1,8 +1,16 @@
 import React from "react";
 import Separator from "../../components/separator";
-import { contactInfo } from "../../data/contact";
+import { contactInfo as localContact } from "../../data/contact";
+import { useContactInfo } from "../../hooks/useCMS";
 
 const KontaktView: React.FC = () => {
+  const { data: cmsContact } = useContactInfo(localContact);
+  const contactInfo = {
+    ...localContact,
+    email: cmsContact.email ?? localContact.email,
+    radioFrequencies: cmsContact.radioFrequencies?.length ? cmsContact.radioFrequencies : localContact.radioFrequencies,
+    emergencyContacts: cmsContact.emergencyContacts?.length ? cmsContact.emergencyContacts : localContact.emergencyContacts,
+  };
   return (
     <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
       {/* Header */}
