@@ -44,7 +44,7 @@ const BliMedlemView: React.FC = () => {
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Vad ingår</h3>
         <ul className="flex flex-col gap-3">
-          {membershipInfo.benefits.map((benefit) => (
+          {membershipInfo.benefits.map((benefit: any) => (
             <li
               key={benefit}
               className="text-muted-foreground text-sm leading-relaxed flex gap-3 items-baseline"
@@ -68,7 +68,7 @@ const BliMedlemView: React.FC = () => {
             <p className="text-sm font-semibold">Krav</p>
           </div>
           {/* Table rows */}
-          {membershipInfo.licenseRequirements.map((req) => (
+          {membershipInfo.licenseRequirements.map((req: any) => (
             <div
               key={req.level}
               className="grid grid-cols-2 gap-4 py-3 border-b border-border"
