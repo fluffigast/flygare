@@ -14,6 +14,11 @@ import ArticlesView from "./views/articles/articles-view.tsx";
 import ArticlesSingleView from "./views/articles/articles-single/articles-single-view.tsx";
 import SitesView from "./views/sites/sites-view.tsx";
 import SitesSingleView from "./views/sites/sites-single/sites-single-view.tsx";
+import KontaktView from "./views/kontakt/kontakt-view.tsx";
+import OmView from "./views/om/om-view.tsx";
+import BliMedlemView from "./views/bli-medlem/bli-medlem-view.tsx";
+import TavlingarView from "./views/tavlingar/tavlingar-view.tsx";
+import VaderView from "./views/vader/vader-view.tsx";
 import NotFoundView from "./views/not-found-view.tsx";
 
 createRoot(document.getElementById("root")!).render(
@@ -34,6 +39,11 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<SitesView />} />
             <Route path=":slug" element={<SitesSingleView />} />
           </Route>
+          <Route path="kontakt" element={<KontaktView />} />
+          <Route path="om" element={<OmView />} />
+          <Route path="bli-medlem" element={<BliMedlemView />} />
+          <Route path="tavlingar" element={<TavlingarView />} />
+          <Route path="vader" element={<VaderView />} />
           <Route path="*" element={<NotFoundView />} />
         </Route>
       </Routes>
