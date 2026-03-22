@@ -3,7 +3,7 @@ import { RadioGroup } from "radix-ui";
 import React, { useState, useRef, useEffect } from "react";
 import Separator from "../../components/separator";
 import { news } from "../../data/news";
-import { getRandomPlaceholderImage } from "../../utils/placeholder";
+import { getPlaceholderImage } from "../../utils/placeholder";
 import NewsSliderItem from "./news-slider-item";
 
 export interface NewsSliderProps {}
@@ -73,7 +73,7 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
             >
               <NewsSliderItem
                 {...item}
-                imageUrl={getRandomPlaceholderImage()}
+                imageUrl={getPlaceholderImage(item.id)}
               />
             </div>
           ))}

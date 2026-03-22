@@ -7,7 +7,7 @@ import HeroBanner from "../../../blocks/hero-banner/hero-banner";
 import { WindCompassWedge } from "../../../components/wind-compass-wedge";
 import { sites, type Site } from "../../../data/sites";
 import { formatSweref99, formatWgs84 } from "../../../utils/coordinates";
-import { getRandomPlaceholderImage } from "../../../utils/placeholder";
+import { getPlaceholderImage } from "../../../utils/placeholder";
 import { windDirectionCaption } from "../../../utils/wind-direction";
 import WeatherForecast from "../../../blocks/weather-forecast/weather-forecast";
 import Separator from "../../../components/separator";
@@ -24,7 +24,7 @@ const SitesSingleView: React.FC = () => {
     <>
       <HeroBanner
         imageUrl={
-          getRandomPlaceholderImage() ??
+          getPlaceholderImage(slug ?? "fallback") ??
           `https://placehold.co/1920x1080?text=${sitesItem?.slug}`
         }
       />
@@ -175,13 +175,13 @@ const SitesSingleView: React.FC = () => {
                       <div className="flex flex-col flex-1">
                         <div className="italic font-serif">WGS84</div>
                         <div className="text-muted-foreground">
-                          {formatWgs84(overview.position.wgs84)}
+                          {formatWgs84(emergency.position.wgs84)}
                         </div>
                       </div>
                       <div className="flex flex-col flex-1">
                         <div className="italic font-serif">Sweref99</div>
                         <div className="text-muted-foreground">
-                          {formatSweref99(overview.position.sweref99)}
+                          {formatSweref99(emergency.position.sweref99)}
                         </div>
                       </div>
                     </div>

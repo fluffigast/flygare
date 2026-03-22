@@ -8,15 +8,23 @@
  */
 export function getRandomPlaceholderImage(): string {
   const images = getAllPlaceholderImages();
-  
-  // If no images found, return a fallback placeholder
-  if (images.length === 0) {
-    return 'https://placehold.co/400x600';
-  }
-
-  // Return a random image
+  if (images.length === 0) return 'https://placehold.co/400x600';
   const randomIndex = Math.floor(Math.random() * images.length);
   return images[randomIndex];
+}
+
+/**
+ * Returns a stable image for a given ID string.
+ * Same ID always returns the same image — no flickering on re-render.
+ */
+export function getPlaceholderImage(id: string): string {
+  const images = getAllPlaceholderImages();
+  if (images.length === 0) return 'https://placehold.co/400x600';
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = ((hash << 5) - hash + id.charCodeAt(i)) | 0;
+  }
+  return images[Math.abs(hash) % images.length];
 }
 
 /**

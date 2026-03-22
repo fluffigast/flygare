@@ -5,13 +5,12 @@ import { articles } from "../../../data/articles";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import HeroBanner from "../../../blocks/hero-banner/hero-banner";
-import { getRandomPlaceholderImage } from "../../../utils/placeholder";
+import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
 
 export interface NewsSingleViewProps {}
 
 const NewsSingleView: React.FC<NewsSingleViewProps> = ({}) => {
-  console.log("NewsSingleView");
   let { slug } = useParams();
   const newsItem = news.find((n) => n.slug === slug);
 
@@ -22,7 +21,7 @@ const NewsSingleView: React.FC<NewsSingleViewProps> = ({}) => {
     <>
       <HeroBanner
         imageUrl={
-          getRandomPlaceholderImage() ??
+          getPlaceholderImage(slug ?? "fallback") ??
           `https://placehold.co/1920x1080?text=${newsItem?.slug}`
         }
       />

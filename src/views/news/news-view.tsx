@@ -2,7 +2,7 @@ import React from "react";
 import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import NewsGrid from "../../blocks/news-grid/news-grid";
 import { news } from "../../data/news";
-import { getRandomPlaceholderImage } from "../../utils/placeholder";
+import { getPlaceholderImage } from "../../utils/placeholder";
 
 export interface NewsViewProps {}
 
@@ -15,7 +15,7 @@ const NewsView: React.FC<NewsViewProps> = ({}) => {
           <NewsGrid
             news={news.map((newsItem) => ({
               ...newsItem,
-              imageUrl: getRandomPlaceholderImage(),
+              imageUrl: getPlaceholderImage(article.id),
             }))}
           />
         </section>

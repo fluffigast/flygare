@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router";
 
 import HeroBanner from "../../../blocks/hero-banner/hero-banner";
 import { articles } from "../../../data/articles";
-import { getRandomPlaceholderImage } from "../../../utils/placeholder";
+import { getPlaceholderImage } from "../../../utils/placeholder";
 import Stack from "../../../components/stack";
 
 export interface ArticlesSingleViewProps {}
@@ -21,7 +21,7 @@ const ArticlesSingleView: React.FC<ArticlesSingleViewProps> = ({}) => {
     <>
       <HeroBanner
         imageUrl={
-          getRandomPlaceholderImage() ??
+          getPlaceholderImage(slug ?? "fallback") ??
           `https://placehold.co/1920x1080?text=${articlesItem?.slug}`
         }
       />

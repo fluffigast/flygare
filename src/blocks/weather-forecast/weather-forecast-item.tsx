@@ -44,7 +44,7 @@ const WeatherForecastItem: React.FC<WeatherForecastItemProps> = ({
           <p className="text-muted-foreground italic font-serif">
             Vindriktning
           </p>
-          <p className="text-foreground inline-flex items-center gap-2">
+          <div className="text-foreground inline-flex items-center gap-2">
             <div
               className="w-5 h-5"
               style={{ transform: `rotate(${windDirection.degrees}deg)` }}
@@ -52,7 +52,7 @@ const WeatherForecastItem: React.FC<WeatherForecastItemProps> = ({
               <MoveUpIcon className="w-5 h-5" />
             </div>{" "}
             {windDirection.label}
-          </p>
+          </div>
         </div>
 
         <div className="flex flex-col gap-1">
