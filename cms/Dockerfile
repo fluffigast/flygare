@@ -34,10 +34,14 @@ COPY --from=builder --chown=payload:payload /app/.next/static ./.next/static
 COPY --from=builder --chown=payload:payload /app/node_modules ./node_modules
 COPY --from=builder --chown=payload:payload /app/package.json ./
 
+# Source files needed for seed script
+COPY --from=builder --chown=payload:payload /app/src ./src
+COPY --from=builder --chown=payload:payload /app/tsconfig.json ./tsconfig.json
+
 RUN mkdir -p /app/data && chown payload:payload /app/data
 
-# Schema-ready empty DB — copied to runtime path if no DB exists
-COPY --chown=payload:payload data/seed.db /app/data/seed.db
+# Schema-only DB stored outside data dir (data dir may be an Azure Files mount)
+COPY --chown=payload:payload data/seed.db /app/seed.db
 COPY --chown=payload:payload start.sh ./
 RUN chmod +x start.sh
 

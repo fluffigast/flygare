@@ -35,7 +35,7 @@ async function seed() {
     collection: 'users',
     data: {
       email: 'admin@flygare.nu',
-      password: 'changeme123',
+      password: process.env.PAYLOAD_ADMIN_PASSWORD || 'changeme123',
       role: 'admin',
     },
   })
