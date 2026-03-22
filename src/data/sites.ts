@@ -65,7 +65,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.4089, lon: 13.0782 },
-        sweref99: { lat: 692480, lon: 7038210 },
+        sweref99: { lat: 7038210, lon: 692480 },
       },
       altitude: {
         takeoffMetersAboveSea: 1200,
@@ -74,7 +74,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       wind: {
         directionRange: { min: 180, max: 225 },
         notes:
-          "Känslig för rotor vid nordlig vind. Termiken kan vara stark vid sol. Snabba väderomslag förekommer. Molnbasen kan sjunka snabbt. Aktta katabatiska vindar sen eftermiddag.",
+          "Känslig för rotor vid nordlig vind. Termiken kan vara stark vid sol. Snabba väderomslag förekommer. Molnbasen kan sjunka snabbt. Akta katabatiska vindar sen eftermiddag.",
       },
       experienceLevel: {
         level: "medel",
@@ -99,7 +99,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       locationInstruction: 'Ange "Åreskutan, 1000-meter syd startplats."',
       position: {
         wgs84: { lat: 63.4089, lon: 13.0782 },
-        sweref99: { lat: 692480, lon: 7038210 },
+        sweref99: { lat: 7038210, lon: 692480 },
       },
     },
   },
@@ -115,7 +115,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.4142, lon: 13.071 },
-        sweref99: { lat: 691920, lon: 7038780 },
+        sweref99: { lat: 7038780, lon: 691920 },
       },
       altitude: {
         takeoffMetersAboveSea: 1180,
@@ -148,7 +148,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       locationInstruction: 'Ange "Åreskutan, Västerskutan nord startplats."',
       position: {
         wgs84: { lat: 63.4142, lon: 13.071 },
-        sweref99: { lat: 691920, lon: 7038780 },
+        sweref99: { lat: 7038780, lon: 691920 },
       },
     },
   },
@@ -164,7 +164,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.3955, lon: 13.102 },
-        sweref99: { lat: 694050, lon: 7036950 },
+        sweref99: { lat: 7036950, lon: 694050 },
       },
       altitude: {
         takeoffMetersAboveSea: 920,
@@ -198,7 +198,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
         'Ange "Mörvikshummeln, startplats för skärmflyg, Åre."',
       position: {
         wgs84: { lat: 63.3955, lon: 13.102 },
-        sweref99: { lat: 694050, lon: 7036950 },
+        sweref99: { lat: 7036950, lon: 694050 },
       },
     },
   },
@@ -214,7 +214,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.411, lon: 13.0755 },
-        sweref99: { lat: 692200, lon: 7038450 },
+        sweref99: { lat: 7038450, lon: 692200 },
       },
       altitude: {
         takeoffMetersAboveSea: 1270,
@@ -237,14 +237,14 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     risks: [
       "Hög puljeffekt vid mycket folk.",
       "Kort glidbana till första säkra höjd över pist.",
-      "Kollision risk med skärm/hang i samma sektor.",
+      "Kollisionsrisk med skärm/hang i samma sektor.",
     ],
     emergency: {
       ...baseEmergency,
       locationInstruction: 'Ange "Åre kabinbana toppstation, skärmflygstart."',
       position: {
         wgs84: { lat: 63.411, lon: 13.0755 },
-        sweref99: { lat: 692200, lon: 7038450 },
+        sweref99: { lat: 7038450, lon: 692200 },
       },
     },
   },
@@ -260,7 +260,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.387, lon: 13.054 },
-        sweref99: { lat: 690600, lon: 7035800 },
+        sweref99: { lat: 7035800, lon: 690600 },
       },
       altitude: {
         takeoffMetersAboveSea: 780,
@@ -292,7 +292,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       locationInstruction: 'Ange "Tegefjäll, startplats skärmflyg, Jämtland."',
       position: {
         wgs84: { lat: 63.387, lon: 13.054 },
-        sweref99: { lat: 690600, lon: 7035800 },
+        sweref99: { lat: 7035800, lon: 690600 },
       },
     },
   },
