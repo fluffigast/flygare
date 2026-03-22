@@ -70,7 +70,7 @@ export const news = [
     excerpt: "Klubben bjuder in till gemensam städdag inför högsäsongen.",
     content:
       "Inför sommarens intensiva flygperiod samlas vi för att se över och städa landningszonen. Det handlar om att ta bort skräp, kontrollera ytor och säkerställa att området är tryggt att använda.\n\nAlla medlemmar är välkomna att delta. Tillsammans skapar vi goda förutsättningar för säsongen.",
-    category: "klubb",
+    category: "Klubben",
     publishedAt: "2026-04-01",
   },
   {
@@ -81,7 +81,7 @@ export const news = [
       "Kontrollera aktuell information innan flygning de kommande dagarna.",
     content:
       "En tillfällig restriktion har införts i delar av luftrummet kring Åre. Alla piloter uppmanas att noggrant kontrollera aktuell information före start.\n\nRespektera angivna begränsningar för att säkerställa trygg samverkan med övrig luftfart.",
-    category: "luftrum",
+    category: "Information",
     publishedAt: "2026-04-03",
   },
   {
@@ -92,7 +92,7 @@ export const news = [
       "Informationsskyltar har satts upp för att tydliggöra rutiner och hänsyn.",
     content:
       "Klubben har satt upp nya informationsskyltar vid en av startplatserna på Åreskutan. Skyltarna innehåller korta säkerhetsråd och påminnelser om hänsyn till andra besökare.\n\nSyftet är att göra det enklare för både lokala och tillresta piloter att ta rätt beslut.",
-    category: "starter",
+    category: "Information",
     publishedAt: "2026-04-06",
   },
   {
@@ -102,7 +102,7 @@ export const news = [
     excerpt: "Stark vårtermik kräver god planering och marginal.",
     content:
       "Med stigande temperaturer ökar också risken för kraftig termik och turbulens. Flyg konservativt och anpassa dig efter dagens förutsättningar.\n\nAvbryt hellre i tid än att pressa förhållanden som känns osäkra.",
-    category: "sakerhet",
+    category: "Säkerhet",
     publishedAt: "2026-04-09",
   },
   {
@@ -112,7 +112,7 @@ export const news = [
     excerpt: "Nu finns ett förenklat system för bokning av klubbens buss.",
     content:
       "För att underlätta planering har klubben infört ett nytt bokningssystem för klubbbussen. Medlemmar kan nu reservera bussen inför gemensamma flygdagar.\n\nFölj instruktionerna och lämna alltid bussen i gott skick efter användning.",
-    category: "klubb",
+    category: "Klubben",
     publishedAt: "2026-04-12",
   },
   {
@@ -122,7 +122,7 @@ export const news = [
     excerpt: "Gå igenom alternativa landningsytor före flygning.",
     content:
       "Vid osäkra förhållanden är det viktigt att redan före start ha identifierat alternativa landningsytor. Detta gäller särskilt vid fjällflygning där terrängen begränsar valmöjligheterna.\n\nPlanering på marken skapar tryggare beslut i luften.",
-    category: "landning",
+    category: "Information",
     publishedAt: "2026-04-15",
   },
   {
@@ -132,7 +132,7 @@ export const news = [
     excerpt: "Alla medlemmar bjuds in till säsongens första möte.",
     content:
       "Under mötet går vi igenom aktuella frågor, planerade aktiviteter och säkerhetsarbete inför säsongen.\n\nDet finns även möjlighet att ställa frågor och komma med förslag till styrelsen.",
-    category: "klubb",
+    category: "Klubben",
     publishedAt: "2026-04-18",
   },
   {
@@ -142,7 +142,7 @@ export const news = [
     excerpt: "Se över skärm, sele och nödskärm inför säsongen.",
     content:
       "Inför intensiva flygperioder är det extra viktigt att kontrollera utrustningens skick. Kontrollera linor, tyg, sele och nödskärm.\n\nVäl underhållen utrustning är en grundförutsättning för säker flygning.",
-    category: "utrustning",
+    category: "Information",
     publishedAt: "2026-04-20",
   },
   {
@@ -152,7 +152,7 @@ export const news = [
     excerpt: "Fina förhållanden och god uppslutning.",
     content:
       "Helgens gemensamma flygdag bjöd på stabila vindar och god sikt. Flera piloter fick fina flyg och dagen avslutades med gemensam genomgång.\n\nTack till alla som deltog och bidrog till en trygg och trevlig dag.",
-    category: "evenemang",
+    category: "Aktiviteter",
     publishedAt: "2026-04-23",
   },
   {
@@ -162,7 +162,7 @@ export const news = [
     excerpt: "Följ anvisningar för att undvika problem med markägare.",
     content:
       "Parkering ska ske på anvisade platser. Undvik att blockera vägar eller infarter.\n\nGenom att visa respekt för lokala överenskommelser säkerställer vi fortsatt tillgång till våra startplatser.",
-    category: "regler",
+    category: "Information",
     publishedAt: "2026-04-25",
   },
   {
@@ -172,7 +172,7 @@ export const news = [
     excerpt: "Introduktion till flygning i Åre för nya medlemmar.",
     content:
       "Klubben arrangerar ett introduktionstillfälle för nya piloter där vi går igenom lokala förutsättningar, säkerhetsrutiner och vanliga misstag.\n\nSyftet är att skapa tryggare och mer medvetna piloter i området.",
-    category: "utbildning",
+    category: "Aktiviteter",
     publishedAt: "2026-04-28",
   },
   {
@@ -183,7 +183,7 @@ export const news = [
       "Dialog förs för att stärka långsiktiga möjligheter till flygning.",
     content:
       "Klubben har inlett dialog med lokala aktörer för att säkerställa långsiktigt hållbara lösningar kring start och landning.\n\nEtt gott samarbete är avgörande för att flygningen i Åre ska kunna fortsätta utvecklas.",
-    category: "klubb",
+    category: "Klubben",
     publishedAt: "2026-05-01",
   },
 ];
