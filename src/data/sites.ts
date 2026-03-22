@@ -296,6 +296,186 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       },
     },
   },
+  {
+    id: "ts-006",
+    slug: "tvaravalvet",
+    kind: "startplats",
+    title: "Tväråvalvet",
+    excerpt: "Nordvästlig start med god höjd — populär vid NV-vind.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.43, lon: 13.0825 },
+        sweref99: { lat: 7040550, lon: 692700 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 1050,
+        heightAboveLandingApproxMeters: 925,
+      },
+      wind: {
+        directionRange: { min: 270, max: 330 },
+        notes:
+          "NV (skärm), V–NV (hängflyg). Bra höjd och bred startyta.",
+      },
+      experienceLevel: {
+        level: "medel",
+        notes: "Medel till avancerad",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Startplats på Tväråvalvet med utsikt mot nordväst. Bred startyta som fungerar bra vid nordvästlig vind.",
+      "Nås via markerad led. God höjdskillnad till dalen.",
+    ],
+    risks: [
+      "Rotor vid sydlig vind.",
+      "Brant terräng nedanför starten.",
+    ],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction: 'Ange "Tväråvalvet, Åreskutan."',
+      position: {
+        wgs84: { lat: 63.43, lon: 13.0825 },
+        sweref99: { lat: 7040550, lon: 692700 },
+      },
+    },
+  },
+  {
+    id: "ts-007",
+    slug: "roda-rappet-vast",
+    kind: "startplats",
+    title: "Röda Rappet Väst",
+    excerpt:
+      "Västlig till nordvästlig start — bra komplement vid V-NV vind.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.4261, lon: 13.0703 },
+        sweref99: { lat: 7040100, lon: 691900 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 950,
+        heightAboveLandingApproxMeters: 570,
+      },
+      wind: {
+        directionRange: { min: 250, max: 315 },
+        notes: "V–NV. Skyddad från sydlig vind.",
+      },
+      experienceLevel: {
+        level: "medel",
+        notes: "Medel med god fjällerfarenhet",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Startplats vid Röda Rappet med västlig exponering. Skyddad position.",
+      "Bärväg krävs — planera tid och utrustning.",
+    ],
+    risks: ["Klippig terräng.", "Begränsade nödlandningsytor."],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction: 'Ange "Röda Rappet Väst, Åreskutan."',
+      position: {
+        wgs84: { lat: 63.4261, lon: 13.0703 },
+        sweref99: { lat: 7040100, lon: 691900 },
+      },
+    },
+  },
+  {
+    id: "ts-008",
+    slug: "langspannet",
+    kind: "startplats",
+    title: "Långspannet",
+    excerpt:
+      "Syd-sydvästlig start mellan stötta 3 och 4 — ej rekommenderad för nybörjare.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.405, lon: 13.08 },
+        sweref99: { lat: 7037800, lon: 692500 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 900,
+        heightAboveLandingApproxMeters: 520,
+      },
+      wind: {
+        directionRange: { min: 180, max: 225 },
+        notes: "S–SV. Placerad mellan stötta 3 och 4.",
+      },
+      experienceLevel: {
+        level: "avancerad",
+        notes: "Avancerad pilot krävs",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Start mellan kabinbanans stöttor. Kräver precision och erfarenhet.",
+      "Ej rekommenderad — används bara i specifika förhållanden.",
+    ],
+    risks: [
+      "Kablar i närheten.",
+      "Begränsat utrymme.",
+      "Ej rekommenderad.",
+    ],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction:
+        'Ange "Långspannet, mellan stötta 3 och 4, Åreskutan."',
+      position: {
+        wgs84: { lat: 63.405, lon: 13.08 },
+        sweref99: { lat: 7037800, lon: 692500 },
+      },
+    },
+  },
+  {
+    id: "ts-009",
+    slug: "draklanda",
+    kind: "startplats",
+    title: "Draklanda",
+    excerpt:
+      "Officiell landningsplats — 1 km väster om torget i Åre.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.398, lon: 13.065 },
+        sweref99: { lat: 7037200, lon: 691500 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 380,
+        heightAboveLandingApproxMeters: 0,
+      },
+      wind: {
+        directionRange: { min: 0, max: 360 },
+        notes: "Alla vindriktningar. Officiell landningsplats.",
+      },
+      experienceLevel: {
+        level: "nybörjare",
+        notes: "Alla nivåer",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Draklanda är den officiella landningsplatsen, belägen ca 1 km väster om Åre torg.",
+      "Alla andra landningar betraktas som utelandningar vid XC-flyg.",
+      "Räddningsbåt finns tillgänglig under flygsäsongen.",
+    ],
+    risks: [
+      "Vindbyar vid terrängens kant.",
+      "Respektera avspärrningar och annan verksamhet på fältet.",
+    ],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction: 'Ange "Draklanda, landningsplats, Åre."',
+      position: {
+        wgs84: { lat: 63.398, lon: 13.065 },
+        sweref99: { lat: 7037200, lon: 691500 },
+      },
+    },
+  },
 ];
 
 export const sites: TakeoffSite[] = sitesRaw.map((s) => ({
@@ -327,6 +507,22 @@ export const sitesIntro = {
       title: "Andra flygområden",
       description:
         "Tegefjäll och Mörvikshummeln erbjuder alternativ vid annan vindexponering. Kontakta klubben för aktuell status på dessa platser.",
+    },
+    {
+      title: "Välliste, Trillevallen",
+      description: "V–NV riktning, ~400 m höjdskillnad.",
+    },
+    {
+      title: "Getryggen, Snasahögarna",
+      description: "S–SV riktning, ~600 m höjdskillnad.",
+    },
+    {
+      title: "Tossön, Järpen",
+      description: "V riktning, ~350 m höjdskillnad.",
+    },
+    {
+      title: "Rännberg, Gevsjön",
+      description: "SO riktning, ~250 m höjdskillnad.",
     },
   ] as SiteArea[],
 };

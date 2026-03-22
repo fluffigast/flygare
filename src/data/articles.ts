@@ -56,7 +56,7 @@ export const articles = [
     slug: "klubbbussen",
     excerpt: "Information om klubbens buss och hur den används.",
     content:
-      "Klubbbussen används främst vid gemensamma flygdagar och andra klubbaktiviteter. Den är till för transport av piloter och utrustning till startplatser.\n\nFölj klubbens rutiner för bokning, körning och städning så att bussen kan fortsätta vara en resurs för alla medlemmar.",
+      "Klubbbussen används för transport till startplatser vid gemensamma flygdagar.\n\nRegler:\n• Fullvärdigt medlemskap krävs\n• Max 4 passagerare + 1 förare\n• Passageraravgift: 20 kr per tur (Swish till föraren)\n• Ungdomar under 18: gratis (kräver 3+ betalande passagerare)\n• Max 40 km/h på Skistarvägar\n• Ingen uppkörning när liftar körs för cykling\n• Tanka vid OK/Q8 Åre (klubbkort i kassan)\n• Föraren kontrollerar olja/vatten vid varje tankning\n• Dagsutflykter max 20 mil (längre kräver styrelsebeslut)\n• Fyll i loggboken, lås Skistargrinden efter nedkörning",
     category: "klubb",
     updatedAt: "2026-02-20",
   },
