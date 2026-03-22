@@ -20,12 +20,14 @@ FROM node:22-alpine AS runner
 
 RUN apk add --no-cache libc6-compat dumb-init \
   && addgroup -g 1001 -S payload \
-  && adduser -S payload -u 1001 -G payload
+  && adduser -S payload -u 1001 -G payload \
+  && apk --no-cache upgrade
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=384"
 
 COPY --from=builder --chown=payload:payload /app/.next/standalone ./
 COPY --from=builder --chown=payload:payload /app/.next/static ./.next/static
