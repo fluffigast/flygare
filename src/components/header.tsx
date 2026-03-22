@@ -19,20 +19,23 @@ const Header: React.FC<HeaderProps> = ({}) => {
 
           {/* Desktop nav */}
           <nav className="hidden @md:flex flex-1 items-center gap-6 justify-center">
-            <Link to="/startplatser" className={navLinkClass}>
-              Startplatser
+            <Link to="/" className={navLinkClass}>
+              Hem
+            </Link>
+            <Link to="/information" className={navLinkClass}>
+              Flygguiden
             </Link>
             <Link to="/vader" className={navLinkClass}>
               Väder
             </Link>
-            <Link to="/tavlingar" className={navLinkClass}>
-              Tävlingar
+            <Link to="/startplatser" className={navLinkClass}>
+              Startplatser
             </Link>
             <Link to="/nyheter" className={navLinkClass}>
               Nyheter
             </Link>
             <Link to="/om" className={navLinkClass}>
-              Om oss
+              Om klubben
             </Link>
           </nav>
 
@@ -74,41 +77,12 @@ const Header: React.FC<HeaderProps> = ({}) => {
         {/* Mobile nav */}
         {menuOpen && (
           <nav className="@md:hidden flex flex-col gap-4 pt-4">
-            <Link
-              to="/startplatser"
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Startplatser
-            </Link>
-            <Link
-              to="/vader"
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Väder
-            </Link>
-            <Link
-              to="/tavlingar"
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Tävlingar
-            </Link>
-            <Link
-              to="/nyheter"
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Nyheter
-            </Link>
-            <Link
-              to="/om"
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Om oss
-            </Link>
+            <Link to="/" className={navLinkClass} onClick={() => setMenuOpen(false)}>Hem</Link>
+            <Link to="/information" className={navLinkClass} onClick={() => setMenuOpen(false)}>Flygguiden</Link>
+            <Link to="/vader" className={navLinkClass} onClick={() => setMenuOpen(false)}>Väder</Link>
+            <Link to="/startplatser" className={navLinkClass} onClick={() => setMenuOpen(false)}>Startplatser</Link>
+            <Link to="/nyheter" className={navLinkClass} onClick={() => setMenuOpen(false)}>Nyheter</Link>
+            <Link to="/om" className={navLinkClass} onClick={() => setMenuOpen(false)}>Om klubben</Link>
             <Button href="/bli-medlem">Bli medlem</Button>
           </nav>
         )}
