@@ -1,0 +1,4 @@
+- Avoid using margins, try to use gap in the parent container instead.
+- Use Radix UI primitives where possible.
+- Prefer smaller single purpose components.
+- Prefer arrow functions.
