@@ -1,7 +1,7 @@
 node_modules
 .next
-data/
-*.db
+data/flygare.db
+!data/seed.db
 .env
 .git
 .gitignore
