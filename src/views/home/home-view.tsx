@@ -72,7 +72,7 @@ Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktiv
           </p>
           <h2 className="font-serif text-3xl">Redo att flyga?</h2>
           <div className="flex gap-3 flex-wrap justify-center mt-2">
-            <Button href="/information">Bli medlem — 600 kr/år</Button>
+            <Button href="/bli-medlem">Bli medlem — 600 kr/år</Button>
             <Link
               to="/startplatser"
               className="inline-flex items-center px-4 py-2 rounded-full border border-border text-sm hover:bg-muted transition-colors"

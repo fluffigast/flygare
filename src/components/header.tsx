@@ -19,19 +19,25 @@ const Header: React.FC<HeaderProps> = ({}) => {
 
           {/* Desktop nav */}
           <nav className="hidden @md:flex flex-1 items-center gap-6 justify-center">
+            <Link to="/startplatser" className={navLinkClass}>
+              Startplatser
+            </Link>
+            <Link to="/vader" className={navLinkClass}>
+              Väder
+            </Link>
+            <Link to="/tavlingar" className={navLinkClass}>
+              Tävlingar
+            </Link>
             <Link to="/nyheter" className={navLinkClass}>
               Nyheter
             </Link>
-            <Link to="/information" className={navLinkClass}>
-              Information
-            </Link>
-            <Link to="/startplatser" className={navLinkClass}>
-              Startplatser
+            <Link to="/om" className={navLinkClass}>
+              Om oss
             </Link>
           </nav>
 
           <div className="hidden @md:flex flex-1 justify-end">
-            <Button href="/information">Bli medlem</Button>
+            <Button href="/bli-medlem">Bli medlem</Button>
           </div>
 
           {/* Mobile menu toggle */}
@@ -69,6 +75,27 @@ const Header: React.FC<HeaderProps> = ({}) => {
         {menuOpen && (
           <nav className="@md:hidden flex flex-col gap-4 pt-4">
             <Link
+              to="/startplatser"
+              className={navLinkClass}
+              onClick={() => setMenuOpen(false)}
+            >
+              Startplatser
+            </Link>
+            <Link
+              to="/vader"
+              className={navLinkClass}
+              onClick={() => setMenuOpen(false)}
+            >
+              Väder
+            </Link>
+            <Link
+              to="/tavlingar"
+              className={navLinkClass}
+              onClick={() => setMenuOpen(false)}
+            >
+              Tävlingar
+            </Link>
+            <Link
               to="/nyheter"
               className={navLinkClass}
               onClick={() => setMenuOpen(false)}
@@ -76,20 +103,13 @@ const Header: React.FC<HeaderProps> = ({}) => {
               Nyheter
             </Link>
             <Link
-              to="/information"
+              to="/om"
               className={navLinkClass}
               onClick={() => setMenuOpen(false)}
             >
-              Information
+              Om oss
             </Link>
-            <Link
-              to="/startplatser"
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Startplatser
-            </Link>
-            <Button href="/information">Bli medlem</Button>
+            <Button href="/bli-medlem">Bli medlem</Button>
           </nav>
         )}
       </div>
