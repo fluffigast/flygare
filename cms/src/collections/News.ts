@@ -26,6 +26,9 @@ export const News: CollectionConfig = {
       options: [
         { label: 'Aktiviteter', value: 'Aktiviteter' },
         { label: 'Information', value: 'Information' },
+        { label: 'Klubben', value: 'Klubben' },
+        { label: 'Klubbussen', value: 'Klubbussen' },
+        { label: 'Säkerhet', value: 'Säkerhet' },
         { label: 'Tävlingar', value: 'Tävlingar' },
       ],
     },
@@ -41,7 +44,7 @@ export const News: CollectionConfig = {
     },
     {
       name: 'description',
-      type: 'richText',
+      type: 'textarea',
     },
     {
       name: 'featured',
