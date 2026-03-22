@@ -68,6 +68,7 @@ export default buildConfig({
     FlyingGuide,
   ],
   db: sqliteAdapter({
+    busyTimeout: 5000,
     client: {
       url: process.env.DATABASE_URL!,
     },
