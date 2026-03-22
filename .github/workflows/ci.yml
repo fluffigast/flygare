@@ -48,3 +48,47 @@ jobs:
       - run: swa deploy ./dist --deployment-token "$SWA_TOKEN" --env production
         env:
           SWA_TOKEN: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+
+  cms:
+    name: Build CMS image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/docker-login@v2
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          login-server: ${{ vars.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }} \
+            -t ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:latest \
+            ./cms
+
+      - name: Push to ACR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }}
+          docker push ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:latest
+
+  deploy-cms:
+    name: Deploy CMS to Azure
+    needs: [cms]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az containerapp update \
+              --name ${{ vars.CONTAINER_APP_NAME }} \
+              --resource-group ${{ vars.RESOURCE_GROUP }} \
+              --image ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }}

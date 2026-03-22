@@ -28,6 +28,25 @@ export default buildConfig({
       title: 'Flygare CMS',
       description: 'Åre Skärm- och Drakflygklubb',
     },
+    livePreview: {
+      url: process.env.FRONTEND_URL || 'http://localhost:5173',
+      collections: [
+        'news',
+        'board-members',
+        'launches',
+        'other-sites',
+        'competitions',
+        'milestones',
+        'weather-links',
+      ],
+      globals: [
+        'site-settings',
+        'membership-info',
+        'contact-info',
+        'bus-rules',
+        'flying-guide',
+      ],
+    },
   },
   editor: lexicalEditor(),
   collections: [
