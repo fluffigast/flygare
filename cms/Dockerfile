@@ -34,12 +34,17 @@ COPY --from=builder --chown=payload:payload /app/package.json ./
 
 RUN mkdir -p /app/data && chown payload:payload /app/data
 
+# Schema-ready empty DB — copied to runtime path if no DB exists
+COPY --chown=payload:payload data/seed.db /app/data/seed.db
+COPY --chown=payload:payload start.sh ./
+RUN chmod +x start.sh
+
 USER payload
 
 EXPOSE 3001
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
   CMD wget -qO- http://localhost:3001/api/globals/site-settings || exit 1
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["node", "server.js"]
+CMD ["./start.sh"]
