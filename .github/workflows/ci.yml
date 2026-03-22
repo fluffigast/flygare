@@ -24,6 +24,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+        env:
+          VITE_CMS_URL: ${{ vars.VITE_CMS_URL }}
 
       - uses: actions/upload-artifact@v4
         with:

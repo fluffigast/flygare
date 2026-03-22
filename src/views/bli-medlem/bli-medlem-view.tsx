@@ -1,9 +1,19 @@
 import React from "react";
 import Separator from "../../components/separator";
 import Button from "../../components/button";
-import { membershipInfo } from "../../data/membership";
+import { membershipInfo as localMembership } from "../../data/membership";
+import { useMembershipInfo } from "../../hooks/useCMS";
 
 const BliMedlemView: React.FC = () => {
+  const { data: cmsMembership } = useMembershipInfo(localMembership);
+  const membershipInfo = {
+    ...localMembership,
+    price: cmsMembership.price ?? localMembership.price,
+    validity: cmsMembership.validity ?? localMembership.validity,
+    shopUrl: cmsMembership.shopUrl ?? localMembership.shopUrl,
+    benefits: cmsMembership.benefits?.length ? cmsMembership.benefits : localMembership.benefits,
+    licenseRequirements: cmsMembership.licenseRequirements?.length ? cmsMembership.licenseRequirements : localMembership.licenseRequirements,
+  };
   return (
     <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
       {/* Header */}
