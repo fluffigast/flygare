@@ -28,6 +28,28 @@ export default buildConfig({
       title: 'Flygare CMS',
       description: 'Åre Skärm- och Drakflygklubb',
     },
+    livePreview: {
+      url: ({ data, collectionConfig, globalConfig }) => {
+        const base = process.env.FRONTEND_URL || 'http://localhost:5173'
+        const slug = collectionConfig?.slug || globalConfig?.slug
+        const routes: Record<string, string> = {
+          'news': '/nyheter',
+          'board-members': '/om',
+          'milestones': '/om',
+          'launches': '/startplatser',
+          'competitions': '/tavlingar',
+          'weather-links': '/vader',
+          'site-settings': '/',
+          'membership-info': '/bli-medlem',
+          'contact-info': '/kontakt',
+          'bus-rules': '/flygguiden',
+          'flying-guide': '/flygguiden',
+        }
+        return `${base}${routes[slug ?? ''] ?? '/'}`
+      },
+      collections: ['news', 'board-members', 'launches', 'competitions', 'milestones', 'weather-links'],
+      globals: ['site-settings', 'membership-info', 'contact-info', 'bus-rules', 'flying-guide'],
+    },
   },
   editor: lexicalEditor(),
   collections: [
