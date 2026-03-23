@@ -1,11 +1,16 @@
 import React from "react";
 import Separator from "../../components/separator";
 import { boardMembers as localBoard, milestones as localMilestones } from "../../data/about";
-import { useBoardMembers, useMilestones } from "../../hooks/useCMS";
+import { useBoardMembers, useMilestones, useCMSLivePreview } from "../../hooks/useCMS";
 
 const OmView: React.FC = () => {
-  const { data: boardMembers } = useBoardMembers(localBoard);
-  const { data: milestones } = useMilestones(localMilestones);
+  const { data: boardMembers, setData: setBoardMembers } = useBoardMembers(localBoard);
+  const { data: milestones, setData: setMilestones } = useMilestones(localMilestones);
+  useCMSLivePreview((data) => {
+    // CMS sends a single board member or milestone — update the matching item
+    if (data?.name && data?.role) setBoardMembers((prev: any[]) => prev.map((m: any) => m.id === data.id ? data : m));
+    if (data?.year && data?.text) setMilestones((prev: any[]) => prev.map((m: any) => m.id === data.id ? data : m));
+  });
 
   return (
     <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
