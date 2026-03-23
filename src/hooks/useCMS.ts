@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+import { useLivePreview } from "@payloadcms/live-preview-react";
 import { fetchCollection, fetchGlobal, fetchWithFallback, CMS_URL } from "../lib/cms";
 
 // Generic hook: tries CMS, falls back to local data
@@ -20,32 +21,17 @@ function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
   return { data, setData, loading };
 }
 
-// ── Live Preview hook ──
-// Listens for postMessage from CMS admin panel.
-// Call once per view, pass the setter for the data you want to update live.
-export function useCMSLivePreview(onData: (data: any) => void) {
-  const stableOnData = useCallback(onData, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    // Only activate when loaded inside an iframe (CMS admin Live Preview)
-    if (window.self === window.top) return;
-
-    // Tell the CMS admin we're ready to receive live updates
-    window.parent.postMessage({ type: "payload-live-preview-ready" }, CMS_URL || "*");
-
-    function handleMessage(event: MessageEvent) {
-      // Validate origin matches CMS
-      if (CMS_URL && event.origin !== new URL(CMS_URL).origin) return;
-
-      const msg = event.data;
-      if (msg?.type === "payload-live-preview") {
-        stableOnData(msg.data);
-      }
-    }
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, [stableOnData]);
+// ── Live Preview wrapper for globals ──
+// Use this in views that display a single CMS global.
+// The Payload admin sends live field changes via postMessage.
+// Returns the live-updated data when inside the CMS iframe, otherwise returns initialData unchanged.
+export function useGlobalLivePreview<T extends Record<string, any>>(initialData: T): T {
+  const { data } = useLivePreview<T>({
+    initialData,
+    serverURL: CMS_URL || "",
+    depth: 2,
+  });
+  return data;
 }
 
 // ── Collection hooks ──

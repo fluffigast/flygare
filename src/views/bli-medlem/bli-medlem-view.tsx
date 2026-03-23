@@ -2,18 +2,18 @@ import React from "react";
 import Separator from "../../components/separator";
 import Button from "../../components/button";
 import { membershipInfo as localMembership } from "../../data/membership";
-import { useMembershipInfo, useCMSLivePreview } from "../../hooks/useCMS";
+import { useMembershipInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const BliMedlemView: React.FC = () => {
-  const { data: cmsMembership, setData: setCmsMembership } = useMembershipInfo(localMembership);
-  useCMSLivePreview((data) => setCmsMembership(data));
+  const { data: liveMembership } = useMembershipInfo(localMembership);
+  const liveMembership = useGlobalLivePreview(liveMembership);
   const membershipInfo = {
     ...localMembership,
-    price: cmsMembership.price ?? localMembership.price,
-    validity: cmsMembership.validity ?? localMembership.validity,
-    shopUrl: cmsMembership.shopUrl ?? localMembership.shopUrl,
-    benefits: cmsMembership.benefits?.length ? cmsMembership.benefits : localMembership.benefits,
-    licenseRequirements: cmsMembership.licenseRequirements?.length ? cmsMembership.licenseRequirements : localMembership.licenseRequirements,
+    price: liveMembership.price ?? localMembership.price,
+    validity: liveMembership.validity ?? localMembership.validity,
+    shopUrl: liveMembership.shopUrl ?? localMembership.shopUrl,
+    benefits: liveMembership.benefits?.length ? liveMembership.benefits : localMembership.benefits,
+    licenseRequirements: liveMembership.licenseRequirements?.length ? liveMembership.licenseRequirements : localMembership.licenseRequirements,
   };
   return (
     <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
