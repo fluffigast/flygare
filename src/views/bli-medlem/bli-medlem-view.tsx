@@ -5,8 +5,8 @@ import { membershipInfo as localMembership } from "../../data/membership";
 import { useMembershipInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const BliMedlemView: React.FC = () => {
-  const { data: liveMembership } = useMembershipInfo(localMembership);
-  const liveMembership = useGlobalLivePreview(liveMembership);
+  const { data: cmsMembership } = useMembershipInfo(localMembership);
+  const liveMembership = useGlobalLivePreview(cmsMembership);
   const membershipInfo = {
     ...localMembership,
     price: liveMembership.price ?? localMembership.price,
