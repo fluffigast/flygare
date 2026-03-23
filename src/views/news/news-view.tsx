@@ -2,14 +2,11 @@ import React from "react";
 import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import NewsGrid from "../../blocks/news-grid/news-grid";
 import { news as localNews } from "../../data/news";
-import { useNews, useCMSLivePreview } from "../../hooks/useCMS";
+import { useNews } from "../../hooks/useCMS";
 import { getPlaceholderImage } from "../../utils/placeholder";
 
 const NewsView: React.FC = () => {
-  const { data: cmsNews, setData: setCmsNews } = useNews(localNews);
-  useCMSLivePreview((data) => {
-    if (data?.id) setCmsNews((prev: any[]) => prev.map((n: any) => n.id === data.id ? data : n));
-  });
+  const { data: cmsNews } = useNews(localNews);
 
   const news = cmsNews.map((item: any) => ({
     id: item.id?.toString() ?? item.slug ?? "unknown",
