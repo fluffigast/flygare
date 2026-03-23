@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
-import { fetchCollection, fetchGlobal, fetchWithFallback } from "../lib/cms";
+import { useState, useEffect, useRef } from "react";
+import { useLivePreview } from "@payloadcms/live-preview-react";
+import { fetchCollection, fetchGlobal, fetchWithFallback, CMS_URL } from "../lib/cms";
 
-// Generic hook: tries CMS, falls back to local data
-function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
+const serverURL = CMS_URL || undefined;
+
+// Generic hook: tries CMS, falls back to local data, then threads through Live Preview
+function useCMSData<T extends Record<string, any>>(fetcher: () => Promise<T>, fallback: T) {
   const [data, setData] = useState<T>(fallback);
   const [loading, setLoading] = useState(true);
+  const resolved = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -12,12 +16,20 @@ function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
       if (!cancelled) {
         setData(result);
         setLoading(false);
+        resolved.current = true;
       }
     });
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { data, loading };
+  // Live Preview: listens for postMessage from CMS admin iframe
+  const { data: liveData } = useLivePreview<T>({
+    initialData: data,
+    serverURL: serverURL ?? "",
+    depth: 2,
+  });
+
+  return { data: liveData, loading };
 }
 
 // ── Collection hooks ──
