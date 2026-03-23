@@ -4,8 +4,8 @@ import { contactInfo as localContact } from "../../data/contact";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const KontaktView: React.FC = () => {
-  const { data: liveContact } = useContactInfo(localContact);
-  const liveContact = useGlobalLivePreview(liveContact);
+  const { data: cmsContact } = useContactInfo(localContact);
+  const liveContact = useGlobalLivePreview(cmsContact);
   const contactInfo = {
     ...localContact,
     email: liveContact.email ?? localContact.email,
