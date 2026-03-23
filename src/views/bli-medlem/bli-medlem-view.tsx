@@ -2,10 +2,11 @@ import React from "react";
 import Separator from "../../components/separator";
 import Button from "../../components/button";
 import { membershipInfo as localMembership } from "../../data/membership";
-import { useMembershipInfo } from "../../hooks/useCMS";
+import { useMembershipInfo, useCMSLivePreview } from "../../hooks/useCMS";
 
 const BliMedlemView: React.FC = () => {
-  const { data: cmsMembership } = useMembershipInfo(localMembership);
+  const { data: cmsMembership, setData: setCmsMembership } = useMembershipInfo(localMembership);
+  useCMSLivePreview((data) => setCmsMembership(data));
   const membershipInfo = {
     ...localMembership,
     price: cmsMembership.price ?? localMembership.price,

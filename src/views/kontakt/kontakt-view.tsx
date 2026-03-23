@@ -1,10 +1,11 @@
 import React from "react";
 import Separator from "../../components/separator";
 import { contactInfo as localContact } from "../../data/contact";
-import { useContactInfo } from "../../hooks/useCMS";
+import { useContactInfo, useCMSLivePreview } from "../../hooks/useCMS";
 
 const KontaktView: React.FC = () => {
-  const { data: cmsContact } = useContactInfo(localContact);
+  const { data: cmsContact, setData: setCmsContact } = useContactInfo(localContact);
+  useCMSLivePreview((data) => setCmsContact(data));
   const contactInfo = {
     ...localContact,
     email: cmsContact.email ?? localContact.email,

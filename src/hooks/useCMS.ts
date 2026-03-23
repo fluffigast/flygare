@@ -1,14 +1,10 @@
-import { useState, useEffect, useRef } from "react";
-import { useLivePreview } from "@payloadcms/live-preview-react";
+import { useState, useEffect, useCallback } from "react";
 import { fetchCollection, fetchGlobal, fetchWithFallback, CMS_URL } from "../lib/cms";
 
-const serverURL = CMS_URL || undefined;
-
-// Generic hook: tries CMS, falls back to local data, then threads through Live Preview
-function useCMSData<T extends Record<string, any>>(fetcher: () => Promise<T>, fallback: T) {
+// Generic hook: tries CMS, falls back to local data
+function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
   const [data, setData] = useState<T>(fallback);
   const [loading, setLoading] = useState(true);
-  const resolved = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -16,20 +12,40 @@ function useCMSData<T extends Record<string, any>>(fetcher: () => Promise<T>, fa
       if (!cancelled) {
         setData(result);
         setLoading(false);
-        resolved.current = true;
       }
     });
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Live Preview: listens for postMessage from CMS admin iframe
-  const { data: liveData } = useLivePreview<T>({
-    initialData: data,
-    serverURL: serverURL ?? "",
-    depth: 2,
-  });
+  return { data, setData, loading };
+}
 
-  return { data: liveData, loading };
+// ── Live Preview hook ──
+// Listens for postMessage from CMS admin panel.
+// Call once per view, pass the setter for the data you want to update live.
+export function useCMSLivePreview(onData: (data: any) => void) {
+  const stableOnData = useCallback(onData, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    // Only activate when loaded inside an iframe (CMS admin Live Preview)
+    if (window.self === window.top) return;
+
+    // Tell the CMS admin we're ready to receive live updates
+    window.parent.postMessage({ type: "payload-live-preview-ready" }, CMS_URL || "*");
+
+    function handleMessage(event: MessageEvent) {
+      // Validate origin matches CMS
+      if (CMS_URL && event.origin !== new URL(CMS_URL).origin) return;
+
+      const msg = event.data;
+      if (msg?.type === "payload-live-preview") {
+        stableOnData(msg.data);
+      }
+    }
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [stableOnData]);
 }
 
 // ── Collection hooks ──
