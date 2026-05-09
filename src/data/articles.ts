@@ -59,6 +59,26 @@ export const articles = [
     category: "klubb",
     updatedAt: "2026-02-20",
   },
+  {
+    id: "107",
+    title: "Etik och hänsyn",
+    slug: "etik-och-hansyn",
+    excerpt: "Så visar vi respekt på marken och i luften.",
+    content:
+      "Flygning i Åre sker i områden som delas med andra friluftsutövare. Visa alltid hänsyn till markägare, vandrare och andra som vistas i området.\n\nEtt respektfullt uppträdande är avgörande för att vi ska kunna fortsätta flyga här.",
+    category: "regler",
+    updatedAt: "2026-02-20",
+  },
+  {
+    id: "108",
+    title: "Flygning i fjällmiljö",
+    slug: "fjallflygning",
+    excerpt: "Särskilda förutsättningar för flygning i fjäll.",
+    content:
+      "Fjällflygning ställer högre krav på planering och beslutsfattande. Terräng, väder och begränsade landningsalternativ måste alltid vägas in.\n\nFlyg konservativt och prioritera säkerhet framför prestation.",
+    category: "flygning",
+    updatedAt: "2026-02-20",
+  },
 ];
 
 export type Article = (typeof articles)[number] & { imageUrl?: string };
