@@ -47,7 +47,6 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: frontend-dist
-          path: dist/
 
       - run: npm install -g @azure/static-web-apps-cli
       - run: swa deploy ./dist --api-location ./api --deployment-token "$SWA_TOKEN" --env production
