@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource-variable/karla": "^5.2.8",
     "@fontsource-variable/source-serif-4": "^5.2.9",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@payloadcms/live-preview": "^3.80.0",
     "@payloadcms/live-preview-react": "^3.80.0",
     "@tailwindcss/vite": "^4.1.18",

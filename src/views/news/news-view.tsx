@@ -1,5 +1,4 @@
 import React from "react";
-import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import NewsGrid from "../../blocks/news-grid/news-grid";
 import { news as localNews } from "../../data/news";
 import { useNews } from "../../hooks/useCMS";
@@ -20,14 +19,16 @@ const NewsView: React.FC = () => {
   }));
 
   return (
-    <>
-      <HeroBanner />
-      <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
-        <section>
-          <NewsGrid news={news} />
-        </section>
+    <main>
+      <section className="pt-24 pb-12 px-6 md:px-28">
+        <p className="eyebrow text-accent">Aktuellt</p>
+        <h1 className="display mt-[-4px]">Senaste nytt</h1>
+      </section>
+
+      <div className="site-container">
+        <NewsGrid news={news} />
       </div>
-    </>
+    </main>
   );
 };
 
