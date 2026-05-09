@@ -13,11 +13,16 @@ import WeatherForecast from "../../../blocks/weather-forecast/weather-forecast";
 import Separator from "../../../components/separator";
 
 const SitesSingleView: React.FC = () => {
-  let { slug } = useParams();
+  const { slug } = useParams();
   const sitesItem = sites.find((n: Site) => n.slug === slug);
 
   if (!sitesItem) {
-    return <div>Sites item not found</div>;
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center flex flex-col gap-4">
+        <h1 className="text-4xl font-bold">Sidan hittades inte</h1>
+        <p className="text-muted-foreground">Innehållet du söker finns inte.</p>
+      </div>
+    );
   }
   const { overview, description, risks, emergency } = sitesItem;
   return (
