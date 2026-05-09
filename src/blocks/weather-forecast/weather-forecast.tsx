@@ -27,7 +27,6 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
 }) => {
   const [forecastItems, setForecastItems] = useState<WeatherItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (items) {
@@ -43,12 +42,11 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
     const loadForecast = async () => {
       try {
         setLoading(true);
-        setError(null);
         const data = await fetchSMHIForecast(ARESKUTAN_LAT, ARESKUTAN_LON);
         const transformed = transformSMHIData(data, 3);
         setForecastItems(transformed);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load forecast");
+        console.error("Weather fetch failed:", err);
       } finally {
         setLoading(false);
       }
@@ -78,7 +76,6 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
         </div>
 
         {loading && <p className="text-sm text-slate">Laddar väderdata...</p>}
-        {error && <p className="text-sm text-red-500">Kunde inte ladda väderdata: {error}</p>}
 
         {!loading && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-0 md:px-5">
