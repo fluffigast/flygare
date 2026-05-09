@@ -1,69 +1,49 @@
 import React from "react";
-import Separator from "../../components/separator";
 import { competitions } from "../../data/competitions";
 
 const TavlingarView: React.FC = () => {
   return (
-    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
-      {/* Header */}
-      <section className="flex flex-col gap-6">
-        <div>
-          <p className="font-serif italic text-muted-foreground text-sm">
-            Tävlingar
-          </p>
-          <h2 className="font-serif text-3xl">Tävla och utmana dig själv</h2>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            Från distansrekord till första topplandningen — det finns alltid något att jaga.
-          </p>
-        </div>
+    <main>
+      <section className="pt-24 pb-0 px-6 md:px-28">
+        <p className="eyebrow">Tävlingar</p>
+        <h1 className="display mt-[-4px]">Tävla och utmana dig själv</h1>
+        <p className="text-lg text-slate max-w-2xl mt-8 leading-relaxed">
+          Från distansrekord till första topplandningen — det finns alltid något att jaga.
+        </p>
       </section>
 
-      {/* Competition cards */}
-      {competitions.map((comp, i) => (
-        <React.Fragment key={comp.name}>
-          {i > 0 && <Separator />}
-          <section className="flex flex-col gap-6">
+      <div className="site-container mt-20 flex flex-col gap-16">
+        {competitions.map((comp) => (
+          <div key={comp.name} className="border-t border-hairline pt-6 flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <div className="flex gap-3 items-center">
-                <h3 className="font-serif text-xl">{comp.name}</h3>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                  {comp.status}
-                </span>
+                <h3 className="h-section">{comp.name}</h3>
+                <span className="text-xs px-2 py-0.5 bg-paper text-ink">{comp.status}</span>
               </div>
-              <p className="text-muted-foreground text-sm italic font-serif">
-                {comp.subtitle}
-              </p>
+              <p className="font-serif italic text-sm text-slate">{comp.subtitle}</p>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {comp.description}
-            </p>
+            <p className="text-sm text-slate leading-relaxed">{comp.description}</p>
 
-            {/* Winners table */}
             {"winners" in comp && comp.winners && (
-              <div className="flex flex-col gap-1">
-                <div className="grid grid-cols-3 gap-4 py-2 border-b border-border">
-                  <p className="text-sm font-semibold">År</p>
-                  <p className="text-sm font-semibold">Vinnare</p>
-                  <p className="text-sm font-semibold">Resultat</p>
+              <div className="flex flex-col">
+                <div className="grid grid-cols-3 gap-4 py-2 border-b border-hairline">
+                  <p className="text-sm font-semibold text-ink">År</p>
+                  <p className="text-sm font-semibold text-ink">Vinnare</p>
+                  <p className="text-sm font-semibold text-ink">Resultat</p>
                 </div>
                 {comp.winners.map((winner) => (
-                  <div
-                    key={winner.year}
-                    className="grid grid-cols-3 gap-4 py-3 border-b border-border"
-                  >
-                    <p className="text-sm">{winner.year}</p>
-                    <p className="text-sm">{winner.name}</p>
-                    <p className="text-muted-foreground text-sm">
-                      {winner.result}
-                    </p>
+                  <div key={winner.year} className="grid grid-cols-3 gap-4 py-3 border-b border-hairline">
+                    <p className="text-sm text-ink">{winner.year}</p>
+                    <p className="text-sm text-ink">{winner.name}</p>
+                    <p className="text-sm text-slate">{winner.result}</p>
                   </div>
                 ))}
               </div>
             )}
-          </section>
-        </React.Fragment>
-      ))}
-    </div>
+          </div>
+        ))}
+      </div>
+    </main>
   );
 };
 

@@ -1,108 +1,64 @@
 import React from "react";
 import { Link } from "react-router";
-import Separator from "./separator";
 
-const linkClass =
-  "text-muted-foreground hover:text-foreground transition-colors";
+const LINKS_1 = [
+  { label: "Regler", to: "/information" },
+  { label: "Riktlinjer", to: "/information" },
+  { label: "Startplatser", to: "/startplatser" },
+  { label: "Landningar", to: "/information" },
+  { label: "Luftrum", to: "/information" },
+  { label: "Nödinformation", to: "/information" },
+];
+
+const LINKS_2 = [
+  { label: "Bli medlem", to: "/bli-medlem" },
+  { label: "Dokument", to: "/information" },
+  { label: "Kontakt", to: "/kontakt" },
+];
 
 const Footer: React.FC = () => {
   return (
-    <div className="flex flex-col gap-16 max-w-2xl mx-auto px-4 w-full @container mt-16">
-      <Separator />
-      <footer className="mx-auto w-full">
-        <div className="flex flex-col gap-8 @sm:flex-row">
-          <div className="flex flex-1 flex-col gap-2">
-            <h4>Flyga i Åre</h4>
-            <ul className="flex flex-col gap-2">
-              <li>
-                <Link to="/startplatser" className={linkClass}>
-                  Startplatser
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/information/luftrum-are"
-                  className={linkClass}
-                >
-                  Luftrum
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/information/sakerhet-och-ansvar"
-                  className={linkClass}
-                >
-                  Säkerhet och ansvar
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/information/nodinformation"
-                  className={linkClass}
-                >
-                  Nödinformation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/information/etik-och-hansyn"
-                  className={linkClass}
-                >
-                  Etik och hänsyn
-                </Link>
-              </li>
-            </ul>
+    <footer className="mt-24 border-t border-b border-hairline py-16 md:py-24">
+      <div className="site-container">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          <div className="flex flex-col gap-3">
+            {LINKS_1.map((l) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                className="text-sm text-ink transition-colors hover:text-accent"
+              >
+                {l.label}
+              </Link>
+            ))}
           </div>
-
-          <div className="flex flex-1 flex-col gap-2">
-            <h4>Klubben</h4>
-            <ul className="flex flex-col gap-2">
-              <li>
-                <Link to="/nyheter" className={linkClass}>
-                  Nyheter
-                </Link>
-              </li>
-              <li>
-                <Link to="/information" className={linkClass}>
-                  Information
-                </Link>
-              </li>
-              <li>
-                <Link to="/tavlingar" className={linkClass}>
-                  Tävlingar
-                </Link>
-              </li>
-              <li>
-                <Link to="/bli-medlem" className={linkClass}>
-                  Bli medlem
-                </Link>
-              </li>
-            </ul>
+          <div className="flex flex-col gap-3">
+            {LINKS_2.map((l) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                className="text-sm text-ink transition-colors hover:text-accent"
+              >
+                {l.label}
+              </Link>
+            ))}
           </div>
-
-          <div className="flex flex-1 flex-col gap-2">
-            <h4>Övrigt</h4>
-            <ul className="flex flex-col gap-2">
-              <li>
-                <Link to="/om" className={linkClass}>
-                  Om klubben
-                </Link>
-              </li>
-              <li>
-                <Link to="/kontakt" className={linkClass}>
-                  Kontakt
-                </Link>
-              </li>
-              <li>
-                <Link to="/vader" className={linkClass}>
-                  Väder
-                </Link>
-              </li>
-            </ul>
+          <div>
+            <p className="font-serif font-bold text-sm text-ink mb-3">
+              Om Åre Skärm- och Drakflygklubb
+            </p>
+            <p className="text-sm text-ink leading-relaxed max-w-md">
+              Åre Skärm- och Drakflygklubb är en ideell förening för skärm- och
+              drakflyg i Åreområdet.
+            </p>
           </div>
         </div>
-      </footer>
-    </div>
+        <div className="mt-8 pt-5 flex flex-col sm:flex-row justify-between text-xs text-slate-2">
+          <span>&copy; 2026 Åre Skärm- och Drakflygklubb</span>
+          <span>Org.nr 802xxx-xxxx &middot; info@areflygklubb.se</span>
+        </div>
+      </div>
+    </footer>
   );
 };
 
