@@ -10,7 +10,7 @@ export interface SitesGridItemProps {
 const SitesGridItem: React.FC<SitesGridItemProps> = ({ site }) => {
   const { title, excerpt } = site;
   return (
-    <article className="flex flex-col gap-2">
+    <article className="flex flex-col gap-2 group hover:-translate-y-1 transition-transform duration-200">
       <Link to={`/startplatser/${site.slug}`} key={site.id}>
         <img
           src={getPlaceholderImage(site.id)}

@@ -5,7 +5,7 @@ import { weatherLinks } from "../../data/weather-links";
 
 const VaderView: React.FC = () => {
   return (
-    <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
+    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
       {/* Header */}
       <section className="flex flex-col gap-6">
         <div>
@@ -24,7 +24,7 @@ const VaderView: React.FC = () => {
       {/* Weather links */}
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Vädertjänster</h3>
-        <div className="grid grid-cols-2 gap-4 @sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           {weatherLinks.map((link) => (
             <a
               key={link.label}

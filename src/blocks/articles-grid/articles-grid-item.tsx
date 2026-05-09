@@ -10,7 +10,7 @@ export interface ArticlesGridItemProps {
 const ArticlesGridItem: React.FC<ArticlesGridItemProps> = ({ article }) => {
   const { title, excerpt } = article;
   return (
-    <article className="flex flex-col gap-2">
+    <article className="flex flex-col gap-2 group hover:-translate-y-1 transition-transform duration-200">
       <Link to={`/information/${article.slug}`} key={article.id}>
         <img
           src={getPlaceholderImage(article.id)}

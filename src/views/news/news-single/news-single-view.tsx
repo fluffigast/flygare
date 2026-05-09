@@ -8,9 +8,7 @@ import HeroBanner from "../../../blocks/hero-banner/hero-banner";
 import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
 
-export interface NewsSingleViewProps {}
-
-const NewsSingleView: React.FC<NewsSingleViewProps> = ({}) => {
+const NewsSingleView: React.FC = () => {
   let { slug } = useParams();
   const newsItem = news.find((n) => n.slug === slug);
 
@@ -25,7 +23,7 @@ const NewsSingleView: React.FC<NewsSingleViewProps> = ({}) => {
           `https://placehold.co/1920x1080?text=${newsItem?.slug}`
         }
       />
-      <article className="max-w-2xl mx-auto px-4 flex flex-col w-full">
+      <article className="max-w-2xl mx-auto px-4 flex flex-col w-full py-16">
         <div className="flex flex-col">
           <p className="text-muted-foreground font-serif italic text-2xl">
             {newsItem?.category}
