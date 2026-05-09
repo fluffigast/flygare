@@ -9,11 +9,16 @@ import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
 
 const NewsSingleView: React.FC = () => {
-  let { slug } = useParams();
+  const { slug } = useParams();
   const newsItem = news.find((n) => n.slug === slug);
 
   if (!newsItem) {
-    return <div>News item not found</div>;
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center flex flex-col gap-4">
+        <h1 className="text-4xl font-bold">Sidan hittades inte</h1>
+        <p className="text-muted-foreground">Innehållet du söker finns inte.</p>
+      </div>
+    );
   }
   return (
     <>
@@ -34,7 +39,7 @@ const NewsSingleView: React.FC = () => {
             {format(newsItem?.publishedAt, "d MMMM, yyyy", { locale: sv })}
           </p>
         </div>
-        <div className="flex gap-8 p-16">
+        <div className="flex gap-8 py-8">
           <div className="flex-2 flex flex-col gap-4">
             <p className="font-serif italic text-3xl text-foreground">
               {newsItem?.excerpt}

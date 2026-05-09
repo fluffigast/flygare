@@ -9,11 +9,16 @@ import { getPlaceholderImage } from "../../../utils/placeholder";
 import Stack from "../../../components/stack";
 
 const ArticlesSingleView: React.FC = () => {
-  let { slug } = useParams();
+  const { slug } = useParams();
   const articlesItem = articles.find((n) => n.slug === slug);
 
   if (!articlesItem) {
-    return <div>Articles item not found</div>;
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center flex flex-col gap-4">
+        <h1 className="text-4xl font-bold">Sidan hittades inte</h1>
+        <p className="text-muted-foreground">Innehållet du söker finns inte.</p>
+      </div>
+    );
   }
   return (
     <>
@@ -34,7 +39,7 @@ const ArticlesSingleView: React.FC = () => {
             {format(articlesItem?.updatedAt, "d MMMM, yyyy", { locale: sv })}
           </p>
         </div>
-        <Stack gap={8} direction="row" className="p-16">
+        <Stack gap={8} direction="row" className="py-8">
           <div className="flex-2 flex flex-col gap-4">
             <p className="font-serif italic text-3xl text-foreground">
               {articlesItem?.excerpt}
