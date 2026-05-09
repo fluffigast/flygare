@@ -8,9 +8,7 @@ import { articles } from "../../../data/articles";
 import { getPlaceholderImage } from "../../../utils/placeholder";
 import Stack from "../../../components/stack";
 
-export interface ArticlesSingleViewProps {}
-
-const ArticlesSingleView: React.FC<ArticlesSingleViewProps> = ({}) => {
+const ArticlesSingleView: React.FC = () => {
   let { slug } = useParams();
   const articlesItem = articles.find((n) => n.slug === slug);
 
@@ -25,7 +23,7 @@ const ArticlesSingleView: React.FC<ArticlesSingleViewProps> = ({}) => {
           `https://placehold.co/1920x1080?text=${articlesItem?.slug}`
         }
       />
-      <article className="max-w-2xl mx-auto px-4 flex flex-col w-full">
+      <article className="max-w-2xl mx-auto px-4 flex flex-col w-full py-16">
         <div className="flex flex-col">
           <p className="text-muted-foreground font-serif italic text-2xl">
             {articlesItem?.category}

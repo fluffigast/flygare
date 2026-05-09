@@ -28,7 +28,7 @@ const SitesSingleView: React.FC = () => {
           `https://placehold.co/1920x1080?text=${sitesItem?.slug}`
         }
       />
-      <article className="mx-auto flex w-full max-w-6xl flex-col px-4 gap-8">
+      <article className="mx-auto flex w-full max-w-6xl flex-col px-4 gap-8 py-16">
         <header className="flex flex-col gap-2">
           <p className="font-serif text-2xl italic text-muted-foreground">
             {sitesItem.category}
