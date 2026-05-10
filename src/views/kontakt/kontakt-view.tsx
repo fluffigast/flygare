@@ -13,7 +13,7 @@ const KontaktView: React.FC = () => {
     emergencyContacts: liveContact.emergencyContacts?.length ? liveContact.emergencyContacts : localContact.emergencyContacts,
   };
   return (
-    <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
+    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
       {/* Header */}
       <section className="flex flex-col gap-6">
         <div>
