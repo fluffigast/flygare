@@ -4,11 +4,13 @@ import SitesMap from "../../blocks/sites-map/sites-map";
 import Separator from "../../components/separator";
 import { sites, sitesIntro } from "../../data/sites";
 
-const SitesView: React.FC = () => {
+export interface SitesViewProps {}
+
+const SitesView: React.FC<SitesViewProps> = ({}) => {
   return (
     <>
       <SitesMap sites={sites} />
-      <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
+      <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
         <section className="flex flex-col gap-6">
           <div>
             <p className="font-serif italic text-muted-foreground text-sm">Startplatser</p>
