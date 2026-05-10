@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 
 const LINKS_1 = [
-  { label: "Säkerhet och regler", to: "/information/sakerhet-och-regler" },
+  { label: "Säkerhet och ansvar", to: "/information/sakerhet-och-ansvar" },
   { label: "Startplatser", to: "/startplatser" },
   { label: "Luftrum", to: "/information/luftrum-are" },
   { label: "Nödinformation", to: "/information/nodinformation" },

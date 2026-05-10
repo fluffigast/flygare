@@ -21,7 +21,6 @@ const HomeView: React.FC = () => {
         imageUrl={getPlaceholderImage("home-hero")}
         title="Skandinaviens mest spektakulära flygplats"
         subtitle="Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn."
-        showDisc
       />
 
       {/* Welcome / Featured */}
