@@ -2,12 +2,10 @@ import React from "react";
 import { Link } from "react-router";
 import Separator from "./separator";
 
-export interface FooterProps {}
-
 const linkClass =
   "text-muted-foreground hover:text-foreground transition-colors";
 
-const Footer: React.FC<FooterProps> = ({}) => {
+const Footer: React.FC = () => {
   return (
     <div className="flex flex-col gap-16 max-w-2xl mx-auto px-4 w-full @container mt-16">
       <Separator />
@@ -79,16 +77,11 @@ const Footer: React.FC<FooterProps> = ({}) => {
                   Bli medlem
                 </Link>
               </li>
-              <li>
-                <Link to="/vader" className={linkClass}>
-                  Väder
-                </Link>
-              </li>
             </ul>
           </div>
 
-          <div className="flex flex-2 flex-col gap-2">
-            <h4>Om Oss</h4>
+          <div className="flex flex-1 flex-col gap-2">
+            <h4>Övrigt</h4>
             <ul className="flex flex-col gap-2">
               <li>
                 <Link to="/om" className={linkClass}>
@@ -98,6 +91,11 @@ const Footer: React.FC<FooterProps> = ({}) => {
               <li>
                 <Link to="/kontakt" className={linkClass}>
                   Kontakt
+                </Link>
+              </li>
+              <li>
+                <Link to="/vader" className={linkClass}>
+                  Väder
                 </Link>
               </li>
             </ul>
