@@ -67,7 +67,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
     <section className="mt-24">
       <div className="site-container">
         {/* Header */}
-        <div className="border-t border-hairline pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8">
           <div>
             <p className="eyebrow-sm text-base mb-1">Väder</p>
             <h2 className="h-section">Väderprognos för {location}</h2>

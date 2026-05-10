@@ -44,7 +44,7 @@ const WeatherForecastItem: React.FC<WeatherForecastItemProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-5 pt-2 border-t border-hairline">
+    <div className="flex flex-col gap-5 pt-2">
       <div className="flex flex-col gap-1 pt-2">
         <h3 className="font-serif font-bold text-[clamp(22px,2vw,32px)] leading-none text-ink-2 tracking-tight">
           {day}

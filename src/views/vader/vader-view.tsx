@@ -14,7 +14,7 @@ const VaderView: React.FC = () => {
 
       <section className="mt-24">
         <div className="site-container">
-          <div className="border-t border-hairline pt-6">
+          <div className="pt-0">
             <h3 className="h-section mb-8">Vädertjänster</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {weatherLinks.map((link) => (

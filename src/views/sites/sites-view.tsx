@@ -21,13 +21,13 @@ const SitesView: React.FC = () => {
         </div>
 
         {sitesIntro.areas.map((area) => (
-          <div key={area.title} className="border-t border-hairline pt-6">
+          <div key={area.title} className="pt-0">
             <h3 className="h-section mb-3">{area.title}</h3>
             <p className="text-base text-slate leading-relaxed">{area.description}</p>
           </div>
         ))}
 
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <SitesGrid sites={sites} />
         </div>
       </div>

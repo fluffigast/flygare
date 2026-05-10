@@ -35,7 +35,7 @@ const BliMedlemView: React.FC = () => {
         </section>
 
         {/* Benefits */}
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Vad ingår</h3>
           <ul className="flex flex-col gap-3">
             {info.benefits.map((benefit: any) => (
@@ -48,7 +48,7 @@ const BliMedlemView: React.FC = () => {
         </div>
 
         {/* License requirements */}
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Licenskrav</h3>
           <div className="flex flex-col">
             <div className="grid grid-cols-2 gap-4 py-2 border-b border-hairline">
