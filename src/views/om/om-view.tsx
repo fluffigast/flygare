@@ -8,7 +8,7 @@ const OmView: React.FC = () => {
   const { data: milestones } = useMilestones(localMilestones);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
+    <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
       <section className="flex flex-col gap-6">
         <div>
           <p className="font-serif italic text-muted-foreground text-sm">Om oss</p>
@@ -24,7 +24,7 @@ const OmView: React.FC = () => {
 
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Styrelse</h3>
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-6 @sm:grid-cols-3">
           {boardMembers.map((member: any) => (
             <div key={member.name} className="flex flex-col gap-1">
               <p className="text-sm font-semibold">{member.name}</p>
