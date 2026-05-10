@@ -40,7 +40,9 @@ const ArticlesSingleView: React.FC = () => {
             <p className="font-serif italic text-2xl leading-snug text-ink-2 text-pretty">
               {article.excerpt}
             </p>
-            <p className="text-base leading-6 text-slate-3">{article.content}</p>
+            {article.content.split("\n\n").filter(Boolean).map((p, i) => (
+              <p key={i} className="text-base leading-relaxed text-slate-3">{p}</p>
+            ))}
           </div>
 
           <aside className="flex flex-col gap-8">

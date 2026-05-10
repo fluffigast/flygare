@@ -21,6 +21,8 @@ const NewsSingleView: React.FC = () => {
     );
   }
 
+  const paragraphs = newsItem.content.split("\n\n").filter(Boolean);
+
   return (
     <main>
       <HeroBanner
@@ -44,13 +46,13 @@ const NewsSingleView: React.FC = () => {
             <p className="font-serif italic text-2xl leading-snug text-ink-2 text-pretty">
               {newsItem.excerpt}
             </p>
-            <p className="text-base leading-6 text-slate-3">{newsItem.content}</p>
+            {paragraphs.map((p, i) => (
+              <p key={i} className="text-base leading-relaxed text-slate-3">{p}</p>
+            ))}
           </div>
 
           <aside className="flex flex-col gap-8">
-            <h3 className="font-serif font-bold text-[clamp(22px,2vw,32px)] leading-none text-ink-2">
-              Relaterad information
-            </h3>
+            <h3 className="h-section">Relaterad information</h3>
             {articles.slice(0, 2).map((a) => (
               <div key={a.id} className="flex flex-col gap-2">
                 <h4 className="font-serif font-bold text-base text-ink-2">{a.title}</h4>

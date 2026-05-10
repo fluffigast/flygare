@@ -7,7 +7,7 @@ const ArticlesView: React.FC = () => {
   return (
     <main>
       <section className="pt-24 pb-0 px-6 md:px-28">
-        <p className="eyebrow">Information</p>
+        <p className="eyebrow">Flygguiden</p>
         <h1 className="display mt-[-4px]">Att flyga i Åre</h1>
         <p className="text-lg text-slate max-w-2xl mt-8 leading-relaxed">
           En samlad guide till starter, väder, regler och säkerhet i
@@ -17,7 +17,7 @@ const ArticlesView: React.FC = () => {
 
       <section className="mt-20">
         <div className="site-container">
-          <ArticlesGrid articles={articles} maxNumArticles={6} />
+          <ArticlesGrid articles={articles} />
         </div>
       </section>
 
