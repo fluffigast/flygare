@@ -17,7 +17,7 @@ const BliMedlemView: React.FC = () => {
   return (
     <main>
       <section className="pt-24 pb-0 px-6 md:px-28">
-        <p className="eyebrow">Bli medlem</p>
+        <p className="eyebrow">Flyg med oss</p>
         <h1 className="display mt-[-4px]">Bli en del av klubben</h1>
         <p className="text-lg text-slate max-w-2xl mt-8 leading-relaxed">
           Medlemskapet ger dig tillgång till Skandinaviens mest spektakulära flygplats.
@@ -39,7 +39,7 @@ const BliMedlemView: React.FC = () => {
           <h3 className="h-section mb-8">Vad ingår</h3>
           <ul className="flex flex-col gap-3">
             {info.benefits.map((benefit: any) => (
-              <li key={benefit} className="text-sm text-slate leading-relaxed flex gap-3 items-baseline">
+              <li key={benefit} className="text-base text-slate leading-relaxed flex gap-3 items-baseline">
                 <span className="text-ink shrink-0">&bull;</span>
                 {benefit}
               </li>
