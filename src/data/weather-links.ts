@@ -14,4 +14,12 @@ export const weatherLinks = [
     label: "MetOffice Isobarer",
     url: "https://www.metoffice.gov.uk/weather/maps-and-charts/surface-pressure",
   },
+  {
+    label: "TAF/METAR Frösön",
+    url: "https://www.aro.lfv.se/Links/Link/ViewLink?TorLinkId=314&type=MET",
+  },
+  {
+    label: "MEAC Hummeln",
+    url: "https://meac.se/sub_2/hummeln/wind.asp",
+  },
 ];

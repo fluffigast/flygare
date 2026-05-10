@@ -1,11 +1,22 @@
 import React from "react";
 import Separator from "../../components/separator";
 import Button from "../../components/button";
-import { membershipInfo } from "../../data/membership";
+import { membershipInfo as localMembership } from "../../data/membership";
+import { useMembershipInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const BliMedlemView: React.FC = () => {
+  const { data: cmsMembership } = useMembershipInfo(localMembership);
+  const liveMembership = useGlobalLivePreview(cmsMembership);
+  const membershipInfo = {
+    ...localMembership,
+    price: liveMembership.price ?? localMembership.price,
+    validity: liveMembership.validity ?? localMembership.validity,
+    shopUrl: liveMembership.shopUrl ?? localMembership.shopUrl,
+    benefits: liveMembership.benefits?.length ? liveMembership.benefits : localMembership.benefits,
+    licenseRequirements: liveMembership.licenseRequirements?.length ? liveMembership.licenseRequirements : localMembership.licenseRequirements,
+  };
   return (
-    <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
+    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
       {/* Header */}
       <section className="flex flex-col gap-6">
         <div>
@@ -34,7 +45,7 @@ const BliMedlemView: React.FC = () => {
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Vad ingår</h3>
         <ul className="flex flex-col gap-3">
-          {membershipInfo.benefits.map((benefit) => (
+          {membershipInfo.benefits.map((benefit: any) => (
             <li
               key={benefit}
               className="text-muted-foreground text-sm leading-relaxed flex gap-3 items-baseline"
@@ -58,7 +69,7 @@ const BliMedlemView: React.FC = () => {
             <p className="text-sm font-semibold">Krav</p>
           </div>
           {/* Table rows */}
-          {membershipInfo.licenseRequirements.map((req) => (
+          {membershipInfo.licenseRequirements.map((req: any) => (
             <div
               key={req.level}
               className="grid grid-cols-2 gap-4 py-3 border-b border-border"
