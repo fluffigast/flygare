@@ -8,28 +8,23 @@ export interface SitesGridItemProps {
 }
 
 const SitesGridItem: React.FC<SitesGridItemProps> = ({ site }) => {
+  const { title, excerpt } = site;
   return (
-    <Link
-      to={`/startplatser/${site.slug}`}
-      className="group flex flex-col transition-transform duration-200 hover:-translate-y-0.5"
-    >
-      <div
-        className="w-full aspect-[480/560] bg-cover bg-center bg-[#e9eef3] transition-[filter] duration-200 group-hover:brightness-[1.04]"
-        style={{ backgroundImage: `url(${getPlaceholderImage(site.id)})` }}
-      />
-      <div className="p-5 flex flex-col gap-3">
-        <h3 className="font-serif font-bold text-[clamp(22px,2vw,32px)] leading-none text-ink tracking-tight">
-          {site.title}
-        </h3>
-        <p className="text-base leading-6 text-slate">{site.excerpt}</p>
-        <div className="mt-1 w-7 h-7 grid place-items-center text-ink transition-transform duration-200 group-hover:translate-x-1.5">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="13 6 19 12 13 18" />
-          </svg>
-        </div>
+    <article className="flex flex-col gap-2 group hover:-translate-y-1 transition-transform duration-200">
+      <Link to={`/startplatser/${site.slug}`}>
+        <img
+          src={getPlaceholderImage(site.id)}
+          alt={title}
+          className="w-full aspect-3/4 object-cover"
+        />
+      </Link>
+      <div className="p-4 flex flex-col gap-2">
+        <Link to={`/startplatser/${site.slug}`}>
+          <h3>{title}</h3>
+        </Link>
+        <p className="text-muted-foreground">{excerpt}</p>
       </div>
-    </Link>
+    </article>
   );
 };
 

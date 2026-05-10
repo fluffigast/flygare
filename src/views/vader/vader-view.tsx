@@ -1,41 +1,47 @@
 import React from "react";
+import Separator from "../../components/separator";
 import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
 import { weatherLinks } from "../../data/weather-links";
 
 const VaderView: React.FC = () => {
   return (
-    <main>
-      <section className="pt-24 pb-0 px-6 md:px-28">
-        <p className="eyebrow">Väder</p>
-        <h1 className="display mt-[-4px]">Väder i Åre</h1>
-      </section>
-
-      <WeatherForecast />
-
-      <section className="mt-24">
-        <div className="site-container">
-          <div className="pt-0">
-            <h3 className="h-section mb-8">Vädertjänster</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {weatherLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col gap-1 p-5 border border-hairline transition-colors hover:border-ink-2"
-                >
-                  <p className="text-sm font-semibold text-ink">{link.label}</p>
-                  <p className="text-slate-2 text-xs truncate">
-                    {new URL(link.url).hostname}
-                  </p>
-                </a>
-              ))}
-            </div>
-          </div>
+    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
+      {/* Header */}
+      <section className="flex flex-col gap-6">
+        <div>
+          <p className="font-serif italic text-muted-foreground text-sm">
+            Väder
+          </p>
+          <h2 className="font-serif text-3xl">Väder i Åre</h2>
         </div>
       </section>
-    </main>
+
+      {/* Weather forecast component */}
+      <WeatherForecast />
+
+      <Separator />
+
+      {/* Weather links */}
+      <section className="flex flex-col gap-6">
+        <h3 className="font-serif text-xl">Vädertjänster</h3>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {weatherLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col gap-1 p-4 rounded-lg border border-border hover:border-primary transition-colors"
+            >
+              <p className="text-sm font-semibold">{link.label}</p>
+              <p className="text-muted-foreground text-xs truncate">
+                {new URL(link.url).hostname}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 

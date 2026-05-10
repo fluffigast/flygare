@@ -4,8 +4,11 @@ import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import ArticlesGrid from "../../blocks/articles-grid/articles-grid";
 import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
 import NewsSlider from "../../blocks/news-slider/news-slider";
+import Separator from "../../components/separator";
 import { articles } from "../../data/articles";
 import { getPlaceholderImage } from "../../utils/placeholder";
+import FeaturedSection from "../../blocks/featured-section/featured-section";
+import Button from "../../components/button";
 
 const stats = [
   { value: "1975", label: "Grundat" },
@@ -22,86 +25,58 @@ const HomeView: React.FC = () => {
         title="Skandinaviens mest spektakulära flygplats"
         subtitle="Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn."
       />
+      <main className="@container max-w-2xl mx-auto px-4 flex gap-16 flex-col py-16">
+        <FeaturedSection
+          title="50 år av flygning från Skutan"
+          content="Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.
 
-      {/* Welcome / Featured */}
-      <div className="site-container">
-        <section className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] mt-24">
-          <div
-            className="w-full h-[clamp(260px,30vw,462px)] bg-cover bg-center"
-            style={{ backgroundImage: `url(${getPlaceholderImage("home-featured")})` }}
-          />
-          <div className="flex flex-col justify-center p-8 lg:p-12 gap-6">
-            <h2 className="font-serif font-bold text-[clamp(22px,2vw,32px)] leading-snug text-ink tracking-tight">
-              50 år av flygning från Skutan
-            </h2>
-            <p className="text-base leading-6 text-ink-2">
-              Åre Drakflygklubb bildades 1975 och sedan 1988 har även
-              skärmflygklubben funnits. Idag görs 95% av all flygning med skärm.
-              Distansrekordet ligger på 230 km — Åre till Sollefteå.
-            </p>
-            <p className="text-base leading-6 text-ink-2">
-              Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi
-              arbetar aktivt med utbildning, säkerhet och samarbete med markägare
-              och andra aktörer i området.
-            </p>
-          </div>
-        </section>
+Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området."
+          imageUrl={getPlaceholderImage("home-featured")}
+          alignment="right"
+        />
 
         {/* Stats */}
-        <section className="bg-ink text-white mt-16 p-8 md:p-12">
+        <section className="bg-primary text-primary-foreground rounded-lg p-8 md:p-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((s) => (
               <div key={s.label}>
                 <p className="font-serif text-4xl md:text-5xl font-bold">{s.value}</p>
-                <p className="text-sm uppercase tracking-wider text-white/50 mt-1">
+                <p className="text-sm uppercase tracking-wider text-primary-foreground/60 mt-1">
                   {s.label}
                 </p>
               </div>
             ))}
           </div>
         </section>
-      </div>
 
-      <NewsSlider />
+        <Separator />
+        <NewsSlider />
+        <ArticlesGrid
+          articles={articles.map((article) => ({
+            ...article,
+            imageUrl: getPlaceholderImage(article.id),
+          }))}
+        />
+        <Separator />
+        <WeatherForecast />
 
-      {/* Flyga i Åre */}
-      <section className="mt-24">
-        <div className="site-container">
-          <div className="flex justify-between items-end mb-6">
-            <h2 className="h-section">Flyga i Åre</h2>
-            <Link
-              to="/information"
-              className="text-sm text-ink-2 border-b border-ink-2 pb-0.5"
-            >
-              Se all information
-            </Link>
-          </div>
-          <ArticlesGrid articles={articles} maxNumArticles={6} />
-        </div>
-      </section>
-
-      <WeatherForecast />
-
-      {/* CTA */}
-      <section className="mt-24">
-        <div className="site-container text-center flex flex-col gap-4 items-center py-12">
-          <p className="font-serif italic text-slate text-sm">
+        {/* CTA */}
+        <section className="text-center flex flex-col gap-4 items-center py-8">
+          <p className="font-serif italic text-muted-foreground text-sm">
             Bli en del av klubben
           </p>
-          <h2 className="h-section">Redo att flyga?</h2>
-          <div className="flex gap-3 flex-wrap justify-center mt-4">
-            <Link to="/bli-medlem" className="pill-btn">
-              Bli medlem — 600 kr/år
-            </Link>
+          <h2 className="font-serif text-3xl">Redo att flyga?</h2>
+          <div className="flex gap-3 flex-wrap justify-center mt-2">
+            <Button href="/bli-medlem">Bli medlem — 600 kr/år</Button>
             <Link
               to="/startplatser"
-              className="inline-flex items-center px-5 py-2 rounded-full border border-hairline text-sm hover:bg-paper transition-colors"
+              className="inline-flex items-center px-4 py-2 rounded-full border border-border text-sm hover:bg-muted transition-colors"
             >
               Se startplatser
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </>
   );
 };
