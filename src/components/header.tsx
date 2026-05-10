@@ -44,10 +44,11 @@ const Header: React.FC = () => {
 
       {/* Desktop nav */}
       <nav className="hidden md:flex gap-7">
-        {navLink("Information", "/information", ["/information", "/startplatser"])}
-        {navLink("Nyheter", "/nyheter", ["/nyheter"])}
+        {navLink("Flygguiden", "/information", ["/information"])}
         {navLink("Väder", "/vader", ["/vader"])}
-        {navLink("Om klubben", "/om", ["/om"])}
+        {navLink("Startplatser", "/startplatser", ["/startplatser"])}
+        {navLink("Nyheter", "/nyheter", ["/nyheter"])}
+        {navLink("Om klubben", "/om", ["/om", "/kontakt", "/tavlingar"])}
       </nav>
 
       <Link
@@ -76,10 +77,11 @@ const Header: React.FC = () => {
       {/* Mobile nav */}
       {menuOpen && (
         <nav className="absolute top-15 left-0 right-0 bg-white border-b border-hairline flex flex-col gap-4 p-6 md:hidden z-50">
-          {navLink("Information", "/information", ["/information", "/startplatser"])}
-          {navLink("Nyheter", "/nyheter", ["/nyheter"])}
+          {navLink("Flygguiden", "/information", ["/information"])}
           {navLink("Väder", "/vader", ["/vader"])}
-          {navLink("Om klubben", "/om", ["/om"])}
+          {navLink("Startplatser", "/startplatser", ["/startplatser"])}
+          {navLink("Nyheter", "/nyheter", ["/nyheter"])}
+          {navLink("Om klubben", "/om", ["/om", "/kontakt", "/tavlingar"])}
           <Link to="/bli-medlem" className="pill-btn text-center" onClick={() => setMenuOpen(false)}>
             Bli medlem
           </Link>
