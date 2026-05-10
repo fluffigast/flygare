@@ -14,7 +14,7 @@ const TavlingarView: React.FC = () => {
 
       <div className="site-container mt-20 flex flex-col gap-16">
         {competitions.map((comp) => (
-          <div key={comp.name} className="border-t border-hairline pt-6 flex flex-col gap-6">
+          <div key={comp.name} className="pt-0 flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <div className="flex gap-3 items-center">
                 <h3 className="h-section">{comp.name}</h3>

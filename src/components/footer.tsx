@@ -24,7 +24,7 @@ const LINKS_3 = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-24 border-t border-hairline py-16 md:py-24">
+    <footer className="mt-32 pt-16 pb-24">
       <div className="site-container">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           <div className="flex flex-col gap-3">
@@ -56,7 +56,7 @@ const Footer: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className="mt-8 pt-5 flex flex-col sm:flex-row justify-between text-xs text-slate-2">
+        <div className="mt-12 flex flex-col sm:flex-row justify-between text-xs text-slate-2">
           <span>&copy; 2026 Åre Skärm- och Drakflygklubb</span>
           <span>Org.nr 802xxx-xxxx &middot; info@areflygklubb.se</span>
         </div>

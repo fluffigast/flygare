@@ -162,7 +162,7 @@ const SitesSingleView: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-hairline mt-8" />
+        <div className="mt-12" />
         <WeatherForecast location={site.title} />
       </article>
     </main>

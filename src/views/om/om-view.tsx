@@ -18,7 +18,7 @@ const OmView: React.FC = () => {
       </section>
 
       <div className="site-container mt-20 flex flex-col gap-16">
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Styrelse</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
             {boardMembers.map((member: any) => (
@@ -30,7 +30,7 @@ const OmView: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Historia</h3>
           <div className="flex flex-col gap-6">
             {milestones.map((milestone: any) => (

@@ -34,7 +34,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
   return (
     <section className="flex flex-col gap-12">
       {/* Filter bar */}
-      <div className="border-t border-b border-hairline py-5 flex gap-7 justify-center flex-wrap">
+      <div className="py-5 flex gap-7 justify-center flex-wrap">
         {CATEGORIES.map((c) => (
           <button
             key={c}
@@ -67,7 +67,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="border-t border-b border-hairline py-8 flex gap-7 justify-center">
+        <div className="py-8 flex gap-7 justify-center">
           <button className="text-sm text-ink">Föregående</button>
           {Array.from({ length: totalPages }).map((_, i) => (
             <button

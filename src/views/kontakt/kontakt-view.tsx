@@ -27,7 +27,7 @@ const KontaktView: React.FC = () => {
 
       <div className="site-container mt-20 flex flex-col gap-16">
         {/* Social media */}
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Sociala medier</h3>
           <div className="flex flex-col gap-3">
             <a href={contactInfo.facebook.url} target="_blank" rel="noopener noreferrer" className="text-ink underline hover:text-accent transition-colors text-base">
@@ -40,7 +40,7 @@ const KontaktView: React.FC = () => {
         </div>
 
         {/* Radio frequencies */}
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Radiofrekvenser</h3>
           <div className="grid grid-cols-2 gap-4">
             {contactInfo.radioFrequencies.map((freq: any) => (
@@ -53,7 +53,7 @@ const KontaktView: React.FC = () => {
         </div>
 
         {/* Emergency contacts */}
-        <div className="border-t border-hairline pt-6">
+        <div className="pt-0">
           <h3 className="h-section mb-8">Nödkontakter</h3>
           <div className="flex flex-col gap-4">
             {contactInfo.emergencyContacts.map((contact: any) => (
