@@ -18,11 +18,13 @@ const TavlingarView: React.FC = () => {
             <div className="flex flex-col gap-2">
               <div className="flex gap-3 items-center">
                 <h3 className="h-section">{comp.name}</h3>
-                <span className="text-xs px-2 py-0.5 bg-paper text-ink">{comp.status}</span>
+                <span className="text-xs px-2 py-0.5 bg-paper text-ink border border-hairline">
+                  {comp.status}
+                </span>
               </div>
-              <p className="font-serif italic text-sm text-slate">{comp.subtitle}</p>
+              <p className="font-serif italic text-base text-slate">{comp.subtitle}</p>
             </div>
-            <p className="text-sm text-slate leading-relaxed">{comp.description}</p>
+            <p className="text-base text-slate leading-relaxed">{comp.description}</p>
 
             {"winners" in comp && comp.winners && (
               <div className="flex flex-col">

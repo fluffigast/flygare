@@ -23,8 +23,8 @@ const OmView: React.FC = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
             {boardMembers.map((member: any) => (
               <div key={member.name} className="flex flex-col gap-1">
-                <p className="text-sm font-semibold text-ink">{member.name}</p>
-                <p className="text-sm text-slate">{member.role}</p>
+                <p className="text-base font-semibold text-ink">{member.name}</p>
+                <p className="text-base text-slate">{member.role}</p>
               </div>
             ))}
           </div>
@@ -36,7 +36,7 @@ const OmView: React.FC = () => {
             {milestones.map((milestone: any) => (
               <div key={milestone.year} className="flex gap-6 items-baseline">
                 <p className="font-serif text-2xl text-ink shrink-0 w-16">{milestone.year}</p>
-                <p className="text-sm text-slate leading-relaxed">{milestone.text}</p>
+                <p className="text-base text-slate leading-relaxed">{milestone.text}</p>
               </div>
             ))}
           </div>

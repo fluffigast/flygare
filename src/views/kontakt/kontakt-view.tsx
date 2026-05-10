@@ -30,10 +30,10 @@ const KontaktView: React.FC = () => {
         <div className="border-t border-hairline pt-6">
           <h3 className="h-section mb-8">Sociala medier</h3>
           <div className="flex flex-col gap-3">
-            <a href={contactInfo.facebook.url} target="_blank" rel="noopener noreferrer" className="text-ink underline hover:text-accent transition-colors text-sm">
+            <a href={contactInfo.facebook.url} target="_blank" rel="noopener noreferrer" className="text-ink underline hover:text-accent transition-colors text-base">
               {contactInfo.facebook.label}
             </a>
-            <a href={contactInfo.youtube.url} target="_blank" rel="noopener noreferrer" className="text-ink underline hover:text-accent transition-colors text-sm">
+            <a href={contactInfo.youtube.url} target="_blank" rel="noopener noreferrer" className="text-ink underline hover:text-accent transition-colors text-base">
               {contactInfo.youtube.label}
             </a>
           </div>
@@ -45,8 +45,8 @@ const KontaktView: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             {contactInfo.radioFrequencies.map((freq: any) => (
               <div key={freq.label} className="flex flex-col gap-1">
-                <p className="font-serif italic text-sm text-ink-2">{freq.label}</p>
-                <p className="text-sm text-slate">{freq.value}</p>
+                <p className="font-serif italic text-base text-ink-2">{freq.label}</p>
+                <p className="text-base text-slate">{freq.value}</p>
               </div>
             ))}
           </div>
@@ -58,10 +58,10 @@ const KontaktView: React.FC = () => {
           <div className="flex flex-col gap-4">
             {contactInfo.emergencyContacts.map((contact: any) => (
               <div key={contact.label} className="flex flex-col gap-1">
-                <p className="text-sm font-semibold text-ink">{contact.label}</p>
-                <p className="text-sm text-slate">{contact.description}</p>
+                <p className="text-base font-semibold text-ink">{contact.label}</p>
+                <p className="text-base text-slate">{contact.description}</p>
                 {"phone" in contact && contact.phone && (
-                  <a href={`tel:${contact.phone}`} className="text-ink underline hover:text-accent transition-colors text-sm">
+                  <a href={`tel:${contact.phone}`} className="text-ink underline hover:text-accent transition-colors text-base">
                     {contact.phone}
                   </a>
                 )}
