@@ -1,67 +1,108 @@
 import React from "react";
 import { Link } from "react-router";
+import Separator from "./separator";
 
-const LINKS_1 = [
-  { label: "Säkerhet och ansvar", to: "/information/sakerhet-och-ansvar" },
-  { label: "Startplatser", to: "/startplatser" },
-  { label: "Luftrum", to: "/information/luftrum-are" },
-  { label: "Nödinformation", to: "/information/nodinformation" },
-  { label: "Etik och hänsyn", to: "/information/etik-och-hansyn" },
-];
-
-const LINKS_2 = [
-  { label: "Nyheter", to: "/nyheter" },
-  { label: "Flygguiden", to: "/information" },
-  { label: "Tävlingar", to: "/tavlingar" },
-  { label: "Bli medlem", to: "/bli-medlem" },
-];
-
-const LINKS_3 = [
-  { label: "Om klubben", to: "/om" },
-  { label: "Kontakt", to: "/kontakt" },
-  { label: "Väder", to: "/vader" },
-];
+const linkClass =
+  "text-muted-foreground hover:text-foreground transition-colors";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-32 pt-16 pb-24">
-      <div className="site-container">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-          <div className="flex flex-col gap-3">
-            <p className="font-serif font-bold text-sm text-ink mb-1">Flyga i Åre</p>
-            {LINKS_1.map((l) => (
-              <Link key={l.label} to={l.to} className="text-sm text-slate transition-colors hover:text-ink">
-                {l.label}
-              </Link>
-            ))}
+    <div className="flex flex-col gap-16 max-w-2xl mx-auto px-4 w-full @container mt-16">
+      <Separator />
+      <footer className="mx-auto w-full">
+        <div className="flex flex-col gap-8 @sm:flex-row">
+          <div className="flex flex-1 flex-col gap-2">
+            <h4>Flyga i Åre</h4>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <Link to="/startplatser" className={linkClass}>
+                  Startplatser
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/information/luftrum-are"
+                  className={linkClass}
+                >
+                  Luftrum
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/information/sakerhet-och-ansvar"
+                  className={linkClass}
+                >
+                  Säkerhet och ansvar
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/information/nodinformation"
+                  className={linkClass}
+                >
+                  Nödinformation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/information/etik-och-hansyn"
+                  className={linkClass}
+                >
+                  Etik och hänsyn
+                </Link>
+              </li>
+            </ul>
           </div>
-          <div className="flex flex-col gap-3">
-            <p className="font-serif font-bold text-sm text-ink mb-1">Klubben</p>
-            {LINKS_2.map((l) => (
-              <Link key={l.label} to={l.to} className="text-sm text-slate transition-colors hover:text-ink">
-                {l.label}
-              </Link>
-            ))}
+
+          <div className="flex flex-1 flex-col gap-2">
+            <h4>Klubben</h4>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <Link to="/nyheter" className={linkClass}>
+                  Nyheter
+                </Link>
+              </li>
+              <li>
+                <Link to="/information" className={linkClass}>
+                  Information
+                </Link>
+              </li>
+              <li>
+                <Link to="/tavlingar" className={linkClass}>
+                  Tävlingar
+                </Link>
+              </li>
+              <li>
+                <Link to="/bli-medlem" className={linkClass}>
+                  Bli medlem
+                </Link>
+              </li>
+            </ul>
           </div>
-          <div className="flex flex-col gap-3">
-            <p className="font-serif font-bold text-sm text-ink mb-1">Övrigt</p>
-            {LINKS_3.map((l) => (
-              <Link key={l.label} to={l.to} className="text-sm text-slate transition-colors hover:text-ink">
-                {l.label}
-              </Link>
-            ))}
-            <p className="text-sm text-slate leading-relaxed mt-4 max-w-sm">
-              Åre Skärm- och Drakflygklubb är en ideell förening för skärm- och
-              drakflyg i Åreområdet.
-            </p>
+
+          <div className="flex flex-1 flex-col gap-2">
+            <h4>Övrigt</h4>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <Link to="/om" className={linkClass}>
+                  Om klubben
+                </Link>
+              </li>
+              <li>
+                <Link to="/kontakt" className={linkClass}>
+                  Kontakt
+                </Link>
+              </li>
+              <li>
+                <Link to="/vader" className={linkClass}>
+                  Väder
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="mt-12 flex flex-col sm:flex-row justify-between text-xs text-slate-2">
-          <span>&copy; 2026 Åre Skärm- och Drakflygklubb</span>
-          <span>Org.nr 802xxx-xxxx &middot; info@areflygklubb.se</span>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   );
 };
 

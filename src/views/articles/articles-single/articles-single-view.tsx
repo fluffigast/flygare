@@ -6,68 +6,62 @@ import { Link, useParams } from "react-router";
 import HeroBanner from "../../../blocks/hero-banner/hero-banner";
 import { articles } from "../../../data/articles";
 import { getPlaceholderImage } from "../../../utils/placeholder";
+import Stack from "../../../components/stack";
 
 const ArticlesSingleView: React.FC = () => {
   const { slug } = useParams();
-  const article = articles.find((n) => n.slug === slug);
+  const articlesItem = articles.find((n) => n.slug === slug);
 
-  if (!article) {
+  if (!articlesItem) {
     return (
-      <div className="site-container py-24 text-center flex flex-col gap-4">
-        <h1 className="display">Sidan hittades inte</h1>
-        <p className="text-slate">Innehållet du söker finns inte.</p>
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center flex flex-col gap-4">
+        <h1 className="text-4xl font-bold">Sidan hittades inte</h1>
+        <p className="text-muted-foreground">Innehållet du söker finns inte.</p>
       </div>
     );
   }
-
   return (
-    <main>
-      <HeroBanner imageUrl={getPlaceholderImage(slug ?? "fallback")} compact />
-
-      <article className="max-w-[1200px] mx-auto pt-24 px-4">
-        <header className="mb-12">
-          <span className="eyebrow-sm block mb-3">{article.category}</span>
-          <h1 className="font-serif font-bold text-[clamp(36px,5vw,64px)] leading-none text-ink-2 tracking-tight text-balance">
-            {article.title}
-          </h1>
-          <p className="mt-6 text-base text-slate-2">
-            Publicerad {format(article.updatedAt, "d MMMM, yyyy", { locale: sv })}
+    <>
+      <HeroBanner
+        imageUrl={
+          getPlaceholderImage(slug ?? "fallback") ??
+          `https://placehold.co/1920x1080?text=${articlesItem?.slug}`
+        }
+      />
+      <article className="max-w-2xl mx-auto px-4 flex flex-col w-full py-16">
+        <div className="flex flex-col">
+          <p className="text-muted-foreground font-serif italic text-2xl">
+            {articlesItem?.category}
           </p>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16 lg:gap-24">
-          <div className="flex flex-col gap-4">
-            <p className="font-serif italic text-2xl leading-snug text-ink-2 text-pretty">
-              {article.excerpt}
-            </p>
-            {article.content.split("\n\n").filter(Boolean).map((p, i) => (
-              <p key={i} className="text-base leading-relaxed text-slate-3">{p}</p>
-            ))}
-          </div>
-
-          <aside className="flex flex-col gap-8">
-            <h3 className="font-serif font-bold text-[clamp(22px,2vw,32px)] leading-none text-ink-2">
-              Relaterade artiklar
-            </h3>
-            {articles
-              .filter((a) => a.slug !== slug)
-              .slice(0, 2)
-              .map((a) => (
-                <div key={a.id} className="flex flex-col gap-2">
-                  <h4 className="font-serif font-bold text-base text-ink-2">{a.title}</h4>
-                  <p className="text-base leading-6 text-slate">{a.excerpt}</p>
-                  <Link
-                    to={`/information/${a.slug}`}
-                    className="text-sm text-accent inline-flex gap-1.5 items-center mt-1 hover:underline"
-                  >
-                    Läs mer &rarr;
-                  </Link>
-                </div>
-              ))}
-          </aside>
+          <h1 className="text-5xl mb-2">{articlesItem?.title}</h1>
+          <p className="text-muted-foreground">
+            Publicerad den{" "}
+            {format(articlesItem?.updatedAt, "d MMMM, yyyy", { locale: sv })}
+          </p>
         </div>
+        <Stack gap={8} direction="row" className="py-8">
+          <div className="flex-2 flex flex-col gap-4">
+            <p className="font-serif italic text-3xl text-foreground">
+              {articlesItem?.excerpt}
+            </p>
+            <p>{articlesItem?.content}</p>
+          </div>
+          <div className="flex-1 flex flex-col gap-4">
+            <h3>Relaterade artiklar</h3>
+            <ul className="flex flex-col gap-4">
+              {articles.slice(0, 2).map((a) => (
+                <li key={a.id}>
+                  <h4>
+                    <Link to={`/information/${a.slug}`}>{a.title}</Link>
+                  </h4>
+                  <p>{a.excerpt}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Stack>
       </article>
-    </main>
+    </>
   );
 };
 

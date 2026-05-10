@@ -12,7 +12,7 @@
     "X-XSS-Protection": "0",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(self)",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://placehold.co; font-src 'self'; connect-src 'self' https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://*.openfreemap.org https://*.opentopomap.org; frame-ancestors 'none'"
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://placehold.co; font-src 'self'; connect-src 'self' https://opendata-download-metfcst.smhi.se https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://*.openfreemap.org https://*.opentopomap.org; frame-ancestors 'none'"
   },
   "mimeTypes": {
     ".webp": "image/webp",

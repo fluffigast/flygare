@@ -101,7 +101,7 @@ export async function fetchSMHIForecast(
   const roundedLat = Math.round(latitude * 10) / 10;
   const roundedLon = Math.round(longitude * 10) / 10;
   
-  const url = `/api/smhi?lat=${roundedLat}&lon=${roundedLon}`;
+  const url = `https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${roundedLon}/lat/${roundedLat}/data.json`;
 
   const response = await fetch(url);
   if (!response.ok) {
