@@ -27,15 +27,10 @@ jobs:
         env:
           VITE_CMS_URL: ${{ vars.VITE_CMS_URL }}
 
-      - name: Install API dependencies
-        run: cd api && npm install
-
       - uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
-          path: |
-            dist/
-            api/
+          path: dist/
           retention-days: 7
 
   deploy-frontend:
@@ -47,9 +42,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: frontend-dist
+          path: dist/
 
       - run: npm install -g @azure/static-web-apps-cli
-      - run: swa deploy ./dist --api-location ./api --api-language node --api-version 22 --deployment-token "$SWA_TOKEN" --env production
+      - run: swa deploy ./dist --deployment-token "$SWA_TOKEN" --env production
         env:
           SWA_TOKEN: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
 
