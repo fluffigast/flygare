@@ -1,10 +1,19 @@
 import React from "react";
 import Separator from "../../components/separator";
-import { contactInfo } from "../../data/contact";
+import { contactInfo as localContact } from "../../data/contact";
+import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const KontaktView: React.FC = () => {
+  const { data: cmsContact } = useContactInfo(localContact);
+  const liveContact = useGlobalLivePreview(cmsContact);
+  const contactInfo = {
+    ...localContact,
+    email: liveContact.email ?? localContact.email,
+    radioFrequencies: liveContact.radioFrequencies?.length ? liveContact.radioFrequencies : localContact.radioFrequencies,
+    emergencyContacts: liveContact.emergencyContacts?.length ? liveContact.emergencyContacts : localContact.emergencyContacts,
+  };
   return (
-    <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
+    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
       {/* Header */}
       <section className="flex flex-col gap-6">
         <div>
@@ -57,7 +66,7 @@ const KontaktView: React.FC = () => {
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Radiofrekvenser</h3>
         <div className="grid grid-cols-2 gap-4">
-          {contactInfo.radioFrequencies.map((freq) => (
+          {contactInfo.radioFrequencies.map((freq: any) => (
             <div key={freq.label} className="flex flex-col gap-1">
               <p className="text-muted-foreground italic font-serif text-sm">
                 {freq.label}
@@ -74,7 +83,7 @@ const KontaktView: React.FC = () => {
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Nödkontakter</h3>
         <div className="flex flex-col gap-4">
-          {contactInfo.emergencyContacts.map((contact) => (
+          {contactInfo.emergencyContacts.map((contact: any) => (
             <div key={contact.label} className="flex flex-col gap-1">
               <p className="font-semibold text-sm">{contact.label}</p>
               <p className="text-muted-foreground text-sm">

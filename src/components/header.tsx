@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import Button from "./button";
 import { Link } from "react-router";
 
-export interface HeaderProps {}
-
 const navLinkClass = "text-foreground hover:text-primary transition-colors";
 
-const Header: React.FC<HeaderProps> = ({}) => {
+const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (

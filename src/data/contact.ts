@@ -22,5 +22,10 @@ export const contactInfo = {
       description: "TMA-passage öster om Järpen",
       phone: "+46 8 511 886 17",
     },
+    {
+      label: "Trafikverket Driftcentral Ånge",
+      description: "Järnvägsärenden",
+      phone: "+46 690 523 20",
+    },
   ],
 };

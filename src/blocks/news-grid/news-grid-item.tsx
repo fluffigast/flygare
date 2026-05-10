@@ -21,7 +21,7 @@ const NewsGridItem: React.FC<NewsGridItemProps> = ({
   slug,
 }) => {
   return (
-    <article className="flex flex-col gap-2">
+    <article className="flex flex-col gap-2 group hover:-translate-y-1 transition-transform duration-200">
       <Link to={`/nyheter/${slug}`}>
         <img
           src={image}
