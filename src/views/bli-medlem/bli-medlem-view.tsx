@@ -16,7 +16,7 @@ const BliMedlemView: React.FC = () => {
     licenseRequirements: liveMembership.licenseRequirements?.length ? liveMembership.licenseRequirements : localMembership.licenseRequirements,
   };
   return (
-    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
+    <div className="max-w-5xl mx-auto px-6 flex gap-16 flex-col w-full py-16">
       {/* Header */}
       <section className="flex flex-col gap-6">
         <div>

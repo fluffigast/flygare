@@ -14,7 +14,7 @@ const ArticlesSingleView: React.FC = () => {
 
   if (!articlesItem) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center flex flex-col gap-4">
+      <div className="max-w-5xl mx-auto px-6 py-24 text-center flex flex-col gap-4">
         <h1 className="text-4xl font-bold">Sidan hittades inte</h1>
         <p className="text-muted-foreground">Innehållet du söker finns inte.</p>
       </div>
@@ -28,7 +28,7 @@ const ArticlesSingleView: React.FC = () => {
           `https://placehold.co/1920x1080?text=${articlesItem?.slug}`
         }
       />
-      <article className="max-w-2xl mx-auto px-4 flex flex-col w-full py-16">
+      <article className="max-w-5xl mx-auto px-6 flex flex-col w-full py-16">
         <div className="flex flex-col">
           <p className="text-muted-foreground font-serif italic text-2xl">
             {articlesItem?.category}
