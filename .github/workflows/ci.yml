@@ -47,7 +47,7 @@ jobs:
           path: dist/
 
       - run: npm install -g @azure/static-web-apps-cli
-      - run: swa deploy ./dist --api-location ./api --deployment-token "$SWA_TOKEN" --env production
+      - run: swa deploy ./dist --api-location ./api --deployment-token "$SWA_TOKEN" --env production --api-language node --api-version 22
         env:
           SWA_TOKEN: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
 
