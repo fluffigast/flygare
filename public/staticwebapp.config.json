@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/unsplash/*", "/vite.svg", "*.js", "*.css", "*.json"]
+    "exclude": ["/api/*", "/unsplash/*", "/vite.svg", "*.js", "*.css", "*.json"]
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
