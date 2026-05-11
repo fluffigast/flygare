@@ -65,7 +65,7 @@ const KontaktView: React.FC = () => {
       {/* Radio frequencies */}
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Radiofrekvenser</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
           {contactInfo.radioFrequencies.map((freq: any) => (
             <div key={freq.label} className="flex flex-col gap-1">
               <p className="text-muted-foreground italic font-serif text-sm">

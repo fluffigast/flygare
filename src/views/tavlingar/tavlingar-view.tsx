@@ -41,7 +41,7 @@ const TavlingarView: React.FC = () => {
             {/* Winners table */}
             {"winners" in comp && comp.winners && (
               <div className="flex flex-col gap-1">
-                <div className="grid grid-cols-3 gap-4 py-2 border-b border-border">
+                <div className="grid grid-cols-3 gap-2 md:gap-4 py-2 border-b border-border">
                   <p className="text-sm font-semibold">År</p>
                   <p className="text-sm font-semibold">Vinnare</p>
                   <p className="text-sm font-semibold">Resultat</p>

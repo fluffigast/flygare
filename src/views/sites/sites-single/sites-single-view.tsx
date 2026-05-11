@@ -37,7 +37,7 @@ const SitesSingleView: React.FC = () => {
             {sitesItem.title}
           </h1>
         </header>
-        <div className="pt-10 pl-10">
+        <div className="pt-4 md:pt-10 pl-0 md:pl-10">
           <div className="flex w-full flex-col gap-12 lg:flex-row lg:gap-16 lg:items-start">
             <section className="flex flex-1 flex-col gap-8 lg:max-w-md">
               <h2 className="font-serif text-2xl ">Översikt</h2>

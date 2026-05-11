@@ -24,7 +24,7 @@ const VaderView: React.FC = () => {
       {/* Weather links */}
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Vädertjänster</h3>
-        <div className="grid grid-cols-2 gap-4 @sm:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
           {weatherLinks.map((link) => (
             <a
               key={link.label}
