@@ -11,14 +11,16 @@ const ArticlesGridItem: React.FC<ArticlesGridItemProps> = ({ article }) => {
   const { title, excerpt } = article;
   return (
     <article className="flex flex-col gap-2 group hover:-translate-y-1 transition-transform duration-200">
-      <Link to={`/information/${article.slug}`}>
-        <img
-          src={article.imageUrl ?? getPlaceholderImage(article.id)}
-          alt={title}
-          className="w-full aspect-3/4 object-cover bg-muted"
-        />
+      <Link to={`/information/${article.slug}`} className="block">
+        <div className="w-full aspect-[3/4] overflow-hidden rounded-lg bg-muted">
+          <img
+            src={article.imageUrl ?? getPlaceholderImage(article.id)}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        </div>
       </Link>
-      <div className="p-4 flex flex-col gap-2">
+      <div className="pt-4 flex flex-col gap-2">
         <Link to={`/information/${article.slug}`}>
           <h3>{title}</h3>
         </Link>
