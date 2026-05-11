@@ -65,11 +65,11 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
       <Separator />
 
       <div className="relative overflow-hidden min-h-[140px]">
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {currentItems.map((item) => (
             <div
               key={`${item.id}-${currentPage}`}
-              className={`flex-1 animate-fade-slide-${direction}`}
+              className={`flex-1 min-w-0 animate-fade-slide-${direction}`}
             >
               <NewsSliderItem
                 {...item}
