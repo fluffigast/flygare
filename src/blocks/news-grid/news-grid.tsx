@@ -74,7 +74,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-16">
+      <section className="flex flex-col gap-16 overflow-x-clip">
         <div className="flex flex-col gap-8 w-full">
           <Separator />
           <div className="flex items-center gap-4 w-full relative overflow-hidden">
