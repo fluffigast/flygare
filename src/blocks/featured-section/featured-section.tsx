@@ -15,20 +15,20 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
   alignment = "left",
 }) => {
   return (
-    <section className="flex flex-row items-stretch gap-4">
+    <section className="flex flex-col md:flex-row items-stretch gap-6 rounded-lg overflow-hidden">
       <div
         className={cn(
-          "flex-1 flex flex-col gap-4 p-8",
-          alignment === "left" ? "order-1" : "order-2"
+          "flex-1 flex flex-col gap-4 justify-center py-4",
+          alignment === "left" ? "order-1" : "md:order-2"
         )}
       >
         <h2>{title}</h2>
-        <p className="text-muted-foreground">{content}</p>
+        <p className="text-muted-foreground whitespace-pre-line">{content}</p>
       </div>
       <div
         className={cn(
-          "flex-2 h-full overflow-hidden",
-          alignment === "left" ? "order-2" : "order-1"
+          "flex-1 min-h-[300px] overflow-hidden rounded-lg bg-muted",
+          alignment === "left" ? "order-2" : "md:order-1"
         )}
       >
         <img

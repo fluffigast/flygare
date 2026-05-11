@@ -8,7 +8,7 @@ const OmView: React.FC = () => {
   const { data: milestones } = useMilestones(localMilestones);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 flex gap-16 flex-col w-full py-16">
+    <div className="max-w-5xl mx-auto px-6 flex gap-16 flex-col w-full py-16">
       <section className="flex flex-col gap-6">
         <div>
           <p className="font-serif italic text-muted-foreground text-sm">Om oss</p>

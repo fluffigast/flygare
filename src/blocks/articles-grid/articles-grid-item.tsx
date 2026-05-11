@@ -13,9 +13,9 @@ const ArticlesGridItem: React.FC<ArticlesGridItemProps> = ({ article }) => {
     <article className="flex flex-col gap-2 group hover:-translate-y-1 transition-transform duration-200">
       <Link to={`/information/${article.slug}`}>
         <img
-          src={getPlaceholderImage(article.id)}
+          src={article.imageUrl ?? getPlaceholderImage(article.id)}
           alt={title}
-          className="w-full aspect-3/4 object-cover"
+          className="w-full aspect-3/4 object-cover bg-muted"
         />
       </Link>
       <div className="p-4 flex flex-col gap-2">

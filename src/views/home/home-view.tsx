@@ -25,7 +25,7 @@ const HomeView: React.FC = () => {
         title="Skandinaviens mest spektakulära flygplats"
         subtitle="Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn."
       />
-      <main className="@container max-w-2xl mx-auto px-4 flex gap-16 flex-col py-16">
+      <main className="@container max-w-5xl mx-auto px-6 flex gap-16 flex-col py-16">
         <FeaturedSection
           title="50 år av flygning från Skutan"
           content="Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.

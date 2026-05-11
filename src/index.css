@@ -116,7 +116,6 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --radius: var(--radius);
 
-  --max-width-2xl: 80rem;
 }
 
 @layer base {
