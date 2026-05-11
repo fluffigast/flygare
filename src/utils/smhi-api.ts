@@ -1,26 +1,26 @@
 /**
- * SMHI Point Forecast API utility
- * Documentation: https://opendata.smhi.se/metobs/introduction
+ * SMHI SNOW1gv1 Forecast API utility
+ * Docs: https://opendata.smhi.se/metfcst/snow1gv1
  *
  * Åreskutan coordinates: ~63.4°N, 13.1°E
  */
 
 export interface SMHIForecastData {
-  approvedTime: string;
+  createdTime: string;
   referenceTime: string;
   geometry: {
     type: string;
     coordinates: number[];
   };
   timeSeries: Array<{
-    validTime: string;
-    parameters: Array<{
-      name: string;
-      level: number;
-      levelType: string;
-      unit: string;
-      values: number[];
-    }>;
+    time: string;
+    data: {
+      air_temperature?: number;
+      wind_speed?: number;
+      wind_from_direction?: number;
+      mean_precipitation_intensity?: number;
+      [key: string]: number | undefined;
+    };
   }>;
 }
 
@@ -36,25 +36,20 @@ export interface WeatherForecastItem {
   precipitation: string;
 }
 
-/**
- * Convert wind direction in degrees to arrow and label
- */
 function getWindDirection(degrees: number): { degrees: number; label: string } {
   const directions = [
-    { deg: 0, degrees: 0, label: "Nordlig" },
-    { deg: 45, degrees: 45, label: "Nordostlig" },
-    { deg: 90, degrees: 90, label: "Östlig" },
-    { deg: 135, degrees: 135, label: "Sydostlig" },
-    { deg: 180, degrees: 180, label: "Sydlig" },
-    { deg: 225, degrees: 225, label: "Sydvästlig" },
-    { deg: 270, degrees: 270, label: "Västlig" },
-    { deg: 315, degrees: 315, label: "Nordvästlig" },
+    { deg: 0, label: "Nordlig" },
+    { deg: 45, label: "Nordostlig" },
+    { deg: 90, label: "Östlig" },
+    { deg: 135, label: "Sydostlig" },
+    { deg: 180, label: "Sydlig" },
+    { deg: 225, label: "Sydvästlig" },
+    { deg: 270, label: "Västlig" },
+    { deg: 315, label: "Nordvästlig" },
   ];
 
-  // Normalize degrees to 0-360
   const normalizedDeg = ((degrees % 360) + 360) % 360;
 
-  // Find closest direction
   let closest = directions[0];
   let minDiff = Math.abs(normalizedDeg - directions[0].deg);
 
@@ -70,12 +65,9 @@ function getWindDirection(degrees: number): { degrees: number; label: string } {
     }
   }
 
-  return closest;
+  return { degrees: Math.round(normalizedDeg), label: closest.label };
 }
 
-/**
- * Get day name in Swedish
- */
 function getDayName(date: Date): string {
   const days = [
     "Söndag",
@@ -89,18 +81,13 @@ function getDayName(date: Date): string {
   return days[date.getDay()];
 }
 
-/**
- * Fetch weather forecast from SMHI Point Forecast API
- * Note: The API requires coordinates rounded to 1 decimal place
- */
 export async function fetchSMHIForecast(
   latitude: number,
   longitude: number
 ): Promise<SMHIForecastData> {
-  // Round coordinates to 1 decimal place as the API doesn't accept high precision
   const roundedLat = Math.round(latitude * 10) / 10;
   const roundedLon = Math.round(longitude * 10) / 10;
-  
+
   const url = `/api/smhi?lat=${roundedLat}&lon=${roundedLon}`;
 
   const response = await fetch(url);
@@ -112,8 +99,8 @@ export async function fetchSMHIForecast(
 }
 
 /**
- * Transform SMHI forecast data to component format
- * Returns forecast for the next 3 days
+ * Transform SNOW1gv1 forecast data to component format.
+ * New API uses flat data objects with readable field names.
  */
 export function transformSMHIData(
   data: SMHIForecastData,
@@ -123,12 +110,11 @@ export function transformSMHIData(
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Group forecasts by day (using local date)
+  // Group forecasts by day
   const dailyData: Map<string, typeof data.timeSeries> = new Map();
 
   for (const timePoint of data.timeSeries) {
-    const forecastDate = new Date(timePoint.validTime);
-    // Use local date string to group by day
+    const forecastDate = new Date(timePoint.time);
     const dayKey = `${forecastDate.getFullYear()}-${String(
       forecastDate.getMonth() + 1
     ).padStart(2, "0")}-${String(forecastDate.getDate()).padStart(2, "0")}`;
@@ -139,7 +125,6 @@ export function transformSMHIData(
     dailyData.get(dayKey)!.push(timePoint);
   }
 
-  // Process each day, starting from tomorrow
   const sortedDays = Array.from(dailyData.keys()).sort();
   let dayCount = 0;
 
@@ -148,14 +133,10 @@ export function transformSMHIData(
 
     const dayForecasts = dailyData.get(dayKey)!;
     const [year, month, day] = dayKey.split("-").map(Number);
-    const dayDate = new Date(year, month - 1, day, 12, 0, 0); // Use noon for the day
+    const dayDate = new Date(year, month - 1, day, 12, 0, 0);
 
-    // Skip today, start from tomorrow
-    if (dayDate <= today) {
-      continue;
-    }
+    if (dayDate <= today) continue;
 
-    // Calculate averages for the day
     let totalTemp = 0;
     let totalWindSpeed = 0;
     let windDirSinSum = 0;
@@ -166,26 +147,23 @@ export function transformSMHIData(
     let precipCount = 0;
 
     for (const forecast of dayForecasts) {
-      const tempParam = forecast.parameters.find((p) => p.name === "t");
-      const windSpeedParam = forecast.parameters.find((p) => p.name === "ws");
-      const windDirParam = forecast.parameters.find((p) => p.name === "wd");
-      const precipParam = forecast.parameters.find((p) => p.name === "pmean");
+      const d = forecast.data;
 
-      if (tempParam && tempParam.values.length > 0) {
-        totalTemp += tempParam.values[0];
+      if (d.air_temperature != null) {
+        totalTemp += d.air_temperature;
         tempCount++;
       }
-      if (windSpeedParam && windSpeedParam.values.length > 0) {
-        totalWindSpeed += windSpeedParam.values[0];
+      if (d.wind_speed != null) {
+        totalWindSpeed += d.wind_speed;
         windCount++;
       }
-      if (windDirParam && windDirParam.values.length > 0) {
-        const rad = (windDirParam.values[0] * Math.PI) / 180;
+      if (d.wind_from_direction != null) {
+        const rad = (d.wind_from_direction * Math.PI) / 180;
         windDirSinSum += Math.sin(rad);
         windDirCosSum += Math.cos(rad);
       }
-      if (precipParam && precipParam.values.length > 0) {
-        totalPrecipitation += precipParam.values[0];
+      if (d.mean_precipitation_intensity != null) {
+        totalPrecipitation += d.mean_precipitation_intensity;
         precipCount++;
       }
     }
@@ -194,23 +172,22 @@ export function transformSMHIData(
       const avgTemp = Math.round(totalTemp / tempCount);
       const avgWindSpeed = windCount > 0 ? totalWindSpeed / windCount : 0;
       const avgWindDirRad = Math.atan2(windDirSinSum, windDirCosSum);
-      const avgWindDir = windCount > 0 ? ((avgWindDirRad * 180) / Math.PI + 360) % 360 : 0;
+      const avgWindDir =
+        windCount > 0
+          ? ((avgWindDirRad * 180) / Math.PI + 360) % 360
+          : 0;
       const totalPrecip =
         precipCount > 0 ? Math.round(totalPrecipitation * 10) / 10 : 0;
 
       const windDir = getWindDirection(avgWindDir);
       const minWind = Math.round(avgWindSpeed);
       const maxWind = Math.round(avgWindSpeed * 1.3);
-      const windStrength = `${minWind}-${maxWind} m/s`;
 
       forecastItems.push({
         day: getDayName(dayDate),
         date: dayDate,
-        windDirection: {
-          degrees: Math.round(avgWindDir),
-          label: windDir.label,
-        },
-        windStrength,
+        windDirection: windDir,
+        windStrength: `${minWind}-${maxWind} m/s`,
         temperature: `${avgTemp}°C`,
         precipitation: `${totalPrecip} mm`,
       });

@@ -10,7 +10,7 @@ module.exports = async function (context, req) {
   const roundedLat = Math.round(parseFloat(lat) * 10) / 10;
   const roundedLon = Math.round(parseFloat(lon) * 10) / 10;
 
-  const url = `https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${roundedLon}/lat/${roundedLat}/data.json`;
+  const url = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/${roundedLon}/lat/${roundedLat}/data.json`;
 
   try {
     const response = await fetch(url);

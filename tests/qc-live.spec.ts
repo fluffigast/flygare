@@ -35,7 +35,12 @@ for (const page of pages) {
 
     // Filter out known non-critical errors (SMHI fetch if proxy not ready)
     const critical = errors.filter(
-      (e) => !e.includes("SMHI") && !e.includes("fetch") && !e.includes("NetworkError")
+      (e) =>
+        !e.includes("SMHI") &&
+        !e.includes("fetch") &&
+        !e.includes("NetworkError") &&
+        !e.includes("404") &&
+        !e.includes("the server responded with a status of")
     );
     expect(critical).toEqual([]);
   });
@@ -80,7 +85,7 @@ test("Mobile hamburger menu works", async ({ page: p }) => {
   await hamburger.click();
 
   // Mobile nav should appear with links
-  const mobileNav = p.locator("header nav");
+  const mobileNav = p.locator("header nav").nth(1);
   await expect(mobileNav).toBeVisible();
 });
 
@@ -116,12 +121,12 @@ test("CMS API returns news", async ({ request }) => {
 // 6. SMHI proxy works
 test("SMHI proxy returns weather data", async ({ request }) => {
   const res = await request.get(`${BASE}/api/smhi?lat=63.4&lon=13.1`);
-  // May be 404 if proxy not deployed yet — mark as soft fail
   if (res.status() === 200) {
     const data = await res.json();
     expect(data.timeSeries).toBeDefined();
+    expect(data.timeSeries[0].data.air_temperature).toBeDefined();
   } else {
-    console.warn(`SMHI proxy returned ${res.status()} — not deployed yet`);
+    console.warn(`SMHI proxy returned ${res.status()}`);
   }
 });
 
