@@ -1,8 +1,4 @@
 {
   "name": "flygare-api",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "@azure/functions": "^4.0.0"
-  }
+  "version": "1.0.0"
 }
