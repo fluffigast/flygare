@@ -19,23 +19,14 @@ const Header: React.FC<HeaderProps> = ({}) => {
 
           {/* Desktop nav */}
           <nav className="hidden @md:flex flex-1 items-center gap-6 justify-center">
-            <Link to="/" className={navLinkClass}>
-              Hem
-            </Link>
-            <Link to="/information" className={navLinkClass}>
-              Flygguiden
-            </Link>
-            <Link to="/vader" className={navLinkClass}>
-              Väder
-            </Link>
-            <Link to="/startplatser" className={navLinkClass}>
-              Startplatser
-            </Link>
             <Link to="/nyheter" className={navLinkClass}>
               Nyheter
             </Link>
-            <Link to="/om" className={navLinkClass}>
-              Om klubben
+            <Link to="/information" className={navLinkClass}>
+              Information
+            </Link>
+            <Link to="/startplatser" className={navLinkClass}>
+              Startplatser
             </Link>
           </nav>
 
@@ -77,12 +68,27 @@ const Header: React.FC<HeaderProps> = ({}) => {
         {/* Mobile nav */}
         {menuOpen && (
           <nav className="@md:hidden flex flex-col gap-4 pt-4">
-            <Link to="/" className={navLinkClass} onClick={() => setMenuOpen(false)}>Hem</Link>
-            <Link to="/information" className={navLinkClass} onClick={() => setMenuOpen(false)}>Flygguiden</Link>
-            <Link to="/vader" className={navLinkClass} onClick={() => setMenuOpen(false)}>Väder</Link>
-            <Link to="/startplatser" className={navLinkClass} onClick={() => setMenuOpen(false)}>Startplatser</Link>
-            <Link to="/nyheter" className={navLinkClass} onClick={() => setMenuOpen(false)}>Nyheter</Link>
-            <Link to="/om" className={navLinkClass} onClick={() => setMenuOpen(false)}>Om klubben</Link>
+            <Link
+              to="/nyheter"
+              className={navLinkClass}
+              onClick={() => setMenuOpen(false)}
+            >
+              Nyheter
+            </Link>
+            <Link
+              to="/information"
+              className={navLinkClass}
+              onClick={() => setMenuOpen(false)}
+            >
+              Information
+            </Link>
+            <Link
+              to="/startplatser"
+              className={navLinkClass}
+              onClick={() => setMenuOpen(false)}
+            >
+              Startplatser
+            </Link>
             <Button href="/bli-medlem">Bli medlem</Button>
           </nav>
         )}
