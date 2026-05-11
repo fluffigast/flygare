@@ -1,30 +1,23 @@
 import React from "react";
 import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import NewsGrid from "../../blocks/news-grid/news-grid";
-import { news as localNews } from "../../data/news";
-import { useNews } from "../../hooks/useCMS";
+import { news } from "../../data/news";
 import { getPlaceholderImage } from "../../utils/placeholder";
 
-const NewsView: React.FC = () => {
-  const { data: cmsNews } = useNews(localNews);
+export interface NewsViewProps {}
 
-  const news = cmsNews.map((item: any) => ({
-    id: item.id?.toString() ?? item.slug ?? "unknown",
-    title: item.title,
-    slug: item.slug ?? item.id?.toString(),
-    category: item.category ?? "Information",
-    excerpt: item.excerpt ?? "",
-    content: item.content ?? "",
-    publishedAt: item.publishedAt ?? item.date ?? item.createdAt,
-    imageUrl: getPlaceholderImage(item.id?.toString() ?? item.slug),
-  }));
-
+const NewsView: React.FC<NewsViewProps> = ({}) => {
   return (
     <>
       <HeroBanner />
       <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
         <section>
-          <NewsGrid news={news} />
+          <NewsGrid
+            news={news.map((newsItem) => ({
+              ...newsItem,
+              imageUrl: getPlaceholderImage(newsItem.id),
+            }))}
+          />
         </section>
       </div>
     </>

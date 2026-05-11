@@ -70,18 +70,11 @@ const Footer: React.FC<FooterProps> = ({}) => {
                 </Link>
               </li>
               <li>
-                <Link to="/tavlingar" className={linkClass}>
-                  Tävlingar
-                </Link>
-              </li>
-              <li>
-                <Link to="/bli-medlem" className={linkClass}>
-                  Bli medlem
-                </Link>
-              </li>
-              <li>
-                <Link to="/vader" className={linkClass}>
-                  Väder
+                <Link
+                  to="/information/klubbbussen"
+                  className={linkClass}
+                >
+                  Klubbbussen
                 </Link>
               </li>
             </ul>
@@ -89,18 +82,10 @@ const Footer: React.FC<FooterProps> = ({}) => {
 
           <div className="flex flex-2 flex-col gap-2">
             <h4>Om Oss</h4>
-            <ul className="flex flex-col gap-2">
-              <li>
-                <Link to="/om" className={linkClass}>
-                  Om klubben
-                </Link>
-              </li>
-              <li>
-                <Link to="/kontakt" className={linkClass}>
-                  Kontakt
-                </Link>
-              </li>
-            </ul>
+            <p>
+              Åre Skärm- och Drakflygklubb är en ideell förening för skärm- och
+              drakflyg i Åreområdet.
+            </p>
           </div>
         </div>
       </footer>
