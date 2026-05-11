@@ -30,7 +30,7 @@ const WeatherForecastItem: React.FC<WeatherForecastItemProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full p-4">
+    <div className="flex flex-col gap-2 md:gap-4 w-full p-2 md:p-4">
       {/* Day and Date */}
       <div className="flex flex-col gap-1">
         <h3 className="text-2xl font-semibold text-foreground">{day}</h3>

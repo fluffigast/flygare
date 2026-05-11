@@ -180,7 +180,7 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="flex flex-col gap-8 w-full">
       <Separator />
-      <div className="flex items-center justify-center gap-8">
+      <div className="flex items-center justify-center gap-3 md:gap-8">
         {renderPrevious()}
         <div className="flex items-center gap-4">
           {pageNumbers.map((page) => (

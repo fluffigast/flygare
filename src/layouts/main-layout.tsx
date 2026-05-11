@@ -9,7 +9,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({}) => {
   return (
     <div className="w-full flex flex-col">
       <Header />
-      <div className="@container px-4 flex gap-16 flex-col items-center">
+      <div className="@container px-4 flex gap-8 md:gap-16 flex-col items-center">
         <Outlet />
       </div>
       <Footer />

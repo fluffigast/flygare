@@ -91,7 +91,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
             )}
             <div
               ref={scrollContainerRef}
-              className="flex items-center gap-8 overflow-x-auto overflow-y-hidden scrollbar-hide flex-1"
+              className="flex items-center gap-3 md:gap-8 overflow-x-auto overflow-y-hidden scrollbar-hide flex-1"
             >
               <Link className="text-nowrap" to="/nyheter">
                 Alla kategorier

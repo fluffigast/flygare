@@ -30,7 +30,7 @@ const HomeView: React.FC<HomeViewProps> = ({}) => {
         title="Skandinaviens mest spektakulära flygplats"
         subtitle="Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn."
       />
-      <main className="@container max-w-2xl mx-auto px-4 flex gap-16 flex-col py-16">
+      <main className="@container max-w-2xl mx-auto px-4 flex gap-8 md:gap-16 flex-col py-8 md:py-16">
         <FeaturedSection
           title="50 år av flygning från Skutan"
           content="Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.
@@ -41,8 +41,8 @@ Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktiv
         />
 
         {/* Stats */}
-        <section className="bg-primary text-primary-foreground rounded-lg p-8 md:p-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <section className="bg-primary text-primary-foreground rounded-lg p-4 md:p-8 lg:p-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
             {stats.map((s) => (
               <div key={s.label}>
                 <p className="font-serif text-3xl md:text-4xl">{s.value}</p>

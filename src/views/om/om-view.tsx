@@ -24,7 +24,7 @@ const OmView: React.FC = () => {
 
       <section className="flex flex-col gap-6">
         <h3 className="font-serif text-xl">Styrelse</h3>
-        <div className="grid grid-cols-2 gap-6 @sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3">
           {boardMembers.map((member: any) => (
             <div key={member.name} className="flex flex-col gap-1">
               <p className="text-sm font-semibold">{member.name}</p>

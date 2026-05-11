@@ -110,7 +110,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
       {/* Header */}
       <div className="flex flex-col gap-1">
         <p className="italic font-serif text-muted-foreground">Väder</p>
-        <h2 className="text-3xl font-semibold text-foreground">
+        <h2 className="text-xl md:text-3xl font-semibold text-foreground">
           Väderprognos för {location}
         </h2>
       </div>
@@ -129,7 +129,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
 
       {/* Forecast Items */}
       {!loading && (
-        <div className="flex gap-8 justify-between">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 justify-between">
           {displayItems.map((item, index) => (
             <WeatherForecastItem key={index} {...item} />
           ))}
