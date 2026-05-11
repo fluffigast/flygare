@@ -1,14 +1,18 @@
 import React from "react";
 import { Link } from "react-router";
+import Header from "../../components/header";
 import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import ArticlesGrid from "../../blocks/articles-grid/articles-grid";
 import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
 import NewsSlider from "../../blocks/news-slider/news-slider";
+import Footer from "../../components/footer";
 import Separator from "../../components/separator";
 import { articles } from "../../data/articles";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import FeaturedSection from "../../blocks/featured-section/featured-section";
 import Button from "../../components/button";
+
+export interface HomeViewProps {}
 
 const stats = [
   { value: "1975", label: "Grundat" },
@@ -17,15 +21,16 @@ const stats = [
   { value: "9", label: "Startplatser" },
 ];
 
-const HomeView: React.FC = () => {
+const HomeView: React.FC<HomeViewProps> = ({}) => {
   return (
     <>
+      <Header />
       <HeroBanner
         imageUrl={getPlaceholderImage("home-hero")}
         title="Skandinaviens mest spektakulära flygplats"
         subtitle="Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn."
       />
-      <main className="@container max-w-5xl mx-auto px-6 flex gap-16 flex-col py-16">
+      <main className="@container max-w-2xl mx-auto px-4 flex gap-16 flex-col py-16">
         <FeaturedSection
           title="50 år av flygning från Skutan"
           content="Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.
@@ -40,8 +45,8 @@ Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktiv
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((s) => (
               <div key={s.label}>
-                <p className="font-serif text-4xl md:text-5xl font-bold">{s.value}</p>
-                <p className="text-sm uppercase tracking-wider text-primary-foreground/60 mt-1">
+                <p className="font-serif text-3xl md:text-4xl">{s.value}</p>
+                <p className="text-xs uppercase tracking-widest text-primary-foreground/50 mt-1">
                   {s.label}
                 </p>
               </div>
@@ -77,6 +82,7 @@ Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktiv
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 };
