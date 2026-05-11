@@ -65,7 +65,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.4089, lon: 13.0782 },
-        sweref99: { lat: 692480, lon: 7038210 },
+        sweref99: { lat: 7038210, lon: 692480 },
       },
       altitude: {
         takeoffMetersAboveSea: 1200,
@@ -74,7 +74,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       wind: {
         directionRange: { min: 180, max: 225 },
         notes:
-          "Känslig för rotor vid nordlig vind. Termiken kan vara stark vid sol. Snabba väderomslag förekommer. Molnbasen kan sjunka snabbt. Aktta katabatiska vindar sen eftermiddag.",
+          "Känslig för rotor vid nordlig vind. Termiken kan vara stark vid sol. Snabba väderomslag förekommer. Molnbasen kan sjunka snabbt. Akta katabatiska vindar sen eftermiddag.",
       },
       experienceLevel: {
         level: "medel",
@@ -99,7 +99,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       locationInstruction: 'Ange "Åreskutan, 1000-meter syd startplats."',
       position: {
         wgs84: { lat: 63.4089, lon: 13.0782 },
-        sweref99: { lat: 692480, lon: 7038210 },
+        sweref99: { lat: 7038210, lon: 692480 },
       },
     },
   },
@@ -115,7 +115,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.4142, lon: 13.071 },
-        sweref99: { lat: 691920, lon: 7038780 },
+        sweref99: { lat: 7038780, lon: 691920 },
       },
       altitude: {
         takeoffMetersAboveSea: 1180,
@@ -148,7 +148,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       locationInstruction: 'Ange "Åreskutan, Västerskutan nord startplats."',
       position: {
         wgs84: { lat: 63.4142, lon: 13.071 },
-        sweref99: { lat: 691920, lon: 7038780 },
+        sweref99: { lat: 7038780, lon: 691920 },
       },
     },
   },
@@ -164,7 +164,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.3955, lon: 13.102 },
-        sweref99: { lat: 694050, lon: 7036950 },
+        sweref99: { lat: 7036950, lon: 694050 },
       },
       altitude: {
         takeoffMetersAboveSea: 920,
@@ -198,7 +198,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
         'Ange "Mörvikshummeln, startplats för skärmflyg, Åre."',
       position: {
         wgs84: { lat: 63.3955, lon: 13.102 },
-        sweref99: { lat: 694050, lon: 7036950 },
+        sweref99: { lat: 7036950, lon: 694050 },
       },
     },
   },
@@ -214,7 +214,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.411, lon: 13.0755 },
-        sweref99: { lat: 692200, lon: 7038450 },
+        sweref99: { lat: 7038450, lon: 692200 },
       },
       altitude: {
         takeoffMetersAboveSea: 1270,
@@ -237,14 +237,14 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     risks: [
       "Hög puljeffekt vid mycket folk.",
       "Kort glidbana till första säkra höjd över pist.",
-      "Kollision risk med skärm/hang i samma sektor.",
+      "Kollisionsrisk med skärm/hang i samma sektor.",
     ],
     emergency: {
       ...baseEmergency,
       locationInstruction: 'Ange "Åre kabinbana toppstation, skärmflygstart."',
       position: {
         wgs84: { lat: 63.411, lon: 13.0755 },
-        sweref99: { lat: 692200, lon: 7038450 },
+        sweref99: { lat: 7038450, lon: 692200 },
       },
     },
   },
@@ -260,7 +260,7 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     overview: {
       position: {
         wgs84: { lat: 63.387, lon: 13.054 },
-        sweref99: { lat: 690600, lon: 7035800 },
+        sweref99: { lat: 7035800, lon: 690600 },
       },
       altitude: {
         takeoffMetersAboveSea: 780,
@@ -292,7 +292,187 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       locationInstruction: 'Ange "Tegefjäll, startplats skärmflyg, Jämtland."',
       position: {
         wgs84: { lat: 63.387, lon: 13.054 },
-        sweref99: { lat: 690600, lon: 7035800 },
+        sweref99: { lat: 7035800, lon: 690600 },
+      },
+    },
+  },
+  {
+    id: "ts-006",
+    slug: "tvaravalvet",
+    kind: "startplats",
+    title: "Tväråvalvet",
+    excerpt: "Nordvästlig start med god höjd — populär vid NV-vind.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.43, lon: 13.0825 },
+        sweref99: { lat: 7040550, lon: 692700 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 1050,
+        heightAboveLandingApproxMeters: 925,
+      },
+      wind: {
+        directionRange: { min: 270, max: 330 },
+        notes:
+          "NV (skärm), V–NV (hängflyg). Bra höjd och bred startyta.",
+      },
+      experienceLevel: {
+        level: "medel",
+        notes: "Medel till avancerad",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Startplats på Tväråvalvet med utsikt mot nordväst. Bred startyta som fungerar bra vid nordvästlig vind.",
+      "Nås via markerad led. God höjdskillnad till dalen.",
+    ],
+    risks: [
+      "Rotor vid sydlig vind.",
+      "Brant terräng nedanför starten.",
+    ],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction: 'Ange "Tväråvalvet, Åreskutan."',
+      position: {
+        wgs84: { lat: 63.43, lon: 13.0825 },
+        sweref99: { lat: 7040550, lon: 692700 },
+      },
+    },
+  },
+  {
+    id: "ts-007",
+    slug: "roda-rappet-vast",
+    kind: "startplats",
+    title: "Röda Rappet Väst",
+    excerpt:
+      "Västlig till nordvästlig start — bra komplement vid V-NV vind.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.4261, lon: 13.0703 },
+        sweref99: { lat: 7040100, lon: 691900 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 950,
+        heightAboveLandingApproxMeters: 570,
+      },
+      wind: {
+        directionRange: { min: 250, max: 315 },
+        notes: "V–NV. Skyddad från sydlig vind.",
+      },
+      experienceLevel: {
+        level: "medel",
+        notes: "Medel med god fjällerfarenhet",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Startplats vid Röda Rappet med västlig exponering. Skyddad position.",
+      "Bärväg krävs — planera tid och utrustning.",
+    ],
+    risks: ["Klippig terräng.", "Begränsade nödlandningsytor."],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction: 'Ange "Röda Rappet Väst, Åreskutan."',
+      position: {
+        wgs84: { lat: 63.4261, lon: 13.0703 },
+        sweref99: { lat: 7040100, lon: 691900 },
+      },
+    },
+  },
+  {
+    id: "ts-008",
+    slug: "langspannet",
+    kind: "startplats",
+    title: "Långspannet",
+    excerpt:
+      "Syd-sydvästlig start mellan stötta 3 och 4 — ej rekommenderad för nybörjare.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.405, lon: 13.08 },
+        sweref99: { lat: 7037800, lon: 692500 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 900,
+        heightAboveLandingApproxMeters: 520,
+      },
+      wind: {
+        directionRange: { min: 180, max: 225 },
+        notes: "S–SV. Placerad mellan stötta 3 och 4.",
+      },
+      experienceLevel: {
+        level: "avancerad",
+        notes: "Avancerad pilot krävs",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Start mellan kabinbanans stöttor. Kräver precision och erfarenhet.",
+      "Ej rekommenderad — används bara i specifika förhållanden.",
+    ],
+    risks: [
+      "Kablar i närheten.",
+      "Begränsat utrymme.",
+      "Ej rekommenderad.",
+    ],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction:
+        'Ange "Långspannet, mellan stötta 3 och 4, Åreskutan."',
+      position: {
+        wgs84: { lat: 63.405, lon: 13.08 },
+        sweref99: { lat: 7037800, lon: 692500 },
+      },
+    },
+  },
+  {
+    id: "ts-009",
+    slug: "draklanda",
+    kind: "startplats",
+    title: "Draklanda",
+    excerpt:
+      "Officiell landningsplats — 1 km väster om torget i Åre.",
+    category: "Startplats",
+    updatedAt: "2026-01-10",
+    overview: {
+      position: {
+        wgs84: { lat: 63.398, lon: 13.065 },
+        sweref99: { lat: 7037200, lon: 691500 },
+      },
+      altitude: {
+        takeoffMetersAboveSea: 380,
+        heightAboveLandingApproxMeters: 0,
+      },
+      wind: {
+        directionRange: { min: 0, max: 360 },
+        notes: "Alla vindriktningar. Officiell landningsplats.",
+      },
+      experienceLevel: {
+        level: "nybörjare",
+        notes: "Alla nivåer",
+      },
+      lastUpdated: new Date("2026-01-10"),
+    },
+    description: [
+      "Draklanda är den officiella landningsplatsen, belägen ca 1 km väster om Åre torg.",
+      "Alla andra landningar betraktas som utelandningar vid XC-flyg.",
+      "Räddningsbåt finns tillgänglig under flygsäsongen.",
+    ],
+    risks: [
+      "Vindbyar vid terrängens kant.",
+      "Respektera avspärrningar och annan verksamhet på fältet.",
+    ],
+    emergency: {
+      ...baseEmergency,
+      locationInstruction: 'Ange "Draklanda, landningsplats, Åre."',
+      position: {
+        wgs84: { lat: 63.398, lon: 13.065 },
+        sweref99: { lat: 7037200, lon: 691500 },
       },
     },
   },
@@ -327,6 +507,22 @@ export const sitesIntro = {
       title: "Andra flygområden",
       description:
         "Tegefjäll och Mörvikshummeln erbjuder alternativ vid annan vindexponering. Kontakta klubben för aktuell status på dessa platser.",
+    },
+    {
+      title: "Välliste, Trillevallen",
+      description: "V–NV riktning, ~400 m höjdskillnad.",
+    },
+    {
+      title: "Getryggen, Snasahögarna",
+      description: "S–SV riktning, ~600 m höjdskillnad.",
+    },
+    {
+      title: "Tossön, Järpen",
+      description: "V riktning, ~350 m höjdskillnad.",
+    },
+    {
+      title: "Rännberg, Gevsjön",
+      description: "SO riktning, ~250 m höjdskillnad.",
     },
   ] as SiteArea[],
 };
