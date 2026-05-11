@@ -6,7 +6,9 @@ import { news } from "../../data/news";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import NewsSliderItem from "./news-slider-item";
 
-const NewsSlider: React.FC = () => {
+export interface NewsSliderProps {}
+
+const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
   const newsItems = news.slice(0, 12);
   const itemsPerPage = 3;
   const totalPages = Math.ceil(newsItems.length / itemsPerPage);
@@ -36,7 +38,7 @@ const NewsSlider: React.FC = () => {
   };
 
   return (
-    <section className="w-full flex flex-col gap-4">
+    <section className="w-full @container max-w-2xl mx-auto px-4 py-8 flex flex-col gap-4">
       <div className="flex items-end justify-between w-full">
         <div className="flex-1">
           <h2 className="text-2xl font-semibold font-serif">Nyheter</h2>
@@ -45,7 +47,7 @@ const NewsSlider: React.FC = () => {
           <button
             onClick={handlePrevious}
             disabled={currentPage === 0}
-            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted rounded transition-colors"
+            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted-foreground rounded transition-colors"
             aria-label="Previous"
           >
             <ChevronLeftIcon />
@@ -53,7 +55,7 @@ const NewsSlider: React.FC = () => {
           <button
             onClick={handleNext}
             disabled={currentPage === totalPages - 1}
-            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted rounded transition-colors"
+            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted-foreground rounded transition-colors"
             aria-label="Next"
           >
             <ChevronRightIcon />
@@ -91,8 +93,8 @@ const NewsSlider: React.FC = () => {
             value={String(index)}
             className={`size-2 rounded-full transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
               index === currentPage
-                ? "bg-foreground"
-                : "bg-border hover:bg-muted-foreground"
+                ? "bg-black"
+                : "bg-gray-300 hover:bg-gray-400"
             }`}
             aria-label={`Gå till sida ${index + 1}`}
           />

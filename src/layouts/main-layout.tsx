@@ -3,11 +3,15 @@ import { Outlet } from "react-router";
 import Footer from "../components/footer";
 import Header from "../components/header";
 
-const MainLayout: React.FC = () => {
+export interface MainLayoutProps {}
+
+const MainLayout: React.FC<MainLayoutProps> = ({}) => {
   return (
     <div className="w-full flex flex-col">
       <Header />
-      <Outlet />
+      <div className="@container px-4 flex gap-16 flex-col items-center">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

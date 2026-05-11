@@ -25,8 +25,8 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route index element={<HomeView />} />
         <Route element={<MainLayout />}>
-          <Route index element={<HomeView />} />
           <Route path="nyheter">
             <Route index element={<NewsView />} />
             <Route path=":slug" element={<NewsSingleView />} />

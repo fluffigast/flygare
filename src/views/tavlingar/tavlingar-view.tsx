@@ -4,7 +4,7 @@ import { competitions } from "../../data/competitions";
 
 const TavlingarView: React.FC = () => {
   return (
-    <div className="max-w-5xl mx-auto px-6 flex gap-16 flex-col w-full py-16">
+    <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
       {/* Header */}
       <section className="flex flex-col gap-6">
         <div>
