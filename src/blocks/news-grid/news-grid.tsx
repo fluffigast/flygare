@@ -77,7 +77,7 @@ const NewsGrid: React.FC<NewsGridProps> = ({ news }) => {
       <section className="flex flex-col gap-16">
         <div className="flex flex-col gap-8 w-full">
           <Separator />
-          <div className="flex items-center gap-4 w-full relative">
+          <div className="flex items-center gap-4 w-full relative overflow-hidden">
             {canScrollLeft && (
               <div className="h-full w-16 absolute left-0 flex items-center justify-start bg-linear-to-r from-30% from-background to-background/0">
                 <button

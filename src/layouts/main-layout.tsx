@@ -7,7 +7,7 @@ export interface MainLayoutProps {}
 
 const MainLayout: React.FC<MainLayoutProps> = ({}) => {
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col overflow-x-hidden">
       <Header />
       <div className="@container px-4 flex gap-8 md:gap-16 flex-col items-center">
         <Outlet />

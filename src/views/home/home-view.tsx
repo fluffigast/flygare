@@ -23,7 +23,7 @@ const stats = [
 
 const HomeView: React.FC<HomeViewProps> = ({}) => {
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
       <Header />
       <HeroBanner
         imageUrl={getPlaceholderImage("home-hero")}
@@ -83,7 +83,7 @@ Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktiv
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
