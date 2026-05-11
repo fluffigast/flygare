@@ -26,6 +26,8 @@ COPY --from=builder /app /app
 
 ENV PAYLOAD_SECRET=build-time-seed-secret
 ENV NODE_ENV=production
+ARG PAYLOAD_ADMIN_PASSWORD=changeme123
+ENV PAYLOAD_ADMIN_PASSWORD=$PAYLOAD_ADMIN_PASSWORD
 
 # Start from the schema-only seed.db (has tables, no data)
 RUN cp data/seed.db data/seeded.db
