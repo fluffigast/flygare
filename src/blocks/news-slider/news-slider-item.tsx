@@ -26,7 +26,7 @@ const NewsSliderItem: React.FC<NewsSliderItemProps> = ({
 
   const content = (
     <article className="flex gap-4 flex-1 min-w-0">
-      <div className="hidden sm:block w-32 h-28 overflow-hidden">
+      <div className="w-32 h-28 shrink-0 overflow-hidden rounded bg-muted">
         <img
           src={imageUrl}
           alt={title}
