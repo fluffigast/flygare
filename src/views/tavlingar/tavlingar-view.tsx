@@ -54,7 +54,7 @@ const TavlingarView: React.FC = () => {
                     <p className="text-sm">{winner.year}</p>
                     <p className="text-sm">{winner.name}</p>
                     <p className="text-muted-foreground text-sm">
-                      {winner.result}
+                      {"result" in winner ? winner.result : ""}
                     </p>
                   </div>
                 ))}
