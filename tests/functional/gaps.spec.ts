@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-const CMS_API = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io/api";
+const CMS_API = process.env.CMS_URL ? process.env.CMS_URL + "/api" : "http://localhost:3001/api";
 
 // ═══════════════════════════════════════════════════════════
 // SEO & meta — headings hierarchy, meta tags
@@ -12,7 +11,7 @@ test("[seo] Every page has exactly one h1 or zero (home hero is h1)", async ({ p
   const issues: string[] = [];
 
   for (const route of routes) {
-    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(route, { waitUntil: "networkidle", timeout: 15000 });
     const h1Count = await page.locator("h1").count();
     if (h1Count > 1) {
       issues.push(`${route}: ${h1Count} h1 tags (should be 0 or 1)`);
@@ -23,13 +22,13 @@ test("[seo] Every page has exactly one h1 or zero (home hero is h1)", async ({ p
 });
 
 test("[seo] Page has a title tag", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
   const title = await page.title();
   expect(title.length, "Page should have a title").toBeGreaterThan(0);
 });
 
 test("[seo] Headings don't skip levels (h1 → h3 without h2)", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const skips = await page.evaluate(() => {
     const headings = Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6"));
@@ -56,7 +55,7 @@ test("[seo] Headings don't skip levels (h1 → h3 without h2)", async ({ page })
 // ═══════════════════════════════════════════════════════════
 
 test("[i18n] Swedish characters render correctly", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const bodyText = await page.textContent("body");
 
@@ -67,7 +66,7 @@ test("[i18n] Swedish characters render correctly", async ({ page }) => {
 });
 
 test("[i18n] Footer renders Swedish characters", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
   const footerText = await page.locator("footer").textContent();
   expect(footerText).toContain("Säkerhet");
   expect(footerText).toContain("Nödinformation");
@@ -79,7 +78,7 @@ test("[i18n] Footer renders Swedish characters", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[a11y] All visible images have alt text", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const missingAlt = await page.evaluate(() => {
     const issues: string[] = [];
@@ -104,7 +103,7 @@ test("[a11y] All visible images have alt text", async ({ page }) => {
 
 test("[a11y] Can tab through nav links", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   // Tab to first focusable element
   await page.keyboard.press("Tab");
@@ -120,7 +119,7 @@ test("[a11y] Can tab through nav links", async ({ page }) => {
 });
 
 test("[a11y] Skip to content or focus visible on tab", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   await page.keyboard.press("Tab");
 
@@ -143,7 +142,7 @@ test("[a11y] Skip to content or focus visible on tab", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[links] External links have target=_blank and rel=noopener", async ({ page }) => {
-  await page.goto(`${BASE}/kontakt`, { waitUntil: "networkidle" });
+  await page.goto("/kontakt", { waitUntil: "networkidle" });
 
   const unsafeLinks = await page.evaluate(() => {
     const issues: string[] = [];
@@ -170,7 +169,7 @@ test("[links] External links have target=_blank and rel=noopener", async ({ page
 // ═══════════════════════════════════════════════════════════
 
 test("[url] No double slashes in internal links", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const doubleSlashLinks = await page.evaluate(() => {
     return Array.from(document.querySelectorAll("a[href]"))
@@ -192,7 +191,7 @@ test("[cms] Frontend shows CMS news, not just local data", async ({ page }) => {
   const cmsTitle = cmsData.docs[0]?.title;
 
   if (cmsTitle) {
-    await page.goto(`${BASE}/nyheter`, { waitUntil: "networkidle" });
+    await page.goto("/nyheter", { waitUntil: "networkidle" });
     await page.waitForTimeout(2000);
     const bodyText = await page.textContent("body");
     expect(bodyText, "Frontend should show CMS news title").toContain(cmsTitle);
@@ -203,7 +202,7 @@ test("[cms] Frontend shows CMS site-settings, not hardcoded", async ({ page }) =
   const cmsRes = await page.request.get(`${CMS_API}/globals/site-settings`);
   const settings = await cmsRes.json();
 
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
   await page.waitForTimeout(2000);
   const bodyText = await page.textContent("body");
 
@@ -217,7 +216,7 @@ test("[cms] Frontend shows CMS contact info", async ({ page }) => {
   const cmsRes = await page.request.get(`${CMS_API}/globals/contact-info`);
   const contact = await cmsRes.json();
 
-  await page.goto(`${BASE}/kontakt`, { waitUntil: "networkidle" });
+  await page.goto("/kontakt", { waitUntil: "networkidle" });
   await page.waitForTimeout(2000);
   const bodyText = await page.textContent("body");
 
@@ -231,7 +230,7 @@ test("[cms] Frontend shows CMS contact info", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[interactive] News slider arrows work on home page", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   // Find the next arrow button near "Nyheter"
   const nextBtn = page.locator('button[aria-label="Next"]').first();
@@ -245,7 +244,7 @@ test("[interactive] News slider arrows work on home page", async ({ page }) => {
 });
 
 test("[interactive] News page pagination dots work", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   // Find pagination dots (radio buttons)
   const dots = page.locator('[role="radiogroup"] button, [role="radiogroup"] [role="radio"]');
@@ -259,7 +258,7 @@ test("[interactive] News page pagination dots work", async ({ page }) => {
 });
 
 test("[interactive] Weather wind arrows have rotation", async ({ page }) => {
-  await page.goto(`${BASE}/flyga-i-are/vader`, { waitUntil: "networkidle" });
+  await page.goto("/flyga-i-are/vader", { waitUntil: "networkidle" });
 
   const windArrows = page.locator("[style*='rotate']");
   const count = await windArrows.count();
@@ -272,7 +271,7 @@ test("[interactive] Weather wind arrows have rotation", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[content] Launch site detail page loads with content", async ({ page }) => {
-  await page.goto(`${BASE}/flyga-i-are/startplatser`, { waitUntil: "networkidle" });
+  await page.goto("/flyga-i-are/startplatser", { waitUntil: "networkidle" });
 
   // Find a link to a single site
   const siteLink = page.locator("a[href*='/flyga-i-are/startplatser/']").first();
@@ -301,7 +300,7 @@ test("[consistency] Header club name is same across pages", async ({ page }) => 
   const names: string[] = [];
 
   for (const route of routes) {
-    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(route, { waitUntil: "networkidle", timeout: 15000 });
     const headerText = await page.locator("header a").first().textContent();
     names.push(headerText?.trim() ?? "");
   }
@@ -316,7 +315,7 @@ test("[consistency] Footer structure identical across pages", async ({ page }) =
   const footerTexts: string[] = [];
 
   for (const route of routes) {
-    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(route, { waitUntil: "networkidle", timeout: 15000 });
     const footerText = await page.locator("footer").textContent();
     footerTexts.push(footerText?.trim() ?? "");
   }
@@ -333,7 +332,7 @@ test("[resilience] Pages load even if CMS is slow (uses fallback)", async ({ pag
   // Block CMS requests to simulate CMS being down
   await page.route("**/flygare-cms**", (route) => route.abort());
 
-  await page.goto(BASE, { waitUntil: "networkidle", timeout: 15000 });
+  await page.goto("/", { waitUntil: "networkidle", timeout: 15000 });
 
   // Page should still render with local fallback data
   const body = await page.textContent("body");
@@ -348,7 +347,7 @@ test("[resilience] Pages load even if CMS is slow (uses fallback)", async ({ pag
 test("[resilience] Kontakt page loads with CMS blocked", async ({ page }) => {
   await page.route("**/flygare-cms**", (route) => route.abort());
 
-  await page.goto(`${BASE}/kontakt`, { waitUntil: "networkidle", timeout: 15000 });
+  await page.goto("/kontakt", { waitUntil: "networkidle", timeout: 15000 });
 
   // Should show fallback contact data
   const body = await page.textContent("body");
@@ -361,7 +360,7 @@ test("[resilience] Kontakt page loads with CMS blocked", async ({ page }) => {
 test("[resilience] Nyheter loads with CMS blocked", async ({ page }) => {
   await page.route("**/flygare-cms**", (route) => route.abort());
 
-  await page.goto(`${BASE}/nyheter`, { waitUntil: "networkidle", timeout: 15000 });
+  await page.goto("/nyheter", { waitUntil: "networkidle", timeout: 15000 });
 
   // Should show local fallback news
   const body = await page.textContent("body");

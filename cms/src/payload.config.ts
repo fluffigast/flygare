@@ -1,5 +1,5 @@
 import { buildConfig } from 'payload'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -93,12 +93,11 @@ export default buildConfig({
     SiteNavigation,
     ClubInfo,
   ],
-  db: sqliteAdapter({
-    push: true,
-    busyTimeout: 5000,
-    client: {
-      url: process.env.DATABASE_URL!,
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URL!,
     },
+    push: true,
   }),
   upload: {
     limits: {

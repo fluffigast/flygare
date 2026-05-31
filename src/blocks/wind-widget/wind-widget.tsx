@@ -43,16 +43,31 @@ const WindWidget: React.FC = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/wind")
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((d) => {
+    let cancelled = false;
+
+    async function load(attempt = 0) {
+      try {
+        const res = await fetch("/api/wind");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const d = await res.json();
+        if (cancelled) return;
         if (d.meac !== undefined) {
           setData(d);
         } else if (d.wind_ms !== undefined) {
           setData({ meac: d, skistar: null });
         }
-      })
-      .catch(() => setError(true));
+      } catch {
+        if (cancelled) return;
+        if (attempt < 1) {
+          setTimeout(() => load(attempt + 1), 2000);
+        } else {
+          setError(true);
+        }
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
   }, []);
 
   const meac = data?.meac;
@@ -87,7 +102,16 @@ const WindWidget: React.FC = () => {
         <p className="text-muted-foreground text-sm py-4">Hämtar vinddata...</p>
       )}
 
-      {data && (
+      {data && !meac && !top && !valley && (
+        <p className="text-muted-foreground text-sm">
+          Inga aktuella mätningar just nu.{" "}
+          <a href="https://meac.se/sub_2/hummeln/wind.asp" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            Se MEAC direkt →
+          </a>
+        </p>
+      )}
+
+      {data && (meac || top || valley) && (
         <div className="flex flex-col gap-3">
 
           {/* MEAC sensor — the primary source */}

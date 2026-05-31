@@ -30,9 +30,13 @@ async function fetchMeac() {
 
     const speed = speedMatch ? parseFloat(speedMatch[1]) : null;
 
-    // Check staleness
+    // Check staleness — MEAC reports Swedish local time (CET/CEST)
     if (timeMatch) {
-      const dataTime = new Date(timeMatch[1].replace(" ", "T") + ":00Z");
+      // Sweden is UTC+1 in winter, UTC+2 in summer (CEST Mar-Oct)
+      const raw = timeMatch[1]; // e.g. "2026-05-31 22:40"
+      const month = parseInt(raw.slice(5, 7));
+      const offsetH = month >= 3 && month <= 10 ? 2 : 1;
+      const dataTime = new Date(raw.replace(" ", "T") + `:00+0${offsetH}:00`);
       if (Date.now() - dataTime.getTime() > 3600 * 1000) return null;
     }
 

@@ -1,9 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-const CMS_API =
-  "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io/api";
+const CMS_API = process.env.CMS_URL ? process.env.CMS_URL + "/api" : "http://localhost:3001/api";
 
 const pages = [
   { path: "/", name: "Hem" },
@@ -45,7 +43,7 @@ for (const page of pages) {
     });
     p.on("pageerror", (err) => errors.push(err.message));
 
-    const res = await p.goto(`${BASE}${page.path}`, {
+    const res = await p.goto(page.path, {
       waitUntil: "networkidle",
     });
     expect(res?.status()).toBeLessThan(400);
@@ -66,7 +64,7 @@ for (const vp of viewports) {
   for (const page of pages) {
     test(`[overflow] ${page.name} @ ${vp.name}`, async ({ page: p }) => {
       await p.setViewportSize({ width: vp.width, height: vp.height });
-      await p.goto(`${BASE}${page.path}`, { waitUntil: "networkidle" });
+      await p.goto(page.path, { waitUntil: "networkidle" });
 
       const overflow = await p.evaluate(
         () =>
@@ -83,7 +81,7 @@ for (const vp of viewports) {
 
 test("[functional] Desktop nav has all links", async ({ page: p }) => {
   await p.setViewportSize({ width: 1280, height: 800 });
-  await p.goto(BASE, { waitUntil: "networkidle" });
+  await p.goto("/", { waitUntil: "networkidle" });
 
   const navLinks = await p.locator("header nav a").allTextContents();
   // Verify nav has links — don't hardcode exact labels since they're CMS-managed
@@ -95,7 +93,7 @@ test("[functional] Desktop nav has all links", async ({ page: p }) => {
 
 test("[functional] Mobile hamburger menu works", async ({ page: p }) => {
   await p.setViewportSize({ width: 375, height: 812 });
-  await p.goto(BASE, { waitUntil: "networkidle" });
+  await p.goto("/", { waitUntil: "networkidle" });
 
   const hamburger = p.locator("header button[aria-label]");
   await expect(hamburger).toBeVisible();
@@ -106,7 +104,7 @@ test("[functional] Mobile hamburger menu works", async ({ page: p }) => {
 });
 
 test("[functional] Home page images load", async ({ page: p }) => {
-  await p.goto(BASE, { waitUntil: "networkidle" });
+  await p.goto("/", { waitUntil: "networkidle" });
 
   const images = await p.locator("img").all();
   expect(images.length).toBeGreaterThan(0);
@@ -157,7 +155,7 @@ test("[api] CMS returns club-info", async ({ request }) => {
 
 test("[functional] Desktop nav has dropdown menus", async ({ page: p }) => {
   await p.setViewportSize({ width: 1280, height: 800 });
-  await p.goto(BASE, { waitUntil: "networkidle" });
+  await p.goto("/", { waitUntil: "networkidle" });
 
   await p.hover("text=Flyga i Åre");
   await expect(p.locator("text=Starter & landningar")).toBeVisible();
@@ -165,7 +163,7 @@ test("[functional] Desktop nav has dropdown menus", async ({ page: p }) => {
 });
 
 test("[api] SMHI proxy returns weather data", async ({ request }) => {
-  const res = await request.get(`${BASE}/api/smhi?lat=63.4&lon=13.1`);
+  const res = await request.get(`/api/smhi?lat=63.4&lon=13.1`);
   expect(res.status()).toBe(200);
   const data = await res.json();
   expect(data.timeSeries).toBeDefined();
@@ -181,7 +179,7 @@ for (const vp of viewports) {
   for (const page of pages) {
     test(`[visual] ${page.name} @ ${vp.name}`, async ({ page: p }) => {
       await p.setViewportSize({ width: vp.width, height: vp.height });
-      await p.goto(`${BASE}${page.path}`, { waitUntil: "networkidle" });
+      await p.goto(page.path, { waitUntil: "networkidle" });
 
       // Wait for animations/transitions to settle
       await p.waitForTimeout(500);
@@ -206,7 +204,7 @@ for (const page of pages) {
   test(`[a11y] ${page.name} passes accessibility scan`, async ({
     page: p,
   }) => {
-    await p.goto(`${BASE}${page.path}`, { waitUntil: "networkidle" });
+    await p.goto(page.path, { waitUntil: "networkidle" });
 
     const results = await new AxeBuilder({ page: p })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
@@ -232,8 +230,6 @@ for (const page of pages) {
 // ═══════════════════════════════════════════════════════════
 // LAYER 5: CMS — login, edit, verify change propagates
 // ═══════════════════════════════════════════════════════════
-
-const CMS_BASE = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io";
 
 test("[cms] Can login to CMS admin", async ({ request }) => {
   const res = await request.post(`${CMS_API}/users/login`, {

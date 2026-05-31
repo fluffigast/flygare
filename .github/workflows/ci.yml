@@ -49,11 +49,8 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker image
-        env:
-          ADMIN_PW: ${{ secrets.PAYLOAD_ADMIN_PASSWORD }}
         run: |
           docker build \
-            --build-arg PAYLOAD_ADMIN_PASSWORD="$ADMIN_PW" \
             -t ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }} \
             -t ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:latest \
             ./cms
@@ -78,4 +75,8 @@ jobs:
             az containerapp update \
               --name ${{ vars.CONTAINER_APP_NAME }} \
               --resource-group ${{ vars.RESOURCE_GROUP }} \
-              --image ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }}
+              --image ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }} \
+              --set-env-vars \
+                DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+                PAYLOAD_SECRET="${{ secrets.PAYLOAD_SECRET }}" \
+                PAYLOAD_ADMIN_PASSWORD="${{ secrets.PAYLOAD_ADMIN_PASSWORD }}"

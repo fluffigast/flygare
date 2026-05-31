@@ -1,30 +1,15 @@
 #!/bin/sh
 set -e
 
-# Use persistent mount if available, otherwise fall back to local
-if [ -d "/mnt/data" ]; then
-  DB_DIR="/mnt/data"
-  echo "Using persistent storage at /mnt/data"
-else
-  DB_DIR="./data"
-  echo "Using ephemeral storage at ./data"
+echo "Starting Flygare CMS..."
+echo "DATABASE_URL: ${DATABASE_URL:-(not set)}"
+
+# Push schema and seed on first boot.
+# NODE_ENV=development required for push:true to auto-create/update schema.
+# The seed script is idempotent (exits immediately if data exists).
+if [ "${SKIP_SEED}" != "true" ]; then
+  echo "Pushing schema and running seed..."
+  NODE_ENV=development node --import tsx/esm src/seed/index.ts || echo "Seed: skipped or already populated"
 fi
-
-DB_FILE="$DB_DIR/flygare.db"
-SEED_DB="/app/seed.db"
-
-mkdir -p "$DB_DIR"
-
-# Copy pre-seeded DB on first boot only
-if [ ! -f "$DB_FILE" ]; then
-  echo "No database found, copying pre-seeded database..."
-  cp "$SEED_DB" "$DB_FILE"
-  echo "Database initialized."
-else
-  echo "Existing database found, using it."
-fi
-
-# Point Payload to the correct DB
-export DATABASE_URL="file:$DB_FILE"
 
 exec node server.js

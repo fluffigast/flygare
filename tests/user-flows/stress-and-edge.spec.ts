@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-const CMS_API = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io/api";
+const CMS_API = process.env.CMS_URL ? process.env.CMS_URL + "/api" : "http://localhost:3001/api";
 
 // ═══════════════════════════════════════════════════════════
 // Landscape mobile — phone turned sideways
@@ -11,7 +10,7 @@ test("[landscape] iPhone landscape no overflow", async ({ page }) => {
   await page.setViewportSize({ width: 852, height: 393 });
   const routes = ["/", "/nyheter", "/flyga-i-are", "/kontakt", "/om"];
   for (const route of routes) {
-    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 25000 });
+    await page.goto(route, { waitUntil: "networkidle", timeout: 25000 });
     const overflow = await page.evaluate(() =>
       document.documentElement.scrollWidth > document.documentElement.clientWidth
     );
@@ -21,7 +20,7 @@ test("[landscape] iPhone landscape no overflow", async ({ page }) => {
 
 test("[landscape] iPad landscape layout reasonable", async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 768 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
   const overflow = await page.evaluate(() =>
     document.documentElement.scrollWidth > document.documentElement.clientWidth
   );
@@ -32,11 +31,11 @@ test("[landscape] iPad landscape layout reasonable", async ({ page }) => {
 // Browser zoom — 150% and 200%
 // ═══════════════════════════════════════════════════════════
 
-test("[zoom] Page at 150% zoom no overflow", async ({ browser }) => {
-  const context = await browser.newContext({ deviceScaleFactor: 1.5 });
+test("[zoom] Page at 150% zoom no overflow", async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, deviceScaleFactor: 1.5 });
   const page = await context.newPage();
   await page.setViewportSize({ width: 853, height: 533 }); // 1280/1.5 x 800/1.5
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const overflow = await page.evaluate(() =>
     document.documentElement.scrollWidth > document.documentElement.clientWidth
@@ -45,11 +44,11 @@ test("[zoom] Page at 150% zoom no overflow", async ({ browser }) => {
   await context.close();
 });
 
-test("[zoom] Page at 200% zoom no overflow", async ({ browser }) => {
-  const context = await browser.newContext({ deviceScaleFactor: 2 });
+test("[zoom] Page at 200% zoom no overflow", async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, deviceScaleFactor: 2 });
   const page = await context.newPage();
   await page.setViewportSize({ width: 640, height: 400 }); // 1280/2 x 800/2
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const overflow = await page.evaluate(() =>
     document.documentElement.scrollWidth > document.documentElement.clientWidth
@@ -64,7 +63,7 @@ test("[zoom] Page at 200% zoom no overflow", async ({ browser }) => {
 
 test("[stress] Double-clicking nav links doesn't break", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   // Open hamburger
   await page.locator("header button[aria-label]").first().click();
@@ -88,7 +87,7 @@ test("[stress] Rapid navigation between pages", async ({ page }) => {
 
   // Navigate rapidly without waiting
   for (const route of routes) {
-    page.goto(`${BASE}${route}`).catch(() => {}); // fire and forget
+    page.goto(route).catch(() => {}); // fire and forget
     await page.waitForTimeout(200);
   }
 
@@ -181,11 +180,11 @@ test("[cms-edge] HTML in title gets escaped, not executed", async ({ request }) 
 
 test("[sharing] Shared deep links load correctly", async ({ page }) => {
   const deepUrls = [
-    `${BASE}/flyga-i-are/flygregler`,
-    `${BASE}/om/styrelsen`,
-    `${BASE}/flyga-i-are/xc`,
-    `${BASE}/flyga-i-are/klubbuss`,
-    `${BASE}/ovrigt/dokument`,
+    "/flyga-i-are/flygregler",
+    "/om/styrelsen",
+    "/flyga-i-are/xc",
+    "/flyga-i-are/klubbuss",
+    "/ovrigt/dokument",
   ];
 
   for (const url of deepUrls) {
@@ -202,7 +201,7 @@ test("[sharing] Shared deep links load correctly", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[empty] Aktiviteter shows friendly empty state", async ({ page }) => {
-  await page.goto(`${BASE}/aktiviteter`, { waitUntil: "networkidle" });
+  await page.goto("/aktiviteter", { waitUntil: "networkidle" });
 
   // Should show the page title at minimum
   await expect(page.locator("text=Aktiviteter").first()).toBeVisible();
@@ -215,7 +214,7 @@ test("[empty] Aktiviteter shows friendly empty state", async ({ page }) => {
 });
 
 test("[empty] Foton shows friendly empty state", async ({ page }) => {
-  await page.goto(`${BASE}/ovrigt/foton`, { waitUntil: "networkidle" });
+  await page.goto("/ovrigt/foton", { waitUntil: "networkidle" });
   await expect(page.locator("text=Foton").first()).toBeVisible();
   const body = await page.textContent("body");
   expect(body).not.toContain("Error");
@@ -223,7 +222,7 @@ test("[empty] Foton shows friendly empty state", async ({ page }) => {
 });
 
 test("[empty] Dokument shows friendly empty state", async ({ page }) => {
-  await page.goto(`${BASE}/ovrigt/dokument`, { waitUntil: "networkidle" });
+  await page.goto("/ovrigt/dokument", { waitUntil: "networkidle" });
   await expect(page.locator("text=Dokumentarkiv").first()).toBeVisible();
   const body = await page.textContent("body");
   expect(body).not.toContain("Error");
@@ -296,7 +295,7 @@ test("[concurrent] Two simultaneous edits don't crash", async ({ request }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[print] Home page renders in print media", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
   await page.emulateMedia({ media: "print" });
 
   // Should still have content
@@ -315,7 +314,7 @@ test("[print] Home page renders in print media", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[url] Hash in URL doesn't break page", async ({ page }) => {
-  await page.goto(`${BASE}/kontakt#radiofrekvenser`, { waitUntil: "networkidle" });
+  await page.goto("/kontakt#radiofrekvenser", { waitUntil: "networkidle" });
 
   // Page should load normally
   const body = await page.textContent("body");
@@ -323,7 +322,7 @@ test("[url] Hash in URL doesn't break page", async ({ page }) => {
 });
 
 test("[url] Query params don't break page", async ({ page }) => {
-  await page.goto(`${BASE}/nyheter?category=Information&page=1`, { waitUntil: "networkidle" });
+  await page.goto("/nyheter?category=Information&page=1", { waitUntil: "networkidle" });
 
   const body = await page.textContent("body");
   expect(body!.length).toBeGreaterThan(100);

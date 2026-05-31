@@ -1,13 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-
 // ═══════════════════════════════════════════════════════════
 // Things a human would notice immediately
 // ═══════════════════════════════════════════════════════════
 
 test("[visual] Home hero image is not a gray box", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const hero = page.locator("section").first();
   const heroImg = hero.locator("img").first();
@@ -23,7 +21,7 @@ test("[visual] Home hero image is not a gray box", async ({ page }) => {
 
 test("[visual] Featured section has image and text side by side on desktop", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   // The featured section has two children in flex-row
   const featured = page.locator("section").filter({ has: page.locator("h2") }).first();
@@ -44,7 +42,7 @@ test("[visual] Featured section has image and text side by side on desktop", asy
 });
 
 test("[visual] Stats section has dark background", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const stats = page.locator("text=1975").first();
   if ((await stats.count()) === 0) return;
@@ -69,7 +67,7 @@ test("[visual] No element wider than viewport on mobile", async ({ page }) => {
   const wide: string[] = [];
 
   for (const path of pages) {
-    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto(path, { waitUntil: "networkidle", timeout: 20000 });
 
     const wideEls = await page.evaluate(() => {
       const vw = document.documentElement.clientWidth;
@@ -91,7 +89,7 @@ test("[visual] No element wider than viewport on mobile", async ({ page }) => {
 });
 
 test("[visual] Text contrast is readable (no white on white)", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const lowContrast = await page.evaluate(() => {
     const issues: string[] = [];
@@ -139,7 +137,7 @@ test("[visual] Text contrast is readable (no white on white)", async ({ page }) 
 
 test("[visual] No clipped text on bli-medlem price card", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(`${BASE}/bli-medlem`, { waitUntil: "networkidle" });
+  await page.goto("/bli-medlem", { waitUntil: "networkidle" });
 
   // The price card (dark background) should show full price text
   const price = page.locator("text=600").first();
@@ -151,7 +149,7 @@ test("[visual] No clipped text on bli-medlem price card", async ({ page }) => {
 
 test("[visual] Weather cards don't overlap on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(`${BASE}/flyga-i-are/vader`, { waitUntil: "networkidle" });
+  await page.goto("/flyga-i-are/vader", { waitUntil: "networkidle" });
 
   // Weather forecast items should stack (not overlap)
   const items = page.locator("[class*='flex'][class*='flex-col'] >> text=Vindriktning");
@@ -168,7 +166,7 @@ test("[visual] Weather cards don't overlap on mobile", async ({ page }) => {
 });
 
 test("[visual] Article images are not stretched", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const distorted = await page.evaluate(() => {
     const issues: string[] = [];
@@ -195,7 +193,7 @@ test("[visual] Article images are not stretched", async ({ page }) => {
 });
 
 test("[visual] Footer is at the bottom (not floating mid-page)", async ({ page }) => {
-  await page.goto(`${BASE}/ovrigt/dokument`, { waitUntil: "networkidle" });
+  await page.goto("/ovrigt/dokument", { waitUntil: "networkidle" });
 
   // On a short page (no documents), footer should still be at the bottom
   const footerBox = await page.locator("footer").boundingBox();
@@ -209,7 +207,7 @@ test("[visual] Footer is at the bottom (not floating mid-page)", async ({ page }
 
 test("[visual] Nav dropdown doesn't get cut off by viewport edge", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   // Hover over "Övrigt" (rightmost dropdown)
   const ovrigt = page.locator("header").getByText("Övrigt", { exact: false }).first();
