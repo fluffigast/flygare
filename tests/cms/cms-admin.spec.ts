@@ -8,7 +8,7 @@ test.describe("CMS Admin", () => {
     // Login
     await page.goto(`${CMS}/admin/login`);
     await page.fill('input[name="email"]', "admin@flygare.nu");
-    await page.fill('input[name="password"]', "Flygare2026!");
+    await page.fill('input[name="password"]', process.env.CMS_PASSWORD ?? "changeme");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/admin", { timeout: 15000 });
   });

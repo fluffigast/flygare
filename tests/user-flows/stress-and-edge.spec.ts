@@ -106,7 +106,7 @@ test("[stress] Rapid navigation between pages", async ({ page }) => {
 
 test("[cms-edge] Swedish special chars in CMS update", async ({ request }) => {
   const loginRes = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   const { token } = await loginRes.json();
 
@@ -131,7 +131,7 @@ test("[cms-edge] Swedish special chars in CMS update", async ({ request }) => {
 
 test("[cms-edge] Emoji in news title", async ({ request }) => {
   const loginRes = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   const { token } = await loginRes.json();
 
@@ -154,7 +154,7 @@ test("[cms-edge] Emoji in news title", async ({ request }) => {
 
 test("[cms-edge] HTML in title gets escaped, not executed", async ({ request }) => {
   const loginRes = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   const { token } = await loginRes.json();
 
@@ -262,7 +262,7 @@ test("[auth] Invalid token → cannot edit", async ({ request }) => {
 
 test("[concurrent] Two simultaneous edits don't crash", async ({ request }) => {
   const loginRes = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   const { token } = await loginRes.json();
 

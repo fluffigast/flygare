@@ -239,7 +239,7 @@ test.describe("CMS editor workflow", () => {
     // Login first
     await page.goto(`${CMS}/admin/login`, { waitUntil: "networkidle" });
     await page.fill('input[name="email"]', "admin@flygare.nu");
-    await page.fill('input[name="password"]', "Flygare2026!");
+    await page.fill('input[name="password"]', process.env.CMS_PASSWORD ?? "changeme");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/admin", { timeout: 15000 });
 
@@ -256,7 +256,7 @@ test.describe("CMS editor workflow", () => {
     await page.goto(`${CMS}/admin/collections/pages`, { waitUntil: "networkidle" });
     // Direct URL works — Payload handles auth redirect
     await page.fill('input[name="email"]', "admin@flygare.nu");
-    await page.fill('input[name="password"]', "Flygare2026!");
+    await page.fill('input[name="password"]', process.env.CMS_PASSWORD ?? "changeme");
     await page.click('button[type="submit"]');
     await page.waitForTimeout(3000);
 
@@ -268,7 +268,7 @@ test.describe("CMS editor workflow", () => {
   test("Login → open Site Settings → see heroTagline", async ({ page }) => {
     await page.goto(`${CMS}/admin/globals/site-settings`, { waitUntil: "networkidle" });
     await page.fill('input[name="email"]', "admin@flygare.nu");
-    await page.fill('input[name="password"]', "Flygare2026!");
+    await page.fill('input[name="password"]', process.env.CMS_PASSWORD ?? "changeme");
     await page.click('button[type="submit"]');
     await page.waitForTimeout(3000);
 
@@ -280,7 +280,7 @@ test.describe("CMS editor workflow", () => {
   test("Login → dashboard shows all collections and globals", async ({ page }) => {
     await page.goto(`${CMS}/admin/login`, { waitUntil: "networkidle" });
     await page.fill('input[name="email"]', "admin@flygare.nu");
-    await page.fill('input[name="password"]', "Flygare2026!");
+    await page.fill('input[name="password"]', process.env.CMS_PASSWORD ?? "changeme");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/admin", { timeout: 15000 });
 
