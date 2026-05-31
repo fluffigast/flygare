@@ -30,10 +30,10 @@ export type TakeoffEmergency = {
 export type TakeoffSite = {
   id: string;
   slug: string;
-  kind: "startplats";
+  kind: "startplats" | "landningsplats";
   title: string;
   excerpt: string;
-  category: "Startplats";
+  category: "Startplats" | "Landningsplats";
   updatedAt: string;
   overview: TakeoffOverview;
   description: string[];
@@ -433,11 +433,11 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
   {
     id: "ts-009",
     slug: "draklanda",
-    kind: "startplats",
+    kind: "landningsplats",
     title: "Draklanda",
     excerpt:
       "Officiell landningsplats — 1 km väster om torget i Åre.",
-    category: "Startplats",
+    category: "Landningsplats",
     updatedAt: "2026-01-10",
     overview: {
       position: {

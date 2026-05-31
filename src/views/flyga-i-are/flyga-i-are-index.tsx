@@ -59,7 +59,7 @@ const localGuide = {
   winterTitle: "Flyga på vintern",
   winterContent: "Vintern erbjuder fantastiska förhållanden med laminärt flöde och ofta starka inversioner.",
   summerTitle: "Flyga på sommaren",
-  summerContent: "Sommaren bjuder på termik från mars till oktober. Bästa förhållandena hittas vanligtvis på eftermiddagen.",
+  summerContent: "Termik från sen vår till tidig höst. Landningen på Draklanda kan vara krävande sommartid. Minst 25 höjdflygningar krävs.",
 };
 
 const FlyingGuideIndex: React.FC = () => {
