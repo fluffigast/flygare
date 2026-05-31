@@ -131,38 +131,30 @@ const HomeView: React.FC = () => {
             >
               <Link
                 to="/flyga-i-are/flygregler"
-                className="group flex items-center justify-between px-5 py-4 transition-colors hover:bg-[#fafbfc]"
+                className="group flex items-start justify-between px-5 py-5 transition-colors hover:bg-[#fafbfc]"
                 style={{ borderBottom: "1px solid var(--border, #e2e8f0)" }}
               >
-                <div>
-                  <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>
+                <div className="flex-1">
+                  <p className="font-serif font-bold text-base mb-2" style={{ color: "var(--ink, #020618)" }}>
                     Flygregler
                   </p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                    Viktig info — läs innan du flyger i Åre.
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+                    Viktig info till alla som flyger i Åre. Läs reglerna under Flyga i Åre innan du startar.
                   </p>
                 </div>
-                <span className="text-sm ml-4 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
+                <span className="text-sm ml-4 mt-1 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
               </Link>
-              <div className="px-5 py-5 flex flex-col gap-4">
+              <div className="px-5 py-4 flex items-center justify-between">
                 <div>
-                  <p className="font-serif italic text-xs mb-1" style={{ color: "var(--slate, #62748e)" }}>Medlemskap</p>
-                  <h2 className="font-serif font-bold text-lg mb-2" style={{ color: "var(--ink-2, #0f172b)" }}>Bli medlem</h2>
-                  <p className="text-xs leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                    600 kr/år. Tillgång till alla startplatser, Draklanda, klubbussen och räddningsbåten.
-                  </p>
+                  <p className="font-serif italic text-xs" style={{ color: "var(--slate, #62748e)" }}>Medlemskap</p>
+                  <p className="text-sm" style={{ color: "var(--ink-2, #0f172b)" }}>600 kr/år</p>
                 </div>
-                <a
-                  href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-serif transition-all hover:-translate-y-px"
-                  style={{ background: "#000", color: "#fff" }}
+                <Link
+                  to="/bli-medlem"
+                  className="text-xs font-serif hover:underline"
+                  style={{ color: "var(--hero-accent, #3774a3)" }}
                 >
-                  Bli medlem
-                </a>
-                <Link to="/bli-medlem" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
-                  Mer information →
+                  Bli medlem &rarr;
                 </Link>
               </div>
             </div>
@@ -190,7 +182,7 @@ const HomeView: React.FC = () => {
             Se all information
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {INFO_CARDS.map((card) => (
             <Link
               key={card.to}
