@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
               </li>
               <li>
                 <Link
-                  to="/flyga-i-are/luftrum-are"
+                  to="/flyga-i-are/xc"
                   className={linkClass}
                 >
                   Luftrum
@@ -31,26 +31,18 @@ const Footer: React.FC<FooterProps> = ({}) => {
               </li>
               <li>
                 <Link
-                  to="/flyga-i-are/sakerhet-och-ansvar"
+                  to="/flyga-i-are/sakerhet"
                   className={linkClass}
                 >
-                  Säkerhet och ansvar
+                  Säkerhet & nödsituation
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/flyga-i-are/nodinformation"
+                  to="/flyga-i-are/flygregler"
                   className={linkClass}
                 >
-                  Nödinformation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/flyga-i-are/etik-och-hansyn"
-                  className={linkClass}
-                >
-                  Etik och hänsyn
+                  Flygregler
                 </Link>
               </li>
             </ul>
