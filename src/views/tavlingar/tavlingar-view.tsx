@@ -1,8 +1,23 @@
 import React from "react";
 import Separator from "../../components/separator";
-import { competitions } from "../../data/competitions";
+import { competitions as localCompetitions } from "../../data/competitions";
+import { useCompetitions } from "../../hooks/useCMS";
+
+/** Extract plain text from a Lexical richText object or return string as-is */
+function richTextToString(value: any): string {
+  if (typeof value === "string") return value;
+  if (value?.root?.children) {
+    return value.root.children
+      .map((block: any) =>
+        block.children?.map((child: any) => child.text ?? "").join("") ?? ""
+      )
+      .join("\n");
+  }
+  return "";
+}
 
 const TavlingarView: React.FC = () => {
+  const { data: competitions } = useCompetitions([...localCompetitions]);
   return (
     <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
       {/* Header */}
@@ -35,7 +50,7 @@ const TavlingarView: React.FC = () => {
               </p>
             </div>
             <p data-payload-field="description" className="text-muted-foreground text-sm leading-relaxed">
-              {comp.description}
+              {richTextToString(comp.description)}
             </p>
 
             {/* Winners table */}
@@ -46,7 +61,7 @@ const TavlingarView: React.FC = () => {
                   <p className="text-sm font-semibold">Vinnare</p>
                   <p className="text-sm font-semibold">Resultat</p>
                 </div>
-                {comp.winners.map((winner) => (
+                {comp.winners.map((winner: any) => (
                   <div
                     key={winner.year}
                     className="grid grid-cols-3 gap-4 py-3 border-b border-border"
