@@ -2,10 +2,15 @@ import React from "react";
 import { useParams } from "react-router";
 import { usePage, useGlobalLivePreview } from "../../hooks/useCMS";
 import { pages } from "../../data/pages";
+import { articles } from "../../data/articles";
 
 const PageView: React.FC = () => {
   const { slug } = useParams();
-  const fallback = pages.find((p) => p.slug === slug) ?? { title: "", slug: "", body: "" };
+  const pageFallback = pages.find((p) => p.slug === slug);
+  const articleFallback = articles.find((a) => a.slug === slug);
+  const fallback = pageFallback
+    ?? (articleFallback ? { title: articleFallback.title, slug: articleFallback.slug, body: articleFallback.content } : null)
+    ?? { title: "", slug: "", body: "" };
   const { data: page, loading } = usePage(slug ?? "", fallback);
   const livePage = useGlobalLivePreview(page);
 
