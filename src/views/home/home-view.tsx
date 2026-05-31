@@ -71,37 +71,6 @@ const HomeView: React.FC = () => {
             background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
           }}
         />
-        {/* Centered disc badge */}
-        <div
-          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid place-items-center rounded-full ${heroIn ? "hero-disc-animate" : "opacity-0"}`}
-          style={{
-            width: "clamp(180px, 16vw, 250px)",
-            height: "clamp(180px, 16vw, 250px)",
-            background: "var(--hero-accent, #3774a3)",
-            border: "clamp(14px, 1.3vw, 21px) solid var(--hero-ring, #1a1e2a)",
-            boxShadow: "0 30px 60px -20px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12) inset",
-          }}
-        >
-          <div
-            className="absolute rounded-full pointer-events-none"
-            style={{ inset: "10px", border: "1px solid rgba(255,255,255,.28)" }}
-          />
-          <div className="relative z-10 text-center text-white px-3" style={{ opacity: 0.92, textShadow: "0 1px 2px rgba(0,0,0,.25)" }}>
-            <span
-              className="block font-serif font-bold uppercase tracking-[0.14em]"
-              style={{ fontSize: "clamp(9px, 0.75vw, 12px)", opacity: 0.8, whiteSpace: "nowrap", marginBottom: 4 }}
-            >
-              Åre&nbsp;&middot;&nbsp;1 200 m
-            </span>
-            <span
-              className="block font-serif italic leading-snug"
-              style={{ fontSize: "clamp(13px, 1.15vw, 18px)", letterSpacing: "0.02em" }}
-              data-payload-field="heroTagline"
-            >
-              {site.heroTagline ?? localSiteSettings.heroTagline}
-            </span>
-          </div>
-        </div>
         {/* Footer bar */}
         <div className="absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/70 text-xs tracking-wide">
           <span className="inline-flex items-center gap-2">
