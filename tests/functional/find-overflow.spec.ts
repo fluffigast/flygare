@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 
 const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-const pages = ["/", "/nyheter", "/vader", "/startplatser", "/information"];
+const pages = ["/", "/nyheter", "/flyga-i-are", "/flyga-i-are/startplatser", "/flyga-i-are/vader", "/om", "/bli-medlem", "/kontakt"];
 const widths = [320, 375, 412];
 
 test("Find all overflow elements across phone widths", async ({ browser }) => {

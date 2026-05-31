@@ -13,7 +13,7 @@ test.describe("Live Editing", () => {
 
   test.beforeAll(async ({ request }) => {
     const res = await request.post(`${CMS_API}/users/login`, {
-      data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+      data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
     });
     const data = await res.json();
     token = data.token;
@@ -175,7 +175,7 @@ test.describe("Live Editing", () => {
     // Login to CMS admin via browser
     await page.goto(`${CMS}/admin/login`, { waitUntil: "networkidle" });
     await page.fill('input[name="email"]', "admin@flygare.nu");
-    await page.fill('input[name="password"]', "Flygare2026!");
+    await page.fill('input[name="password"]', process.env.CMS_PASSWORD ?? "changeme");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/admin", { timeout: 15000 });
 

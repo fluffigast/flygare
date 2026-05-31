@@ -86,21 +86,11 @@ test("[functional] Desktop nav has all links", async ({ page: p }) => {
   await p.goto(BASE, { waitUntil: "networkidle" });
 
   const navLinks = await p.locator("header nav a").allTextContents();
-  const expected = [
-    "Hem",
-    "Flyga i Åre",
-    "Nyheter",
-    "Aktiviteter",
-    "Tävling",
-    "Om klubben",
-    "Övrigt",
-  ];
-  for (const label of expected) {
-    expect(
-      navLinks.some((t) => t.includes(label)),
-      `Missing nav link: ${label}`
-    ).toBe(true);
-  }
+  // Verify nav has links — don't hardcode exact labels since they're CMS-managed
+  expect(navLinks.length, "Desktop nav should have links").toBeGreaterThanOrEqual(3);
+  // Verify the brand link exists
+  const brandLink = p.locator('header a[href="/"]');
+  await expect(brandLink).toBeVisible();
 });
 
 test("[functional] Mobile hamburger menu works", async ({ page: p }) => {
@@ -247,7 +237,7 @@ const CMS_BASE = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontain
 
 test("[cms] Can login to CMS admin", async ({ request }) => {
   const res = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   expect(res.status()).toBe(200);
   const data = await res.json();
@@ -257,7 +247,7 @@ test("[cms] Can login to CMS admin", async ({ request }) => {
 test("[cms] Can update site settings via API", async ({ request }) => {
   // Login
   const loginRes = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   const { token } = await loginRes.json();
 
@@ -289,7 +279,7 @@ test("[cms] Can update site settings via API", async ({ request }) => {
 
 test("[cms] New pages collection is editable", async ({ request }) => {
   const loginRes = await request.post(`${CMS_API}/users/login`, {
-    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+    data: { email: "admin@flygare.nu", password: process.env.CMS_PASSWORD ?? "changeme" },
   });
   const { token } = await loginRes.json();
 
