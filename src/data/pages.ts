@@ -66,6 +66,16 @@ export const pages = [
           'Mobilnätet har begränsad täckning i terrängen.',
         ],
       },
+      {
+        title: 'Licenskrav',
+        items: [
+          'Elevlicens — minst 10 flygningar (kursflygen räknas). Flyg under instruktörs ansvar.',
+          'Pilot 1 — minst 10 flygningar för förnyelse. Fjällcertifiering krävs för att flyga i Åre utan instruktör.',
+          'Pilot 2 — minst 10 höjdflygningar och 5 timmars flygtid för förnyelse.',
+          'Giltig licens och försäkring är ett krav för att flyga från klubbens startplatser.',
+          'Licensförnyelse sker via paragliding.se — registrera flygtid i PilotPortalen, betala årsavgift.',
+        ],
+      },
     ],
     body: '',
   },
