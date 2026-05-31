@@ -10,6 +10,8 @@ import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 const localSiteSettings = {
   heroTagline: "Åre Skärm- och Drakflygklubb",
   heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975",
+  aboutTitle: "Välkommen till Åre Skärm- och Drakflygklubb!",
+  aboutText: "Åre Skärm- och Drakflygklubb har i många år varit en samlingspunkt för flygare i fjällmiljö. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området.\n\nKlubben drivs av sina medlemmar och bygger på engagemang, erfarenhetsutbyte och flygglädje. Målet är enkelt — att fler ska få uppleva friheten i luften på ett tryggt och hållbart sätt.",
 };
 
 const INFO_CARDS = [
@@ -103,19 +105,17 @@ const HomeView: React.FC = () => {
             }}
           />
           <div className="flex flex-col justify-center py-8 lg:py-10 lg:px-12">
-            <h2 className="font-serif font-bold text-2xl md:text-[32px] leading-tight tracking-tight mb-5">
-              Välkommen till Åre Skärm- och Drakflygklubb!
+            <h2 className="font-serif font-bold text-2xl md:text-[32px] leading-tight tracking-tight mb-5" data-payload-field="aboutTitle">
+              {site.aboutTitle ?? localSiteSettings.aboutTitle}
             </h2>
-            <p className="text-base leading-relaxed mb-4" style={{ color: "var(--ink-2, #0f172b)" }}>
-              Åre Skärm- och Drakflygklubb har i många år varit en samlingspunkt
-              för flygare i fjällmiljö. Vi arbetar aktivt med utbildning,
-              säkerhet och samarbete med markägare och andra aktörer i området.
-            </p>
-            <p className="text-base leading-relaxed" style={{ color: "var(--ink-2, #0f172b)" }}>
-              Klubben drivs av sina medlemmar och bygger på engagemang,
-              erfarenhetsutbyte och flygglädje. Målet är enkelt — att fler ska
-              få uppleva friheten i luften på ett tryggt och hållbart sätt.
-            </p>
+            {(typeof (site.aboutText ?? localSiteSettings.aboutText) === "string"
+              ? (site.aboutText ?? localSiteSettings.aboutText).split("\n\n")
+              : [(site.aboutText ?? localSiteSettings.aboutText)?.root?.children?.map((b: any) => b.children?.map((c: any) => c.text ?? "").join("")).join("") ?? ""]
+            ).map((p: string, i: number) => (
+              <p key={i} className="text-base leading-relaxed mb-4" style={{ color: "var(--ink-2, #0f172b)" }} {...(i === 0 ? { "data-payload-field": "aboutText" } : {})}>
+                {p}
+              </p>
+            ))}
           </div>
         </div>
       </section>
@@ -125,7 +125,19 @@ const HomeView: React.FC = () => {
         <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
             <WindWidget />
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col gap-5">
+              <Link
+                to="/flyga-i-are/flygregler"
+                className="group block px-5 py-4 transition-colors"
+                style={{ borderLeft: "3px solid var(--hero-accent, #3774a3)", background: "var(--paper, #fafbfc)" }}
+              >
+                <p className="font-serif font-bold text-sm group-hover:opacity-80 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
+                  Flygregler
+                </p>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+                  Viktig info till alla som flyger i Åre — läs innan du startar.
+                </p>
+              </Link>
               <div>
                 <p className="font-serif italic text-sm mb-1" style={{ color: "var(--slate, #62748e)" }}>Medlemskap</p>
                 <h2 className="font-serif font-bold text-2xl mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>Bli medlem</h2>
@@ -133,19 +145,7 @@ const HomeView: React.FC = () => {
                   600 kr/år. Tillgång till alla startplatser, Draklanda, klubbussen och räddningsbåten.
                 </p>
               </div>
-              <div className="flex flex-col gap-3 mt-5">
-                <Link
-                  to="/flyga-i-are/flygregler"
-                  className="group block px-5 py-4 transition-colors"
-                  style={{ borderLeft: "3px solid var(--hero-accent, #3774a3)", background: "var(--paper, #fafbfc)" }}
-                >
-                  <p className="font-serif font-bold text-sm group-hover:opacity-80 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
-                    Flygregler
-                  </p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                    Viktig info till alla som flyger i Åre — läs innan du startar.
-                  </p>
-                </Link>
+              <div className="flex flex-col gap-3">
                 <a
                   href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
                   target="_blank"
