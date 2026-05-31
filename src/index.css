@@ -4,6 +4,7 @@
 :root {
   --font-serif: "Source Serif 4 Variable", serif;
   --font-sans: "Karla Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
   /* Design-handoff palette */
   --hero-accent: #3774a3;
@@ -90,6 +91,7 @@
 @theme {
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);

@@ -2,9 +2,10 @@ import "@fontsource-variable/karla";
 import "@fontsource-variable/karla/wght-italic.css";
 import "@fontsource-variable/source-serif-4";
 import "@fontsource-variable/source-serif-4/wght-italic.css";
+import "@fontsource-variable/jetbrains-mono";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./index.css";
 import { initClickToEdit } from "./utils/click-to-edit";
 import HomeView from "./views/home/home-view.tsx";
@@ -64,6 +65,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="bli-medlem" element={<BliMedlemView />} />
           {/* Övrigt */}
           <Route path="ovrigt">
+            <Route index element={<Navigate to="foton" replace />} />
             <Route path="foton" element={<FotonView />} />
             <Route path="dokument" element={<DokumentView />} />
           </Route>

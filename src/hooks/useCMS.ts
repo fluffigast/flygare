@@ -26,9 +26,10 @@ function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
 // The Payload admin sends live field changes via postMessage.
 // Returns the live-updated data when inside the CMS iframe, otherwise returns initialData unchanged.
 export function useGlobalLivePreview<T extends Record<string, any>>(initialData: T): T {
+  if (!CMS_URL) return initialData;
   const { data } = useLivePreview<T>({
     initialData,
-    serverURL: CMS_URL || "",
+    serverURL: CMS_URL,
     depth: 2,
   });
   return data;
