@@ -29,9 +29,7 @@ ENV NODE_ENV=production
 ARG PAYLOAD_ADMIN_PASSWORD=changeme123
 ENV PAYLOAD_ADMIN_PASSWORD=$PAYLOAD_ADMIN_PASSWORD
 
-# Start from the schema-only seed.db (has tables, no data)
-RUN cp data/seed.db data/seeded.db
-
+# Start with empty DB — Payload auto-creates schema on first run
 ENV DATABASE_URL=file:./data/seeded.db
 
 RUN npx tsx src/seed/index.ts
