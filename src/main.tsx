@@ -54,8 +54,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="om">
             <Route index element={<OmView />} />
             <Route path="styrelsen" element={<StyrelsenView />} />
-            <Route path="klubbprodukter" element={<PageView />} />
-            <Route path="stadgar" element={<PageView />} />
+            <Route path=":slug" element={<PageView />} />
           </Route>
           <Route path="kontakt" element={<KontaktView />} />
           <Route path="bli-medlem" element={<BliMedlemView />} />
