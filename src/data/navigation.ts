@@ -18,8 +18,7 @@ export const navigation = {
       ],
     },
     { label: 'Nyheter', path: '/nyheter', children: [] },
-    { label: 'Aktiviteter', path: '/aktiviteter', children: [] },
-    { label: 'Tävling', path: '/tavlingar', children: [] },
+    { label: 'Flygregler', path: '/flyga-i-are/flygregler', children: [] },
     {
       label: 'Om klubben',
       path: '/om',

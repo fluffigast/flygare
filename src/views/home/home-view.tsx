@@ -80,7 +80,7 @@ const HomeView: React.FC = () => {
           </p>
           <h1
             className="font-serif font-bold text-white leading-[0.96] tracking-tight"
-            style={{ fontSize: "clamp(32px, 6vw, 96px)", letterSpacing: "-0.02em" }}
+            style={{ fontSize: "clamp(24px, 3.5vw, 56px)", letterSpacing: "-0.02em" }}
             data-payload-field="heroDescription"
           >
             {site.heroDescription ?? localSiteSettings.heroDescription}
