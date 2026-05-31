@@ -6,7 +6,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps \
+  && npm install sharp@0.33.5 --platform=linuxmusl --arch=x64
 
 COPY . .
 
