@@ -11,7 +11,7 @@ import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const localSiteSettings = {
   heroTagline: "Åre Skärm- och Drakflygklubb",
-  heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975. ~100 aktiva medlemmar, 9 startplatser, distansrekord 230 km.",
+  heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975",
 };
 
 const HomeView: React.FC = () => {
@@ -32,7 +32,16 @@ const HomeView: React.FC = () => {
 
       <main className="@container max-w-2xl mx-auto px-4 flex flex-col py-8 md:py-12">
 
-        {/* Flygregler notice — simple text, not a dark box */}
+        {/* About — short club intro */}
+        <section className="mb-8 md:mb-12 max-w-prose">
+          <p className="text-muted-foreground leading-relaxed">
+            Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits.
+            Idag görs 95% av all flygning med skärm. Klubben har ca 100 aktiva medlemmar varav
+            30 bor i Åre kommun. Distansrekordet ligger på 230 km — Åre till Sollefteå.
+          </p>
+        </section>
+
+        {/* Flygregler notice */}
         <div className="border-l-4 border-primary pl-4 py-3 mb-8 md:mb-12">
           <Link to="/flyga-i-are/flygregler" className="group">
             <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -46,10 +55,8 @@ const HomeView: React.FC = () => {
 
         {/* Two-column: Wind + Bli medlem */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
-          {/* Wind */}
           <WindWidget />
 
-          {/* Bli medlem */}
           <section className="flex flex-col justify-between">
             <div>
               <p className="font-serif italic text-muted-foreground text-sm">Flyg med oss</p>
@@ -77,19 +84,13 @@ const HomeView: React.FC = () => {
 
         <Separator />
 
-        {/* Nyheter */}
-        <section className="py-8 md:py-12">
-          <div className="flex justify-between items-end mb-4">
-            <div>
-              <p className="font-serif italic text-muted-foreground text-sm">Senaste</p>
-              <h2 className="font-serif text-2xl">Nyheter</h2>
-            </div>
-            <Link to="/nyheter" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Alla nyheter →
-            </Link>
-          </div>
-          <NewsSlider />
-        </section>
+        {/* Nyheter — just the slider, it has its own heading */}
+        <div className="flex justify-end py-2">
+          <Link to="/nyheter" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            Alla nyheter →
+          </Link>
+        </div>
+        <NewsSlider />
 
         <Separator />
 
