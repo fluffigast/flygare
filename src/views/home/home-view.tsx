@@ -125,38 +125,33 @@ const HomeView: React.FC = () => {
         <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
             <WindWidget />
-            <div
-              className="flex flex-col"
-              style={{ border: "1px solid var(--border, #e2e8f0)" }}
-            >
+            <div className="flex flex-col gap-4">
               <Link
                 to="/flyga-i-are/flygregler"
-                className="group flex items-start justify-between px-5 py-5 transition-colors hover:bg-[#fafbfc]"
-                style={{ borderBottom: "1px solid var(--border, #e2e8f0)" }}
+                className="group flex items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
+                style={{ border: "1px solid var(--border, #e2e8f0)" }}
               >
                 <div className="flex-1">
-                  <p className="font-serif font-bold text-base mb-2" style={{ color: "var(--ink, #020618)" }}>
-                    Flygregler
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                    Viktig info till alla som flyger i Åre. Läs reglerna under Flyga i Åre innan du startar.
+                  <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Flygregler</p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+                    Läs innan du flyger i Åre.
                   </p>
                 </div>
-                <span className="text-sm ml-4 mt-1 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
+                <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
               </Link>
-              <div className="px-5 py-4 flex items-center justify-between">
-                <div>
-                  <p className="font-serif italic text-xs" style={{ color: "var(--slate, #62748e)" }}>Medlemskap</p>
-                  <p className="text-sm" style={{ color: "var(--ink-2, #0f172b)" }}>600 kr/år</p>
+              <Link
+                to="/bli-medlem"
+                className="group flex items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
+                style={{ border: "1px solid var(--border, #e2e8f0)" }}
+              >
+                <div className="flex-1">
+                  <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Bli medlem</p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+                    600 kr/år. Startplatser, Draklanda, klubbussen.
+                  </p>
                 </div>
-                <Link
-                  to="/bli-medlem"
-                  className="text-xs font-serif hover:underline"
-                  style={{ color: "var(--hero-accent, #3774a3)" }}
-                >
-                  Bli medlem &rarr;
-                </Link>
-              </div>
+                <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
+              </Link>
             </div>
           </div>
         </div>
