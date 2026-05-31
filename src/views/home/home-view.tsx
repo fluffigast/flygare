@@ -37,9 +37,10 @@ const HomeView: React.FC = () => {
           <div className="md:flex-1" />
           <div className="md:flex-1">
             <p className="text-foreground leading-relaxed">
-              Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben
-              funnits. Idag görs 95% av all flygning med skärm. Klubben har ca 100 aktiva
-              medlemmar varav 30 bor i Åre kommun. Distansrekordet ligger på 230 km — Åre till Sollefteå.
+              Klubben bildades 1975 som drakflygklubb och har sedan 1988 även
+              omfattat skärmflyg. Med ca 100 aktiva medlemmar och 9 startplatser
+              på Åreskutan är vi en av Sveriges mest aktiva flygklubbar.
+              Distansrekordet ligger på 230 km — Åre till Sollefteå.
             </p>
             <Link to="/om" className="text-sm text-primary hover:underline mt-3 inline-block">
               Mer om klubben →
