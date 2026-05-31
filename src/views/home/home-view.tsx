@@ -125,10 +125,10 @@ const HomeView: React.FC = () => {
         <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
             <WindWidget />
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 h-full">
               <Link
                 to="/flyga-i-are/flygregler"
-                className="group flex items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
+                className="group flex flex-1 items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
                 style={{ border: "1px solid var(--border, #e2e8f0)" }}
               >
                 <div className="flex-1">
@@ -141,7 +141,7 @@ const HomeView: React.FC = () => {
               </Link>
               <Link
                 to="/bli-medlem"
-                className="group flex items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
+                className="group flex flex-1 items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
                 style={{ border: "1px solid var(--border, #e2e8f0)" }}
               >
                 <div className="flex-1">
