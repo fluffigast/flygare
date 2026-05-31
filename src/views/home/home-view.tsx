@@ -135,11 +135,15 @@ const HomeView: React.FC = () => {
                 </a>
                 <Link
                   to="/flyga-i-are/flygregler"
-                  className="flex items-center justify-between px-4 py-3 text-xs transition-colors hover:border-current"
-                  style={{ border: "1px solid var(--border, #e2e8f0)", color: "var(--ink, #020618)" }}
+                  className="group block px-5 py-4 transition-colors"
+                  style={{ borderLeft: "3px solid var(--hero-accent, #3774a3)", background: "var(--paper, #fafbfc)" }}
                 >
-                  <span>Flygregler</span>
-                  <span style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
+                  <p className="font-serif font-bold text-sm group-hover:opacity-80 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
+                    Flygregler
+                  </p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+                    Viktig info till alla som flyger i Åre — läs innan du startar.
+                  </p>
                 </Link>
                 <Link to="/bli-medlem" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
                   Mer information →
