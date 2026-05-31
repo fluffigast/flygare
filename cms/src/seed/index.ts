@@ -370,7 +370,7 @@ async function seed() {
 
   // ── Milestones ──────────────────────────────────────────────────────
   const milestones = [
-    { year: 1975, text: 'Åre Drakflygklubb bildas' },
+    { year: 1976, text: 'Åre Drakflygklubb bildas' },
     { year: 1988, text: 'Åre Skärmflygklubb bildas' },
     { year: 1995, text: 'Klubbarna slås ihop' },
     { year: 2023, text: '1000m-projektet slutförs' },
@@ -404,13 +404,13 @@ async function seed() {
     slug: 'site-settings',
     data: {
       clubName: 'Åre Skärm- och Drakflygklubb',
-      foundedYear: 1975,
+      foundedYear: 1976,
       heroSubtitle: 'Åre Skärm- och Drakflygklubb',
       heroTagline: 'Skandinaviens mest spektakulära flygplats',
-      heroDescription: 'Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn.',
+      heroDescription: 'Skärm- och drakflyg från Åreskutan',
       aboutTitle: '50 år av flygning från Skutan',
       aboutText: richText(
-        'Åre Drakflygklubb bildades redan 1975 och är en av Sveriges äldsta drakflygklubbar. Under 80-talet dominerade draken, men på 90-talet tog skärmflyget över. Idag flyger ca 95% skärm. Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun.',
+        'Åre Skärm- och Drakflygklubb bildades 1976 som drakflygklubb och har sedan 1988 även omfattat skärmflyg. Med ca 100 aktiva medlemmar och 9 startplatser på Åreskutan är vi en av Sveriges mest aktiva flygklubbar.',
       ),
       statsMembers: '~100',
       statsDistanceRecord: '230 km',
@@ -440,8 +440,8 @@ async function seed() {
       ],
       licenseRequirements: [
         { level: 'Elevlicens', requirements: 'Minst 10 flygningar' },
-        { level: 'Pilot 1', requirements: 'Minst 10 flygningar' },
-        { level: 'Pilot 2', requirements: 'Minst 10 höjdflygningar + 5 timmar flygtid' },
+        { level: 'Pilot 1', requirements: 'Minst 50 flygningar för initial licens, 10 flygningar för förnyelse' },
+        { level: 'Pilot 2', requirements: 'Minst 10 flygningar + 5 timmars flygtid för förnyelse' },
       ],
     },
   })
@@ -513,7 +513,7 @@ async function seed() {
       ),
       summerTitle: 'Flyga på sommaren',
       summerContent: richText(
-        'Sommaren bjuder på termik från mars till oktober. Bästa förhållandena hittas vanligtvis på eftermiddagen med svag sydvästlig vind. Kontrollera alltid aktuella NOTAM och luftrumsrestriktioner. Termikområden finns markerade på termikkartan.',
+        'Termik från sen vår till tidig höst. Landningen på Draklanda kan vara krävande sommartid — minst 25 höjdflygningar krävs vid öppet vatten. Kontrollera alltid aktuella NOTAM och luftrumsrestriktioner.',
       ),
       hangGlidingTitle: 'Hängflygning från Skutan',
       hangGlidingContent: richText(
@@ -535,20 +535,16 @@ async function seed() {
           path: '/flyga-i-are',
           children: [
             { label: 'Starter & landningar', path: '/flyga-i-are/startplatser' },
-            { label: 'Väder', path: '/flyga-i-are/vader' },
             { label: 'Flygregler', path: '/flyga-i-are/flygregler' },
+            { label: 'Väder', path: '/flyga-i-are/vader' },
             { label: 'Säkerhet & nödsituation', path: '/flyga-i-are/sakerhet' },
-            { label: 'Cross country & luftrum', path: '/flyga-i-are/xc' },
-            { label: 'Acro', path: '/flyga-i-are/acro' },
-            { label: 'Speedrider', path: '/flyga-i-are/speedrider' },
-            { label: 'Hängflyg', path: '/flyga-i-are/hangflyg' },
-            { label: 'Paramotor', path: '/flyga-i-are/paramotor' },
+            { label: 'Luftrum & XC', path: '/flyga-i-are/xc' },
             { label: 'Klubbuss & räddningsbåt', path: '/flyga-i-are/klubbuss' },
           ],
         },
         { label: 'Nyheter', path: '/nyheter', children: [] },
         { label: 'Aktiviteter', path: '/aktiviteter', children: [] },
-        { label: 'Tävling', path: '/tavlingar', children: [] },
+        { label: 'Tävlingar', path: '/tavlingar', children: [] },
         {
           label: 'Om klubben',
           path: '/om',
@@ -580,7 +576,7 @@ async function seed() {
     slug: 'club-info',
     data: {
       history: richText(
-        'Åre Drakflygklubb bildades redan 1975 och sedan 1988 har även Åre Skärmflygklubb funnits. 1995 slogs klubbarna ihop och fick nuvarande namn Åre skärm- och drakflygklubb. Under 1980-talet dominerades flygningen av drakar, men under 1990-talet tog skärmarna över mer och mer — idag görs 95 % av all flygning från Skutan med skärm. Klubben har ca 100 medlemmar, varav ca 30 bor i Åre kommun. Under åren har ett antal startplatser iordningställts, landningsplatsen Draklanda har växt och blivit en väletablerad officiell landningsplats, och ett flertal tävlingar har arrangerats — bl.a. SM i distansflyg, SM/Nordiska mästerskap i akrobatik och den återkommande tävlingen Out and Return. Distansrekordet för skärmflygare är drygt 230 km (Åre–Sollefteå) och för hängflygare 116 km.',
+        'Åre Drakflygklubb bildades 1976 och sedan 1988 har även Åre Skärmflygklubb funnits. 1995 slogs klubbarna ihop och fick nuvarande namn Åre Skärm- och Drakflygklubb. Under 1980-talet dominerades flygningen av drakar, men under 1990-talet tog skärmarna över — idag görs 95 % av all flygning från Skutan med skärm. Klubben har ca 100 medlemmar, varav ca 30 bor i Åre kommun. Under åren har ett antal startplatser iordningställts, landningsplatsen Draklanda har växt och blivit en väletablerad officiell landningsplats, och ett flertal tävlingar har arrangerats. Distansrekordet för skärmflygare är drygt 230 km (Åre–Sollefteå) och för hängflygare 116 km.',
       ),
       records: [
         { title: 'Distansrekord skärm', value: '230 km', year: 2020 },
@@ -602,7 +598,7 @@ async function seed() {
     { title: 'Cross country & luftrum', slug: 'xc', category: 'xc' as const, body: richText('Åre skärmflygklubb har ett samarbetsavtal med ATS Östersund för flygning inom ESNZ TMA, sektorerna Tore 4 och Tore 5 upp till FL 95 (daterat 2022-03-30). Dagen före: mejla ats.ostersund@lfv.se med planerat område, höjd, in- och utfartstider, rutt, radiofrekvens samt telefonnummer för mark och luft. Kontrollera öppettider på aro.lfv.se (tider i UTC). Flygdagen: ring tornet 08-511 886 17 strax innan start för klartecken. Om NOTAM visar öppet men tornet inte svarar efter två försök med fem minuters intervall, kontakta WS ATCC 08-858 547 00. Avgång och ändringar rapporteras omgående till ATS per telefon.'), order: 3 },
     { title: 'Acro', slug: 'acro', category: 'acro' as const, body: richText('Information om acroflygning, räddningsbåt och acrobox i Åre.'), order: 4 },
     { title: 'Speedrider', slug: 'speedrider', category: 'speedrider' as const, body: richText('Information om speedriding i Åreområdet. Kontakta klubben för aktuella regler.'), order: 5 },
-    { title: 'Hängflyg', slug: 'hangflyg', category: 'hangflyg' as const, body: richText('Hängflygning har lång tradition på Åreskutan — klubben grundades 1975 som Åre Drakflygklubb. Under 1980-talet dominerades flygningen från Skutan av drakar, men på 1990-talet tog skärmarna över och idag görs ca 95 % av all flygning med skärm. Startplatserna är anpassade för båda typerna och hängflygare har generellt bredare vindtolerans. Distansrekordet för hängflygare från Åreskutan är 116 km.'), order: 6 },
+    { title: 'Hängflyg', slug: 'hangflyg', category: 'hangflyg' as const, body: richText('Hängflygning har lång tradition på Åreskutan — klubben grundades 1976 som Åre Drakflygklubb. Under 1980-talet dominerades flygningen från Skutan av drakar, men på 1990-talet tog skärmarna över och idag görs ca 95 % av all flygning med skärm. Startplatserna är anpassade för båda typerna och hängflygare har generellt bredare vindtolerans. Distansrekordet för hängflygare från Åreskutan är 116 km.'), order: 6 },
     { title: 'Paramotor', slug: 'paramotor', category: 'paramotor' as const, body: richText('Information om paramotorflygning i Åreområdet. Kontakta klubben för aktuella regler.'), order: 7 },
     { title: 'Klubbprodukter', slug: 'klubbprodukter', category: 'klubbprodukter' as const, body: richText('Klubbtröjor och merchandise. Beställ via vår webbshop.'), order: 1 },
     { title: 'Stadgar', slug: 'stadgar', category: 'stadgar' as const, body: richText('Klubbens stadgar. Se dokumentarkivet för fullständigt dokument.'), order: 2 },
@@ -614,17 +610,26 @@ async function seed() {
   console.log(`Created ${pagesSeed.length} pages`)
 
   // ── Activities (sample) ────────────────────────────────────────
-  await payload.create({
-    collection: 'activities',
-    data: {
+  const activitiesSeed = [
+    {
       title: 'Årsmöte 2026',
       slug: 'arsmote-2026',
-      type: 'arsmote',
+      type: 'arsmote' as const,
       date: '2026-02-22',
       body: richText('Årsmöte hålls 22 februari kl 18:00 på Åre Fjällsätra.'),
     },
-  })
-  console.log('Created 1 activity')
+    {
+      title: '50-årsjubileum — Vi fyller 50!',
+      slug: '50-arsjubileum',
+      type: 'kalender' as const,
+      date: '2026-07-18',
+      body: richText('Klubben firar 50 år (1976–2026) med ett stort arrangemang på Draklanda Beach 18–19 juli. Tävlingar och lekar, återförsäljare visar skärmar och utrustning, acro show, uppvisningar samt musik och dans på kvällen. Ta med något att sitta på, grill, myggmedel och dina bästa flygkompisar. Uppställning av husbilar finns men med begränsad kapacitet — boka i god tid.'),
+    },
+  ]
+  for (const activity of activitiesSeed) {
+    await payload.create({ collection: 'activities', data: activity })
+  }
+  console.log(`Created ${activitiesSeed.length} activities`)
 
   console.log('Seed complete')
   process.exit(0)
