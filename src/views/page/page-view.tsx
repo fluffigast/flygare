@@ -17,14 +17,82 @@ const PageView: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-2xl px-4 py-16 w-full">
-        <p className="text-muted-foreground">Laddar...</p>
+        <p style={{ color: "var(--slate, #62748e)" }}>Laddar...</p>
       </div>
     );
   }
 
   const title = livePage.title || fallback.title;
-  const body = livePage.body || fallback.body;
+  const body = livePage.body || (fallback as any).body;
+  const lede = (livePage as any).lede || (fallback as any).lede;
+  const sections = (livePage as any).sections || (fallback as any).sections;
 
+  // Structured sections mode (flygregler etc.)
+  if (sections?.length) {
+    return (
+      <div className="w-full">
+        <section className="px-4 md:px-[110px] pt-16 md:pt-24 pb-8">
+          <h1
+            className="font-serif font-bold leading-[0.96] tracking-tight"
+            style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
+            data-payload-field="title"
+          >
+            {title}
+          </h1>
+          {lede && (
+            <p
+              className="max-w-2xl mt-8 font-serif italic text-base md:text-lg leading-relaxed"
+              style={{ color: "var(--slate, #62748e)" }}
+            >
+              {lede}
+            </p>
+          )}
+        </section>
+
+        <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+          {sections.map((section: any, i: number) => (
+            <section
+              key={i}
+              className="py-8"
+              style={i > 0 ? { borderTop: "1px solid var(--border, #e2e8f0)" } : undefined}
+            >
+              <h2
+                className="font-serif font-bold text-lg md:text-xl mb-5"
+                style={{ color: "var(--ink-2, #0f172b)" }}
+              >
+                {section.title}
+              </h2>
+              <ul className="flex flex-col gap-3">
+                {section.items.map((item: string, j: number) => (
+                  <li key={j} className="flex gap-3 items-baseline text-base leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>
+                    <span className="shrink-0 w-3 h-px mt-3" style={{ background: "var(--slate-2, #90a1b9)" }} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+
+        {livePage.links?.length > 0 && (
+          <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+            <section style={{ borderTop: "1px solid var(--border, #e2e8f0)" }} className="pt-8">
+              <h2 className="font-serif font-bold text-lg md:text-xl mb-5" style={{ color: "var(--ink-2, #0f172b)" }}>Länkar</h2>
+              <div className="flex flex-col gap-3">
+                {livePage.links.map((link: any) => (
+                  <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm underline hover:opacity-70 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </section>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Plain body text mode (other pages)
   const paragraphs = typeof body === "string"
     ? body.split("\n").filter((p: string) => p.trim())
     : (body?.root?.children?.map((block: any) =>
@@ -68,23 +136,20 @@ const PageView: React.FC = () => {
           );
         })}
       </div>
+
       {livePage.links?.length > 0 && (
-        <section className="flex flex-col gap-4">
-          <h3 className="font-serif text-xl">Länkar</h3>
-          <div className="flex flex-col gap-2">
-            {livePage.links.map((link: any) => (
-              <a
-                key={link.url}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-primary transition-colors underline text-sm"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </section>
+        <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+          <section style={{ borderTop: "1px solid var(--border, #e2e8f0)" }} className="pt-8">
+            <h2 className="font-serif font-bold text-lg md:text-xl mb-5" style={{ color: "var(--ink-2, #0f172b)" }}>Länkar</h2>
+            <div className="flex flex-col gap-3">
+              {livePage.links.map((link: any) => (
+                <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm underline hover:opacity-70 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </section>
+        </div>
       )}
     </div>
   );

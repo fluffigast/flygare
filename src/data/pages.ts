@@ -3,7 +3,71 @@ export const pages = [
     title: 'Flygregler',
     slug: 'flygregler',
     category: 'flygregler',
-    body: 'Guiden är tänkt att främja vår flygsäkerhet samt informera om starter och landningar. Vi önskar dig många härliga flyg från Åreskutan!\n\nÅreskutans start- och landningsområden\n\nDraklanda är den officiella landningsplatsen i Åre. Alla andra landningar är att betrakta som utelandningar vid XC-flyg. För att landa på Draklanda vid öppet vatten måste man minst ha 25 höjdflygningar om piloten inte flyger under instruktörs ansvar.\n\nKabinbanevajrarna\n\nVid nerflyg utan höjdvinst ska alltid kabinbanevajrarna passeras söder om Stötta 1. Piloter som är lokalt oerfarna, elevlicensare och P1:or följer alltid denna regel.\n\nStart vid Långspannet\n\nSe till att loppstråkan är fri från skidåkare och åskådare före start. Reservlandning öster om Tusenmeter Dal, innan västra ravin eller bredvid leden till Mörvikshummeln.\n\nInflygning på Draklanda\n\nLandningsfältet ligger mellan järnvägen och Åresjön. Minimipassage av kabinbanevajrarna med god höjdmarginal krävs. Minst 360 graders sväng efter passage av järnvägen. Anpassa efter rådande vindförhållanden.\n\nVinterregler\n\nDet bästa med vinterflygning är att (nästan) alla startplatser är släta och fina. Vintersäsongen är också mycket passande om du ska flyga in dig på ny utrustning och träna att landa på Draklanda. Åresjöns is kan användas som nödlandning och säker landningsplats vintertid, men landa aldrig nära utloppet — isen är MYCKET svag där. Elevpiloter med fjällcertifiering tillåts under nationella regler med individuellt godkännande.\n\nFlyga på sommaren\n\nPå sommaren är flygningen lite mer krävande. Framför allt landningen på Draklanda kan vara krävande. Minst 25 höjdflygningar krävs för att landa på Draklanda utan instruktörs ansvar.\n\nSkistar — Åre\n\nSamarbetsavtalet med Skistar gäller — all körning på Skistarvägar sker på deras villkor. Maxhastighet 40 km/h. Hummeln: kör bara uppför i markerad stig. Lås alltid Skistargrinden efter nedkörning. Kör aldrig uppför under pågående liftdrift.\n\nFjällväder\n\nMest utmärkande är hastiga väderskiften. Behagfullt lugnt och soligt väder kan snabbt övergå i kraftiga vindbyar och temperaturfall. Vindrelaterade fenomen som vågor och vindbyar förekommer. Molnbankar kan begränsa sikten kraftigt. Mobilnätet har begränsad täckning i terrängen.\n\nDistansrekord\n\nDistansrekordet för hängflygare från Åreskutan är 116 km och för skärmflygare drygt 230 km (Åre–Sollefteå).\n\nÅre Kommun\n\nÅre Kommun är stor till ytan med sina 7586 km² och har ca 10 000 invånare. Under turistsäsong kan befolkningen tredubblas.',
+    lede: 'Guiden är tänkt att främja vår flygsäkerhet samt informera om starter och landningar. Läs igenom innan du flyger. Vi önskar dig många härliga flyg från Åreskutan!',
+    sections: [
+      {
+        title: 'Start och landning',
+        items: [
+          'Draklanda är den officiella landningsplatsen. Alla andra landningar är utelandningar.',
+          'Minst 25 höjdflygningar krävs för att landa på Draklanda vid öppet vatten, om du inte flyger under instruktörs ansvar.',
+          'Markerade startplatser på kartan ska nyttjas i första hand.',
+          'Cykelleder, vandringsleder och skidpister får inte användas som startplats — och får bara användas som landningsplats i nödfall.',
+        ],
+      },
+      {
+        title: 'Kabinbanevajrarna',
+        items: [
+          'Vid nerflyg utan höjdvinst ska kabinbanevajrarna alltid passeras söder om Stötta 1.',
+          'Piloter som är lokalt oerfarna, elevlicensare och P1:or följer alltid denna regel.',
+        ],
+      },
+      {
+        title: 'Inflygning Draklanda',
+        items: [
+          'Landningsfältet ligger mellan järnvägen och Åresjön.',
+          'Minimipassage av kabinbanevajrarna med god höjdmarginal.',
+          'Minst 360° sväng efter passage av järnvägen.',
+          'Anpassa efter rådande vindförhållanden.',
+        ],
+      },
+      {
+        title: 'Vinterregler',
+        items: [
+          'Åresjöns is kan användas som nödlandning vintertid, men landa aldrig nära utloppet — isen är mycket svag där.',
+          'Elevpiloter med fjällcertifiering tillåts under nationella regler med individuellt godkännande.',
+        ],
+      },
+      {
+        title: 'Sommarregler',
+        items: [
+          'Landningen på Draklanda kan vara krävande sommartid.',
+          'Minst 25 höjdflygningar krävs för att landa utan instruktörs ansvar.',
+        ],
+      },
+      {
+        title: 'Skistar-avtal',
+        items: [
+          'All flygverksamhet ska i första hand bedrivas under liftarnas öppettider.',
+          'All körning på Skistarvägar sker på deras villkor. Maxhastighet 40 km/h.',
+          'Biltrafik ej tillåten under lifts öppettider — kör med aktsamhet och minimera slitage.',
+          'Fyrhjulsdrivna bilar ska eftersträvas på markerade vägar.',
+          'Hummeln: kör bara uppför i markerad stig.',
+          'Lås alltid Skistargrinden efter nedkörning.',
+          'Undantag: när enbart Stjärnliften är öppen, upp- och nedfart via väg 3.',
+          'Tillstånd krävs för skoter på Åreskutan. Skistars skoterregler gäller.',
+        ],
+      },
+      {
+        title: 'Fjällväder',
+        items: [
+          'Hastiga väderskiften förekommer — lugnt väder kan snabbt övergå i kraftiga vindbyar och temperaturfall.',
+          'Vindrelaterade fenomen som vågor och vindbyar förekommer.',
+          'Molnbankar kan begränsa sikten kraftigt.',
+          'Mobilnätet har begränsad täckning i terrängen.',
+        ],
+      },
+    ],
+    body: '',
   },
   {
     title: 'Säkerhet & nödsituation',
