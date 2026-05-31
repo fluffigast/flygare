@@ -18,6 +18,13 @@ import { MembershipInfo } from './globals/MembershipInfo'
 import { ContactInfo } from './globals/ContactInfo'
 import { BusRules } from './globals/BusRules'
 import { FlyingGuide } from './globals/FlyingGuide'
+import { Pages } from './collections/Pages'
+import { Activities } from './collections/Activities'
+import { Documents } from './collections/Documents'
+import { Photos } from './collections/Photos'
+import { Links } from './collections/Links'
+import { SiteNavigation } from './globals/SiteNavigation'
+import { ClubInfo } from './globals/ClubInfo'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,21 +41,28 @@ export default buildConfig({
         const slug = collectionConfig?.slug || globalConfig?.slug
         const routes: Record<string, string> = {
           'news': '/nyheter',
-          'board-members': '/om',
+          'board-members': '/om/styrelsen',
           'milestones': '/om',
-          'launches': '/startplatser',
+          'launches': '/flyga-i-are/startplatser',
           'competitions': '/tavlingar',
-          'weather-links': '/vader',
+          'weather-links': '/flyga-i-are/vader',
+          'pages': `/flyga-i-are/${data?.slug ?? ''}`,
+          'activities': '/aktiviteter',
+          'documents': '/ovrigt/dokument',
+          'photos': '/ovrigt/foton',
+          'links': '/',
           'site-settings': '/',
+          'site-navigation': '/',
           'membership-info': '/bli-medlem',
           'contact-info': '/kontakt',
-          'bus-rules': '/flygguiden',
-          'flying-guide': '/flygguiden',
+          'bus-rules': '/flyga-i-are/klubbuss',
+          'flying-guide': '/flyga-i-are',
+          'club-info': '/om',
         }
         return `${base}${routes[slug ?? ''] ?? '/'}`
       },
-      collections: ['news', 'board-members', 'launches', 'competitions', 'milestones', 'weather-links'],
-      globals: ['site-settings', 'membership-info', 'contact-info', 'bus-rules', 'flying-guide'],
+      collections: ['news', 'board-members', 'launches', 'competitions', 'milestones', 'weather-links', 'pages', 'activities', 'documents', 'photos'],
+      globals: ['site-settings', 'membership-info', 'contact-info', 'bus-rules', 'flying-guide', 'site-navigation', 'club-info'],
     },
   },
   editor: lexicalEditor(),
@@ -62,6 +76,11 @@ export default buildConfig({
     WeatherLinks,
     Media,
     Users,
+    Pages,
+    Activities,
+    Documents,
+    Photos,
+    Links,
   ],
   globals: [
     SiteSettings,
@@ -69,6 +88,8 @@ export default buildConfig({
     ContactInfo,
     BusRules,
     FlyingGuide,
+    SiteNavigation,
+    ClubInfo,
   ],
   db: sqliteAdapter({
     busyTimeout: 5000,
