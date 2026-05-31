@@ -164,8 +164,13 @@ const HomeView: React.FC = () => {
                 >
                   Bli medlem
                 </a>
-                <Link to="/flyga-i-are/flygregler" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
-                  Flygregler →
+                <Link
+                  to="/flyga-i-are/flygregler"
+                  className="flex items-center justify-between px-4 py-3 text-xs transition-colors hover:border-current"
+                  style={{ border: "1px solid var(--border, #e2e8f0)", color: "var(--ink, #020618)" }}
+                >
+                  <span>Flygregler</span>
+                  <span style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
                 </Link>
                 <Link to="/bli-medlem" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
                   Mer information →
