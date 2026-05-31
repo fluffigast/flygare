@@ -85,28 +85,28 @@ const HomeView: React.FC = () => {
             background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
           }}
         />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-10">
-            <p
-              className="font-serif italic text-white/70 mb-1"
-              style={{ fontSize: "clamp(11px, 1vw, 14px)" }}
-              data-payload-field="heroTagline"
-            >
-              {liveSite.heroTagline}
-            </p>
-            <h1
-              className="font-serif font-bold text-white/90 leading-tight"
-              style={{ fontSize: "clamp(16px, 1.8vw, 26px)", letterSpacing: "-0.01em" }}
-              data-payload-field="heroDescription"
-            >
-              {liveSite.heroDescription}
-            </h1>
+        <div className="absolute left-0 right-0 bottom-0 p-4 sm:p-6 md:p-10 lg:px-14">
+          <p
+            className="font-serif italic text-white/70 mb-0.5"
+            style={{ fontSize: "clamp(10px, 1vw, 14px)" }}
+            data-payload-field="heroTagline"
+          >
+            {liveSite.heroTagline}
+          </p>
+          <h1
+            className="font-serif font-bold text-white/90 leading-tight"
+            style={{ fontSize: "clamp(14px, 1.6vw, 24px)", letterSpacing: "-0.01em" }}
+            data-payload-field="heroDescription"
+          >
+            {liveSite.heroDescription}
+          </h1>
+          <div className="flex justify-between mt-3 text-white/50 text-[10px] sm:text-xs tracking-wide">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white/40" />
+              Åreskutan, Jämtland
+            </span>
+            <span className="hidden sm:block">Säsong 2026</span>
           </div>
-        <div className="absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/70 text-xs tracking-wide">
-          <span className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50" />
-            Åreskutan, Jämtland
-          </span>
-          <span className="hidden sm:block">Säsong 2026</span>
         </div>
       </section>
 
@@ -121,12 +121,12 @@ const HomeView: React.FC = () => {
               minHeight: 200,
             }}
           />
-          <div className="flex flex-col justify-center py-8 lg:py-10 lg:px-12">
-            <h2 className="font-serif font-bold text-2xl md:text-[32px] leading-tight tracking-tight mb-5" data-payload-field="aboutTitle">
+          <div className="flex flex-col justify-center py-6 sm:py-8 lg:py-10 lg:px-12">
+            <h2 className="font-serif font-bold text-xl sm:text-2xl md:text-[32px] leading-tight tracking-tight mb-4" data-payload-field="aboutTitle">
               {liveSite.aboutTitle}
             </h2>
             {aboutText && aboutText.split("\n\n").map((p: string, i: number) => (
-              <p key={i} className="text-base leading-relaxed mb-4" style={{ color: "var(--ink-2, #0f172b)" }} {...(i === 0 ? { "data-payload-field": "aboutText" } : {})}>
+              <p key={i} className="text-sm sm:text-base leading-relaxed mb-3" style={{ color: "var(--ink-2, #0f172b)" }} {...(i === 0 ? { "data-payload-field": "aboutText" } : {})}>
                 {p}
               </p>
             ))}
@@ -146,10 +146,10 @@ const HomeView: React.FC = () => {
             { label: "Startplatser", value: liveSite.statsLaunchSites },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center gap-1">
-              <p className="font-serif font-bold text-2xl md:text-[40px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }}>
+              <p className="font-serif font-bold text-lg sm:text-2xl md:text-[40px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }}>
                 {stat.value}
               </p>
-              <p className="text-xs" style={{ color: "var(--slate, #62748e)" }}>{stat.label}</p>
+              <p className="text-[10px] sm:text-xs" style={{ color: "var(--slate, #62748e)" }}>{stat.label}</p>
             </div>
           ))}
         </div>

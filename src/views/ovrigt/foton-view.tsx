@@ -6,7 +6,7 @@ const FotonView: React.FC = () => {
 
   return (
     <div className="w-full">
-      <section className="px-4 md:px-[110px] pt-16 md:pt-24 pb-8">
+      <section className="px-4 sm:px-8 md:px-16 lg:px-[110px] pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Övrigt</p>
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
