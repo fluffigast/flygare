@@ -518,6 +518,108 @@ async function seed() {
   })
   console.log('Seeded flying-guide')
 
+  // ── Global: SiteNavigation ─────────────────────────────────────
+  await payload.updateGlobal({
+    slug: 'site-navigation',
+    data: {
+      sections: [
+        { label: 'Hem', path: '/', children: [] },
+        {
+          label: 'Flyga i Åre',
+          path: '/flyga-i-are',
+          children: [
+            { label: 'Starter & landningar', path: '/flyga-i-are/startplatser' },
+            { label: 'Väder', path: '/flyga-i-are/vader' },
+            { label: 'Flygregler', path: '/flyga-i-are/flygregler' },
+            { label: 'Säkerhet & nödsituation', path: '/flyga-i-are/sakerhet' },
+            { label: 'Cross country & luftrum', path: '/flyga-i-are/xc' },
+            { label: 'Acro', path: '/flyga-i-are/acro' },
+            { label: 'Speedrider', path: '/flyga-i-are/speedrider' },
+            { label: 'Hängflyg', path: '/flyga-i-are/hangflyg' },
+            { label: 'Paramotor', path: '/flyga-i-are/paramotor' },
+            { label: 'Klubbuss & räddningsbåt', path: '/flyga-i-are/klubbuss' },
+          ],
+        },
+        { label: 'Nyheter', path: '/nyheter', children: [] },
+        { label: 'Aktiviteter', path: '/aktiviteter', children: [] },
+        { label: 'Tävling', path: '/tavlingar', children: [] },
+        {
+          label: 'Om klubben',
+          path: '/om',
+          children: [
+            { label: 'Historia & nutid', path: '/om' },
+            { label: 'Styrelsen', path: '/om/styrelsen' },
+            { label: 'Kontakt', path: '/kontakt' },
+            { label: 'Klubbprodukter', path: '/om/klubbprodukter' },
+            { label: 'Stadgar', path: '/om/stadgar' },
+            { label: 'Bli medlem', path: '/bli-medlem' },
+          ],
+        },
+        {
+          label: 'Övrigt',
+          path: '/ovrigt',
+          children: [
+            { label: 'Foton', path: '/ovrigt/foton' },
+            { label: 'Dokumentarkiv', path: '/ovrigt/dokument' },
+            { label: 'Skärmflygförbundet', path: 'https://www.paragliding.se', external: true },
+          ],
+        },
+      ],
+    },
+  })
+  console.log('Seeded site-navigation')
+
+  // ── Global: ClubInfo ───────────────────────────────────────────
+  await payload.updateGlobal({
+    slug: 'club-info',
+    data: {
+      history: richText(
+        'Åre Drakflygklubb bildades 1975 och är en av Sveriges äldsta drakflygklubbar. Under 80-talet dominerade draken, men på 90-talet tog skärmflyget över. Idag flyger ca 95% skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå. Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun.',
+      ),
+      records: [
+        { title: 'Distansrekord skärm', value: '230 km', year: 2020 },
+        { title: 'Distansrekord hängflyg', value: '115 km' },
+        { title: 'Medlemmar', value: '~100' },
+        { title: 'Startplatser', value: '9' },
+      ],
+      clubProducts: richText('Klubbtröjor och merchandise finns på vår webbshop.'),
+      shopUrl: 'https://asdfkstore.myspreadshop.se',
+      stadgar: richText('Klubbens stadgar finns tillgängliga som dokument under Dokumentarkiv.'),
+    },
+  })
+  console.log('Seeded club-info')
+
+  // ── Pages (placeholder content) ────────────────────────────────
+  const pagesSeed = [
+    { title: 'Flygregler', slug: 'flygregler', category: 'flygregler' as const, body: richText('Sammanfattning av de viktigaste flygreglerna. Samarbetsavtalet med Skistar. Regler för kommersiella aktörer.'), order: 1 },
+    { title: 'Säkerhet & nödsituation', slug: 'sakerhet', category: 'sakerhet' as const, body: richText('Rutiner vid nödsituation. Säkerhet och ansvar. Etik och hänsyn.'), order: 2 },
+    { title: 'Cross country & luftrum', slug: 'xc', category: 'xc' as const, body: richText('Information om XC-flygning, luftrumskartor, rutiner för flygning i kontrollerat luftrum, länkar och telefonnummer.'), order: 3 },
+    { title: 'Acro', slug: 'acro', category: 'acro' as const, body: richText('Information om acroflygning, räddningsbåt, acrobox.'), order: 4 },
+    { title: 'Speedrider', slug: 'speedrider', category: 'speedrider' as const, body: richText('Information om speedriding i Åre.'), order: 5 },
+    { title: 'Hängflyg', slug: 'hangflyg', category: 'hangflyg' as const, body: richText('Information om hängflygning från Skutan.'), order: 6 },
+    { title: 'Paramotor', slug: 'paramotor', category: 'paramotor' as const, body: richText('Information om paramotorflygning i Åre.'), order: 7 },
+    { title: 'Klubbprodukter', slug: 'klubbprodukter', category: 'klubbprodukter' as const, body: richText('Klubbtröjor och merchandise. Beställ via vår webbshop.'), order: 1 },
+    { title: 'Stadgar', slug: 'stadgar', category: 'stadgar' as const, body: richText('Klubbens stadgar. Se dokumentarkivet för fullständigt dokument.'), order: 2 },
+  ]
+
+  for (const page of pagesSeed) {
+    await payload.create({ collection: 'pages', data: page })
+  }
+  console.log(`Created ${pagesSeed.length} pages`)
+
+  // ── Activities (sample) ────────────────────────────────────────
+  await payload.create({
+    collection: 'activities',
+    data: {
+      title: 'Årsmöte 2026',
+      slug: 'arsmote-2026',
+      type: 'arsmote',
+      date: '2026-02-22',
+      body: richText('Årsmöte hålls 22 februari kl 18:00 på Åre Fjällsätra.'),
+    },
+  })
+  console.log('Created 1 activity')
+
   console.log('Seed complete')
   process.exit(0)
 }
