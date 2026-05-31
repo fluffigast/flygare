@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const CMS = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io";
-const FRONTEND = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
+const CMS = process.env.CMS_URL || "http://localhost:3001";
 const CMS_API = `${CMS}/api`;
 
 // ═══════════════════════════════════════════════════════════
@@ -41,7 +40,7 @@ test.describe("Live Editing", () => {
     expect(updated.heroTagline).toBe(testTagline);
 
     // Verify on frontend (hero title should show new tagline)
-    await page.goto(FRONTEND, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
     // The home page reads from site-settings — check if the new text appears
     const heroText = await page.locator("h1").first().textContent();
     // It might show the updated text or the fallback depending on CMS connection
@@ -73,7 +72,7 @@ test.describe("Live Editing", () => {
     });
 
     // Verify on frontend news page
-    await page.goto(`${FRONTEND}/nyheter`, { waitUntil: "networkidle" });
+    await page.goto("/nyheter", { waitUntil: "networkidle" });
     const pageContent = await page.textContent("body");
     expect(pageContent).toContain(testTitle);
 
@@ -223,7 +222,7 @@ test.describe("Live Editing", () => {
 
     // Verify frontend shows the nav sections
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto(FRONTEND, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     // At desktop width, nav should be visible
     // Check for at least some of the expected nav items

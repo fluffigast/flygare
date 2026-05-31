@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-
 // ═══════════════════════════════════════════════════════════
 // A board member picks up their phone and opens the site
 // ═══════════════════════════════════════════════════════════
@@ -12,7 +10,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Opens site, taps hamburger, taps Flyga i Åre subsection", async ({ page }) => {
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     // Tap hamburger
     await page.locator("header button[aria-label]").first().click();
@@ -33,7 +31,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Opens site, scrolls to bottom, taps footer link", async ({ page }) => {
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     // Scroll to footer
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -50,7 +48,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Opens nyheter, taps a news card, reads it, goes back", async ({ page }) => {
-    await page.goto(`${BASE}/nyheter`, { waitUntil: "networkidle" });
+    await page.goto("/nyheter", { waitUntil: "networkidle" });
 
     // Find a clickable news card
     const newsCard = page.locator("a[href*='/nyheter/']").first();
@@ -74,7 +72,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Opens bli-medlem, taps Köp medlemskap button", async ({ page }) => {
-    await page.goto(`${BASE}/bli-medlem`, { waitUntil: "networkidle" });
+    await page.goto("/bli-medlem", { waitUntil: "networkidle" });
 
     // Find shop button
     const shopBtn = page.locator("text=Köp medlemskap").first();
@@ -89,7 +87,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Opens startplatser, taps a launch site, sees details", async ({ page }) => {
-    await page.goto(`${BASE}/flyga-i-are/startplatser`, { waitUntil: "networkidle" });
+    await page.goto("/flyga-i-are/startplatser", { waitUntil: "networkidle" });
 
     // Tap a launch site card/link
     const siteLink = page.locator("a[href*='/flyga-i-are/startplatser/']").first();
@@ -105,7 +103,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Opens tavlingar, scrolls through competitions", async ({ page }) => {
-    await page.goto(`${BASE}/tavlingar`, { waitUntil: "networkidle" });
+    await page.goto("/tavlingar", { waitUntil: "networkidle" });
 
     // PPC visible
     await expect(page.locator("text=PPC").first()).toBeVisible();
@@ -119,7 +117,7 @@ test.describe("Board member on phone", () => {
   });
 
   test("Taps Bli medlem in hamburger menu", async ({ page }) => {
-    await page.goto(`${BASE}/flyga-i-are`, { waitUntil: "networkidle" });
+    await page.goto("/flyga-i-are", { waitUntil: "networkidle" });
 
     // Open hamburger
     await page.locator("header button[aria-label]").first().click();
@@ -145,7 +143,7 @@ test.describe("Pilot on desktop", () => {
   });
 
   test("Hovers Flyga i Åre dropdown, clicks Väder", async ({ page }) => {
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     // Hover Flyga i Åre
     const flyga = page.locator("header").getByText("Flyga i Åre", { exact: false }).first();
@@ -160,13 +158,13 @@ test.describe("Pilot on desktop", () => {
       await expect(page.locator("text=Väderprognos").first()).toBeVisible();
     } else {
       // Nav might not show dropdown at this width — navigate directly
-      await page.goto(`${BASE}/flyga-i-are/vader`, { waitUntil: "networkidle" });
+      await page.goto("/flyga-i-are/vader", { waitUntil: "networkidle" });
       await expect(page.locator("text=Väderprognos").first()).toBeVisible();
     }
   });
 
   test("Hovers Om klubben, clicks Styrelsen", async ({ page }) => {
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     const omKlubben = page.locator("header").getByText("Om klubben", { exact: false }).first();
     await omKlubben.hover();
@@ -178,22 +176,23 @@ test.describe("Pilot on desktop", () => {
       await page.waitForURL("**/styrelsen", { timeout: 10000 });
       await expect(page.locator("text=Ordförande").first()).toBeVisible();
     } else {
-      await page.goto(`${BASE}/om/styrelsen`, { waitUntil: "networkidle" });
+      await page.goto("/om/styrelsen", { waitUntil: "networkidle" });
       await expect(page.locator("text=Ordförande").first()).toBeVisible();
     }
   });
 
   test("Clicks logo to go home from any page", async ({ page }) => {
-    await page.goto(`${BASE}/tavlingar`, { waitUntil: "networkidle" });
+    await page.goto("/tavlingar", { waitUntil: "networkidle" });
 
     // Click club name / logo
     await page.locator("header a").first().click();
-    await page.waitForURL(`${BASE}/`);
-    expect(page.url()).toBe(`${BASE}/`);
+    await page.waitForURL("**/");
+    expect(page.url()).toMatch(/\/$/);
+
   });
 
   test("Reads an article from home page grid", async ({ page }) => {
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     // Find article cards
     const articleLink = page.locator("article a").first();
@@ -209,7 +208,7 @@ test.describe("Pilot on desktop", () => {
   });
 
   test("Scrolls home page, checks weather section shows real data", async ({ page }) => {
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     // Scroll to weather section
     const weather = page.locator("text=Väderprognos").first();
@@ -233,7 +232,7 @@ test.describe("Pilot on desktop", () => {
 // ═══════════════════════════════════════════════════════════
 
 test.describe("CMS editor workflow", () => {
-  const CMS = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io";
+  const CMS = process.env.CMS_URL || "http://localhost:3001";
 
   test("Login → navigate to News list via URL", async ({ page }) => {
     // Login first

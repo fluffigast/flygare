@@ -1,17 +1,16 @@
 import { test } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
 const pages = ["/", "/nyheter", "/flyga-i-are", "/flyga-i-are/startplatser", "/flyga-i-are/vader", "/om", "/bli-medlem", "/kontakt"];
 const widths = [320, 375, 412];
 
-test("Find all overflow elements across phone widths", async ({ browser }) => {
+test("Find all overflow elements across phone widths", async ({ browser, baseURL }) => {
   const findings: string[] = [];
 
   for (const path of pages) {
     for (const w of widths) {
-      const ctx = await browser.newContext({ viewport: { width: w, height: 812 } });
+      const ctx = await browser.newContext({ baseURL, viewport: { width: w, height: 812 } });
       const page = await ctx.newPage();
-      await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+      await page.goto(path, { waitUntil: "networkidle" });
 
       const result = await page.evaluate(() => {
         const html = document.documentElement;

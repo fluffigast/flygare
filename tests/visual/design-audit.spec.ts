@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-
 // Real device sizes people actually use
 const devices = [
   { name: "iPhone SE", width: 375, height: 667 },
@@ -34,7 +32,7 @@ for (const device of devices) {
     const overflowPages: string[] = [];
 
     for (const p of keyPages) {
-      await page.goto(`${BASE}${p.path}`, { waitUntil: "networkidle", timeout: 15000 });
+      await page.goto(p.path, { waitUntil: "networkidle", timeout: 15000 });
       const overflow = await page.evaluate(() =>
         document.documentElement.scrollWidth > document.documentElement.clientWidth
       );
@@ -54,7 +52,7 @@ test("[design] No text smaller than 12px on mobile", async ({ page }) => {
   const tinyText: string[] = [];
 
   for (const p of keyPages) {
-    await page.goto(`${BASE}${p.path}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(p.path, { waitUntil: "networkidle", timeout: 15000 });
 
     const tiny = await page.evaluate(() => {
       const issues: string[] = [];
@@ -85,7 +83,7 @@ test("[design] No text overflows its container on mobile", async ({ page }) => {
   const overflowText: string[] = [];
 
   for (const p of keyPages) {
-    await page.goto(`${BASE}${p.path}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(p.path, { waitUntil: "networkidle", timeout: 15000 });
 
     const issues = await page.evaluate(() => {
       const problems: string[] = [];
@@ -113,7 +111,7 @@ test("[design] No text overflows its container on mobile", async ({ page }) => {
 
 test("[design] Touch targets are at least 44px on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const smallTargets = await page.evaluate(() => {
     const issues: string[] = [];
@@ -147,7 +145,7 @@ test("[design] All pages have consistent header and footer", async ({ page }) =>
   const issues: string[] = [];
 
   for (const p of keyPages) {
-    await page.goto(`${BASE}${p.path}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(p.path, { waitUntil: "networkidle", timeout: 15000 });
 
     const hasHeader = await page.locator("header").count();
     const hasFooter = await page.locator("footer").count();
@@ -160,7 +158,7 @@ test("[design] All pages have consistent header and footer", async ({ page }) =>
 });
 
 test("[design] Font families load correctly", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const fonts = await page.evaluate(() => {
     const h1 = document.querySelector("h1, h2");
@@ -179,7 +177,7 @@ test("[design] Font families load correctly", async ({ page }) => {
 });
 
 test("[design] Color scheme is consistent (no bright neon or red)", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const hasBrightRed = await page.evaluate(() => {
     let found = false;
@@ -207,7 +205,7 @@ test("[design] No overlapping elements on mobile", async ({ page }) => {
   const overlaps: string[] = [];
 
   for (const p of [keyPages[0], keyPages[2], keyPages[4]]) {
-    await page.goto(`${BASE}${p.path}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(p.path, { waitUntil: "networkidle", timeout: 15000 });
 
     const issues = await page.evaluate(() => {
       const problems: string[] = [];
@@ -243,7 +241,7 @@ test("[design] No overlapping elements on mobile", async ({ page }) => {
 });
 
 test("[design] Images have proper aspect ratios (not stretched)", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const stretchedImages = await page.evaluate(() => {
     const issues: string[] = [];
@@ -274,7 +272,7 @@ test("[design] Images have proper aspect ratios (not stretched)", async ({ page 
 for (const device of devices) {
   test(`[screenshot] Home @ ${device.name}`, async ({ page }) => {
     await page.setViewportSize({ width: device.width, height: device.height });
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
     await page.waitForTimeout(500);
     await page.screenshot({
       path: `tests/screenshots/${device.name.replace(/\s+/g, "-").toLowerCase()}-home.png`,
@@ -287,7 +285,7 @@ for (const device of devices) {
 for (const p of keyPages) {
   test(`[screenshot] ${p.name} @ iPhone 14 Pro`, async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 852 });
-    await page.goto(`${BASE}${p.path}`, { waitUntil: "networkidle" });
+    await page.goto(p.path, { waitUntil: "networkidle" });
     await page.waitForTimeout(500);
     await page.screenshot({
       path: `tests/screenshots/iphone14-${p.name.toLowerCase().replace(/\s+/g, "-")}.png`,

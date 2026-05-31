@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-
 const allPages = [
   "/", "/nyheter", "/flyga-i-are", "/flyga-i-are/startplatser",
   "/flyga-i-are/vader", "/flyga-i-are/flygregler", "/flyga-i-are/sakerhet",
@@ -18,7 +16,7 @@ const allPages = [
 test("[polish] No 'undefined' text visible on any page", async ({ page }) => {
   const found: string[] = [];
   for (const path of allPages) {
-    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto(path, { waitUntil: "networkidle", timeout: 20000 });
     const body = await page.textContent("body");
     if (body?.includes("undefined") && !body.includes("undefined;")) {
       found.push(path);
@@ -30,7 +28,7 @@ test("[polish] No 'undefined' text visible on any page", async ({ page }) => {
 test("[polish] No 'null' text visible on any page", async ({ page }) => {
   const found: string[] = [];
   for (const path of allPages) {
-    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto(path, { waitUntil: "networkidle", timeout: 20000 });
     const hasNull = await page.evaluate(() => {
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       while (walker.nextNode()) {
@@ -46,7 +44,7 @@ test("[polish] No 'null' text visible on any page", async ({ page }) => {
 test("[polish] No '[object Object]' on any page", async ({ page }) => {
   const found: string[] = [];
   for (const path of allPages) {
-    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto(path, { waitUntil: "networkidle", timeout: 20000 });
     const body = await page.textContent("body");
     if (body?.includes("[object Object]")) found.push(path);
   }
@@ -56,7 +54,7 @@ test("[polish] No '[object Object]' on any page", async ({ page }) => {
 test("[polish] No 'Invalid Date' on any page", async ({ page }) => {
   const found: string[] = [];
   for (const path of allPages) {
-    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto(path, { waitUntil: "networkidle", timeout: 20000 });
     const body = await page.textContent("body");
     if (body?.includes("Invalid Date")) found.push(path);
   }
@@ -66,7 +64,7 @@ test("[polish] No 'Invalid Date' on any page", async ({ page }) => {
 test("[polish] No 'NaN' in visible text", async ({ page }) => {
   const found: string[] = [];
   for (const path of ["/", "/flyga-i-are/vader", "/tavlingar", "/bli-medlem"]) {
-    await page.goto(`${BASE}${path}`, { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto(path, { waitUntil: "networkidle", timeout: 20000 });
     const hasNaN = await page.evaluate(() => {
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       while (walker.nextNode()) {
@@ -96,7 +94,7 @@ test("[polish] Every Flyga i Åre subsection loads from mobile menu", async ({ p
   const broken: string[] = [];
 
   for (const label of subsections) {
-    await page.goto(`${BASE}/kontakt`, { waitUntil: "networkidle" });
+    await page.goto("/kontakt", { waitUntil: "networkidle" });
 
     // Open menu
     await page.locator("header button[aria-label]").first().click();
@@ -127,7 +125,7 @@ test("[polish] Every Om klubben subsection loads from mobile menu", async ({ pag
   const broken: string[] = [];
 
   for (const label of subsections) {
-    await page.goto(`${BASE}/nyheter`, { waitUntil: "networkidle" });
+    await page.goto("/nyheter", { waitUntil: "networkidle" });
 
     await page.locator("header button[aria-label]").first().click();
     await page.waitForTimeout(400);
@@ -153,7 +151,7 @@ test("[polish] Every Om klubben subsection loads from mobile menu", async ({ pag
 // ═══════════════════════════════════════════════════════════
 
 test("[polish] Every footer link resolves", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const links = await page.locator("footer a[href^='/']").evaluateAll((els) =>
     els.map((el) => ({ href: el.getAttribute("href"), text: el.textContent?.trim() }))
@@ -163,7 +161,7 @@ test("[polish] Every footer link resolves", async ({ page }) => {
 
   for (const { href, text } of links) {
     if (!href) continue;
-    await page.goto(`${BASE}${href}`, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(href!, { waitUntil: "networkidle", timeout: 15000 });
     const notFound = await page.locator("text=Sidan hittades inte").count();
     if (notFound > 0) broken.push(`"${text}" → ${href}`);
   }
@@ -176,7 +174,7 @@ test("[polish] Every footer link resolves", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[polish] No 0-width images on home page", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.waitForTimeout(2000);
 
@@ -190,7 +188,7 @@ test("[polish] No 0-width images on home page", async ({ page }) => {
 });
 
 test("[polish] No 0-width images on nyheter page", async ({ page }) => {
-  await page.goto(`${BASE}/nyheter`, { waitUntil: "networkidle" });
+  await page.goto("/nyheter", { waitUntil: "networkidle" });
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.waitForTimeout(2000);
 
@@ -208,7 +206,7 @@ test("[polish] No 0-width images on nyheter page", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[polish] Home page doesn't flash 'Laddar' for more than 3 seconds", async ({ page }) => {
-  await page.goto(BASE, { waitUntil: "domcontentloaded" });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
 
   // Check after 3 seconds if loading text is still there
   await page.waitForTimeout(3000);
@@ -221,7 +219,7 @@ test("[polish] Home page doesn't flash 'Laddar' for more than 3 seconds", async 
 // ═══════════════════════════════════════════════════════════
 
 test("[polish] Competition winners table has years and names", async ({ page }) => {
-  await page.goto(`${BASE}/tavlingar`, { waitUntil: "networkidle" });
+  await page.goto("/tavlingar", { waitUntil: "networkidle" });
 
   // Check for year numbers in winner tables
   const body = await page.textContent("body");
@@ -230,7 +228,7 @@ test("[polish] Competition winners table has years and names", async ({ page }) 
 });
 
 test("[polish] Competition rules are listed", async ({ page }) => {
-  await page.goto(`${BASE}/tavlingar`, { waitUntil: "networkidle" });
+  await page.goto("/tavlingar", { waitUntil: "networkidle" });
 
   // Should have bullet points or rule items
   const body = await page.textContent("body");
@@ -247,7 +245,7 @@ test("[polish] Competition rules are listed", async ({ page }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("[polish] Radio frequencies are formatted correctly", async ({ page }) => {
-  await page.goto(`${BASE}/kontakt`, { waitUntil: "networkidle" });
+  await page.goto("/kontakt", { waitUntil: "networkidle" });
 
   const body = await page.textContent("body");
   expect(body).toContain("MHz");
@@ -255,7 +253,7 @@ test("[polish] Radio frequencies are formatted correctly", async ({ page }) => {
 });
 
 test("[polish] Emergency contacts show phone numbers", async ({ page }) => {
-  await page.goto(`${BASE}/kontakt`, { waitUntil: "networkidle" });
+  await page.goto("/kontakt", { waitUntil: "networkidle" });
 
   const body = await page.textContent("body");
   expect(body).toContain("112");
@@ -268,7 +266,7 @@ test("[polish] Emergency contacts show phone numbers", async ({ page }) => {
 
 test("[polish] Button hover changes appearance", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const btn = page.locator('a[href="/bli-medlem"]').first();
   if ((await btn.count()) === 0) return;
@@ -290,7 +288,7 @@ test("[polish] Button hover changes appearance", async ({ page }) => {
 
 test("[polish] First content visible within 2 seconds", async ({ page }) => {
   const start = Date.now();
-  await page.goto(BASE, { waitUntil: "domcontentloaded" });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
 
   // Wait for any text to appear
   await page.waitForSelector("h1, h2, p, a", { timeout: 5000 });

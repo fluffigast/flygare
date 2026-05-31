@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-
 test("Crawl all internal links — every link resolves, no 404s, no dead ends", async ({ page }) => {
   const visited = new Set<string>();
   const broken: string[] = [];
@@ -13,7 +11,7 @@ test("Crawl all internal links — every link resolves, no 404s, no dead ends", 
     if (visited.has(normalizedUrl)) continue;
     visited.add(normalizedUrl);
 
-    const res = await page.goto(`${BASE}${normalizedUrl}`, { waitUntil: "networkidle", timeout: 15000 }).catch(() => null);
+    const res = await page.goto(normalizedUrl, { waitUntil: "networkidle", timeout: 15000 }).catch(() => null);
 
     if (!res || res.status() >= 400) {
       broken.push(`${normalizedUrl} (from ${from}) → ${res?.status() ?? "timeout"}`);
@@ -53,7 +51,7 @@ test("Crawl all internal links — every link resolves, no 404s, no dead ends", 
 
 test("Verify all nav dropdown links resolve", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
   const navSections = ["Flyga i Åre", "Om klubben", "Övrigt"];
   const brokenLinks: string[] = [];
@@ -74,7 +72,7 @@ test("Verify all nav dropdown links resolve", async ({ page }) => {
       if (!href || href.startsWith("http")) continue;
 
       // Navigate and check
-      const res = await page.goto(`${BASE}${href}`, { waitUntil: "networkidle", timeout: 10000 }).catch(() => null);
+      const res = await page.goto(href!, { waitUntil: "networkidle", timeout: 10000 }).catch(() => null);
       const status = res?.status() ?? 0;
       const is404Page = await page.locator("text=Sidan hittades inte").count();
 
@@ -83,7 +81,7 @@ test("Verify all nav dropdown links resolve", async ({ page }) => {
       }
 
       // Go back to home for next hover
-      await page.goto(BASE, { waitUntil: "networkidle" });
+      await page.goto("/", { waitUntil: "networkidle" });
     }
   }
 
@@ -97,7 +95,7 @@ test("Verify all nav dropdown links resolve", async ({ page }) => {
 });
 
 test("CMS live preview URLs resolve on frontend", async ({ request, page }) => {
-  const CMS_API = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io/api";
+  const CMS_API = process.env.CMS_URL ? process.env.CMS_URL + "/api" : "http://localhost:3001/api";
 
   // Get the live preview route map from the CMS config by testing each known mapping
   const previewRoutes = [
@@ -122,7 +120,7 @@ test("CMS live preview URLs resolve on frontend", async ({ request, page }) => {
   const broken: string[] = [];
 
   for (const route of previewRoutes) {
-    const res = await page.goto(`${BASE}${route.expectedPath}`, { waitUntil: "networkidle", timeout: 10000 }).catch(() => null);
+    const res = await page.goto(route.expectedPath, { waitUntil: "networkidle", timeout: 10000 }).catch(() => null);
     const status = res?.status() ?? 0;
     const is404 = await page.locator("text=Sidan hittades inte").count();
 

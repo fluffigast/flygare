@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const CMS = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io";
-const FRONTEND = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
+const CMS = process.env.CMS_URL || "http://localhost:3001";
 
 test.describe("CMS Admin", () => {
   test.beforeEach(async ({ page }) => {

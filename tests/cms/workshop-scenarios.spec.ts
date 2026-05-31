@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const BASE = "https://brave-tree-08c5f0c03.4.azurestaticapps.net";
-const CMS = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io";
+const CMS = process.env.CMS_URL || "http://localhost:3001";
 const CMS_API = `${CMS}/api`;
 
 // ═══════════════════════════════════════════════════════════
@@ -255,8 +254,8 @@ test.describe("Pontus edits navigation", () => {
 // ═══════════════════════════════════════════════════════════
 
 test.describe("Slow network visitor", () => {
-  test("Home page loads with throttled network", async ({ browser }) => {
-    const context = await browser.newContext();
+  test("Home page loads with throttled network", async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ baseURL });
     const page = await context.newPage();
 
     // Simulate slow 3G
@@ -268,7 +267,7 @@ test.describe("Slow network visitor", () => {
       latency: 400,
     });
 
-    await page.goto(BASE, { waitUntil: "domcontentloaded", timeout: 30000 });
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 30000 });
 
     // Should at least show the shell
     const body = await page.textContent("body");
@@ -282,15 +281,15 @@ test.describe("Slow network visitor", () => {
 // Multiple tabs — opening site in two tabs doesn't break
 // ═══════════════════════════════════════════════════════════
 
-test("Two tabs viewing different pages simultaneously", async ({ browser }) => {
-  const context = await browser.newContext();
+test("Two tabs viewing different pages simultaneously", async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL });
 
   const page1 = await context.newPage();
   const page2 = await context.newPage();
 
   await Promise.all([
-    page1.goto(`${BASE}/kontakt`, { waitUntil: "networkidle" }),
-    page2.goto(`${BASE}/nyheter`, { waitUntil: "networkidle" }),
+    page1.goto("/kontakt", { waitUntil: "networkidle" }),
+    page2.goto("/nyheter", { waitUntil: "networkidle" }),
   ]);
 
   // Both should render correctly
@@ -308,7 +307,7 @@ test("Two tabs viewing different pages simultaneously", async ({ browser }) => {
 // ═══════════════════════════════════════════════════════════
 
 test("Refresh on a subpage keeps you on that page", async ({ page }) => {
-  await page.goto(`${BASE}/flyga-i-are/flygregler`, { waitUntil: "networkidle" });
+  await page.goto("/flyga-i-are/flygregler", { waitUntil: "networkidle" });
 
   // Verify content loaded
   await expect(page.locator("h2").first()).toBeVisible();
@@ -322,7 +321,7 @@ test("Refresh on a subpage keeps you on that page", async ({ page }) => {
 });
 
 test("Refresh on /om/styrelsen keeps you there", async ({ page }) => {
-  await page.goto(`${BASE}/om/styrelsen`, { waitUntil: "networkidle" });
+  await page.goto("/om/styrelsen", { waitUntil: "networkidle" });
   await expect(page.locator("text=Ordförande").first()).toBeVisible();
 
   await page.reload({ waitUntil: "networkidle" });
