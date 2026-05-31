@@ -19,19 +19,19 @@ const INFO_CARDS = [
     to: "/flyga-i-are/startplatser",
     title: "Starter och landningar",
     desc: "Etablerade start- och landningsplatser, lokala förhållanden och tips för trygg takeoff och säkra landningar.",
-    imgId: "info-starter",
+    img: "/assets/takeoff-hero.jpg",
   },
   {
-    to: "/flyga-i-are/vader",
-    title: "Väder och vind",
-    desc: "Råd om hur man tolkar väder, vindriktningar och termik i Årefjällen. Viktigt för att planera flygning och hålla säkerheten hög.",
-    imgId: "info-vader",
+    to: "/flyga-i-are/klubbuss",
+    title: "Klubbussen",
+    desc: "Regler och avgifter för klubbussen som kör dig upp på berget. Fullvärdigt medlemskap krävs.",
+    img: "/assets/klubbussen.jpg",
   },
   {
-    to: "/flyga-i-are/flygregler",
-    title: "Säkerhet och regler",
-    desc: "Lokala regler, nationella bestämmelser och säkerhetsrutiner för skärm- och drakflyg. Fokus på ansvar och förebyggande åtgärder.",
-    imgId: "info-regler",
+    to: "/flyga-i-are/xc",
+    title: "Luftrum och XC",
+    desc: "Information om kontrollerat luftrum, XC-rutiner och samarbetsavtalet med ATS Östersund.",
+    img: "/assets/luftrum.jpg",
   },
 ];
 
@@ -58,7 +58,7 @@ const HomeView: React.FC = () => {
       >
         <div
           className={`absolute inset-0 bg-cover bg-center transition-transform duration-[6s] ease-out ${heroIn ? "scale-100" : "scale-[1.02]"}`}
-          style={{ backgroundImage: `url(${getPlaceholderImage("home-hero")})` }}
+          style={{ backgroundImage: `url(/assets/hero-paragliding.jpg)` }}
         />
         <div
           className="absolute inset-0"
@@ -89,7 +89,7 @@ const HomeView: React.FC = () => {
           <div
             className="w-full bg-cover bg-center"
             style={{
-              backgroundImage: `url(${getPlaceholderImage("welcome-img")})`,
+              backgroundImage: `url(/assets/news-fjall.jpg)`,
               aspectRatio: "840 / 360",
               minHeight: 200,
             }}
@@ -200,7 +200,7 @@ const HomeView: React.FC = () => {
               <div
                 className="info-card-img w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${getPlaceholderImage(card.imgId)})`,
+                  backgroundImage: `url(${card.img})`,
                   aspectRatio: "480 / 330",
                   backgroundColor: "#e9eef3",
                 }}
