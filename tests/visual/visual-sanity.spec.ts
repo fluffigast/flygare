@@ -49,17 +49,18 @@ test("[visual] Stats section has dark background", async ({ page }) => {
   const stats = page.locator("text=1975").first();
   if ((await stats.count()) === 0) return;
 
-  const hasDarkBg = await stats.evaluate((el) => {
-    let parent = el.parentElement;
-    while (parent) {
-      const cls = parent.className?.toString() ?? "";
-      if (cls.includes("bg-primary") || cls.includes("bg-")) return true;
-      parent = parent.parentElement;
-    }
-    return false;
+  // Check the text is light colored (white on dark background)
+  const textColor = await stats.evaluate((el) => {
+    const style = window.getComputedStyle(el);
+    return style.color;
   });
 
-  expect(hasDarkBg, "Stats section should have bg-primary class").toBe(true);
+  // On a dark bg, the text should be light (high R,G,B values)
+  const match = textColor.match(/(\d+),\s*(\d+),\s*(\d+)/);
+  if (match) {
+    const brightness = (parseInt(match[1]) + parseInt(match[2]) + parseInt(match[3])) / 3;
+    expect(brightness, "Stats text should be light (on dark bg)").toBeGreaterThan(150);
+  }
 });
 
 test("[visual] No element wider than viewport on mobile", async ({ page }) => {
