@@ -2,6 +2,19 @@ import React from "react";
 import { Link } from "react-router";
 import { ArrowRightIcon } from "lucide-react";
 import NewsSlider from "../../blocks/news-slider/news-slider";
+import { useFlyingGuide, useGlobalLivePreview } from "../../hooks/useCMS";
+
+function richTextToString(value: any): string {
+  if (typeof value === "string") return value;
+  if (value?.root?.children) {
+    return value.root.children
+      .map((block: any) =>
+        block.children?.map((child: any) => child.text ?? "").join("") ?? ""
+      )
+      .join("\n\n");
+  }
+  return "";
+}
 
 const INFO_CARDS = [
   {
@@ -42,7 +55,22 @@ const INFO_CARDS = [
   },
 ];
 
+const localGuide = {
+  winterTitle: "Flyga på vintern",
+  winterContent: "Vintern erbjuder fantastiska förhållanden med laminärt flöde och ofta starka inversioner.",
+  summerTitle: "Flyga på sommaren",
+  summerContent: "Sommaren bjuder på termik från mars till oktober. Bästa förhållandena hittas vanligtvis på eftermiddagen.",
+};
+
 const FlyingGuideIndex: React.FC = () => {
+  const { data: cmsGuide } = useFlyingGuide(localGuide);
+  const guide = useGlobalLivePreview(cmsGuide);
+
+  const winterTitle = guide.winterTitle ?? localGuide.winterTitle;
+  const winterContent = richTextToString(guide.winterContent) || localGuide.winterContent;
+  const summerTitle = guide.summerTitle ?? localGuide.summerTitle;
+  const summerContent = richTextToString(guide.summerContent) || localGuide.summerContent;
+
   return (
     <div className="w-full">
       {/* Editorial header */}
@@ -112,6 +140,28 @@ const FlyingGuideIndex: React.FC = () => {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Seasonal info from CMS FlyingGuide */}
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-16 md:mt-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+          <div className="flex flex-col gap-3" style={{ borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: 24 }}>
+            <h2 className="font-serif font-bold text-xl md:text-[28px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }} data-payload-field="winterTitle">
+              {winterTitle}
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }} data-payload-field="winterContent">
+              {winterContent}
+            </p>
+          </div>
+          <div className="flex flex-col gap-3" style={{ borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: 24 }}>
+            <h2 className="font-serif font-bold text-xl md:text-[28px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }} data-payload-field="summerTitle">
+              {summerTitle}
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }} data-payload-field="summerContent">
+              {summerContent}
+            </p>
+          </div>
         </div>
       </section>
 

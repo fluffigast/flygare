@@ -35,7 +35,7 @@ const NewsGridItem: React.FC<NewsGridItemProps> = ({
             </p>
             <h3>{title}</h3>
             <p className="text-muted-foreground">
-              {format(publishedAt, "d MMMM, yyyy", { locale: sv })}
+              {format(new Date(publishedAt), "d MMMM, yyyy", { locale: sv })}
             </p>
           </div>
           <p className="text-foreground">{description}</p>

@@ -51,7 +51,7 @@ export const news = [
     content:
       "Klubbbussen är nu genomgången och redo för säsongen. Den används främst vid gemensamma flygdagar och underlättar transport av piloter och utrustning till startplatser.\n\nInformation om bokning, användning och ansvar finns samlad under sektionen Klubbbussen. Följ rutinerna så att bussen kan fortsätta vara en resurs för alla.",
     publishedAt: "2026-03-15",
-    category: "Klubbussen",
+    category: "Klubben",
   },
   {
     id: "6",

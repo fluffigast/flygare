@@ -33,7 +33,7 @@ const ArticlesSingleView: React.FC<ArticlesSingleViewProps> = ({}) => {
           <h1 className="text-2xl md:text-4xl lg:text-5xl mb-2">{articlesItem?.title}</h1>
           <p className="text-muted-foreground">
             Publicerad den{" "}
-            {format(articlesItem?.updatedAt, "d MMMM, yyyy", { locale: sv })}
+            {format(new Date(articlesItem?.updatedAt), "d MMMM, yyyy", { locale: sv })}
           </p>
         </div>
         <Stack gap={8} direction="column" className="p-4 md:p-16">

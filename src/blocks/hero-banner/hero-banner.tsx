@@ -20,7 +20,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
     <section className="bg-primary text-primary-foreground aspect-[3/1] md:aspect-[4/1] overflow-hidden relative">
       <img
         src={imageUrl}
-        alt="Hero banner"
+        alt={title ?? ""}
         className="w-full h-full object-cover"
       />
       {(title || subtitle) && (

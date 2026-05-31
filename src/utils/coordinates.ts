@@ -10,8 +10,8 @@ export const formatWgs84 = (p: { lat: number; lon: number }): string => {
 };
 
 export const formatSweref99 = (p: { lat: number; lon: number }): string => {
-  const east = Math.round(p.lat);
-  const north = Math.round(p.lon);
+  const east = Math.round(p.lon);
+  const north = Math.round(p.lat);
   return `${east.toLocaleString("sv-SE")} m Ö, ${north.toLocaleString(
     "sv-SE"
   )} m N`;

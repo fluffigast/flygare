@@ -13,12 +13,20 @@ export const ContactInfo: GlobalConfig = {
       defaultValue: 'info@flygare.nu',
     },
     {
-      name: 'facebookUrl',
-      type: 'text',
+      name: 'facebook',
+      type: 'group',
+      fields: [
+        { name: 'label', type: 'text', defaultValue: 'Facebook — Åre Skärmflygklubb' },
+        { name: 'url', type: 'text' },
+      ],
     },
     {
-      name: 'youtubeUrl',
-      type: 'text',
+      name: 'youtube',
+      type: 'group',
+      fields: [
+        { name: 'label', type: 'text', defaultValue: 'YouTube — Åre Skärmflygklubb' },
+        { name: 'url', type: 'text' },
+      ],
     },
     {
       name: 'radioFrequencies',

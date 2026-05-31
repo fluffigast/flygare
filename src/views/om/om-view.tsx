@@ -58,14 +58,68 @@ const OmView: React.FC = () => {
             Historia
           </h2>
           <div className="flex flex-col gap-6">
-            {milestones.map((milestone: any) => (
-              <div key={milestone.year} className="flex gap-6 items-baseline">
+            {milestones.map((milestone: any, i: number) => (
+              <div key={milestone.id ?? `${milestone.year}-${i}`} className="flex gap-6 items-baseline">
                 <p className="font-serif text-2xl shrink-0 w-16" style={{ color: "var(--ink-2, #0f172b)" }}>{milestone.year}</p>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>{milestone.text}</p>
               </div>
             ))}
           </div>
         </section>
+
+        {/* Records */}
+        {clubInfo.records?.length > 0 && (
+          <section className="mt-16" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
+            <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
+              Rekord & fakta
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {clubInfo.records.map((r: any) => (
+                <div key={r.title} className="flex flex-col gap-1">
+                  <p className="font-serif font-bold text-2xl" style={{ color: "var(--ink-2, #0f172b)" }}>{r.value}</p>
+                  <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>{r.title}{r.year ? ` (${r.year})` : ""}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Club products */}
+        {(clubInfo.clubProducts || clubInfo.shopUrl) && (
+          <section className="mt-16" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
+            <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
+              Klubbprodukter
+            </h2>
+            {clubInfo.clubProducts && (
+              <p className="text-base leading-relaxed mb-4" style={{ color: "var(--slate, #62748e)" }}>
+                {richTextToString(clubInfo.clubProducts)}
+              </p>
+            )}
+            {clubInfo.shopUrl && (
+              <a
+                href={clubInfo.shopUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm underline hover:opacity-70 transition-opacity"
+                style={{ color: "var(--ink, #020618)" }}
+              >
+                Besök webbshopen
+              </a>
+            )}
+          </section>
+        )}
+
+        {/* Stadgar */}
+        {clubInfo.stadgar && (
+          <section className="mt-16" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
+            <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
+              Stadgar
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+              {richTextToString(clubInfo.stadgar)}
+            </p>
+          </section>
+        )}
       </div>
     </div>
   );

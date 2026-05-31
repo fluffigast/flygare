@@ -176,8 +176,9 @@ export function transformSMHIData(
         windCount > 0
           ? ((avgWindDirRad * 180) / Math.PI + 360) % 360
           : 0;
-      const totalPrecip =
-        precipCount > 0 ? Math.round(totalPrecipitation * 10) / 10 : 0;
+      // mean_precipitation_intensity is mm/h — average the rate for display
+      const avgPrecip =
+        precipCount > 0 ? Math.round((totalPrecipitation / precipCount) * 10) / 10 : 0;
 
       const windDir = getWindDirection(avgWindDir);
       const minWind = Math.round(avgWindSpeed);
@@ -189,7 +190,7 @@ export function transformSMHIData(
         windDirection: windDir,
         windStrength: `${minWind}-${maxWind} m/s`,
         temperature: `${avgTemp}°C`,
-        precipitation: `${totalPrecip} mm`,
+        precipitation: `${avgPrecip} mm/h`,
       });
 
       dayCount++;

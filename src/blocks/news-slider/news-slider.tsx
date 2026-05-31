@@ -2,16 +2,24 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { RadioGroup } from "radix-ui";
 import React, { useState, useRef, useEffect } from "react";
 import Separator from "../../components/separator";
-import { news } from "../../data/news";
+import { news as localNews } from "../../data/news";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import NewsSliderItem from "./news-slider-item";
+import { useNews } from "../../hooks/useCMS";
 
 export interface NewsSliderProps {}
 
 const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
-  const newsItems = news.slice(0, 12);
+  const { data: cmsNews } = useNews(localNews);
+  const newsItems = cmsNews.slice(0, 12).map((item: any) => ({
+    ...item,
+    id: item.id?.toString() ?? item.slug ?? "unknown",
+    slug: item.slug ?? item.id?.toString(),
+    publishedAt: item.publishedAt ?? item.date ?? item.createdAt,
+    excerpt: item.description ?? item.excerpt ?? "",
+  }));
   const itemsPerPage = 3;
-  const totalPages = Math.ceil(newsItems.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(newsItems.length / itemsPerPage));
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState<"left" | "right">("right");
   const prevPageRef = useRef(currentPage);
@@ -48,7 +56,7 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
             onClick={handlePrevious}
             disabled={currentPage === 0}
             className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted-foreground rounded transition-colors"
-            aria-label="Previous"
+            aria-label="Föregående"
           >
             <ChevronLeftIcon />
           </button>
@@ -56,7 +64,7 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
             onClick={handleNext}
             disabled={currentPage === totalPages - 1}
             className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted-foreground rounded transition-colors"
-            aria-label="Next"
+            aria-label="Nästa"
           >
             <ChevronRightIcon />
           </button>
@@ -73,7 +81,7 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
             >
               <NewsSliderItem
                 {...item}
-                imageUrl={getPlaceholderImage(item.id)}
+                imageUrl={item.image?.url ?? item.image?.sizes?.thumbnail?.url ?? getPlaceholderImage(item.id)}
               />
             </div>
           ))}
