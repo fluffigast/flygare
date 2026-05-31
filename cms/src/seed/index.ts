@@ -574,7 +574,7 @@ async function seed() {
     slug: 'club-info',
     data: {
       history: richText(
-        'Åre Drakflygklubb bildades 1975 och är en av Sveriges äldsta drakflygklubbar. Under 80-talet dominerade draken, men på 90-talet tog skärmflyget över. Idag flyger ca 95% skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå. Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun.',
+        'Åre Drakflygklubb bildades redan 1975 och sedan 1988 har även Åre Skärmflygklubb funnits. 1995 slogs klubbarna ihop och fick nuvarande namn Åre skärm- och drakflygklubb. Under 1980-talet dominerades flygningen av drakar, men under 1990-talet tog skärmarna över mer och mer — idag görs 95 % av all flygning från Skutan med skärm. Klubben har ca 100 medlemmar, varav ca 30 bor i Åre kommun. Under åren har ett antal startplatser iordningställts, landningsplatsen Draklanda har växt och blivit en väletablerad officiell landningsplats, och ett flertal tävlingar har arrangerats — bl.a. SM i distansflyg, SM/Nordiska mästerskap i akrobatik och den återkommande tävlingen Out and Return. Distansrekordet för skärmflygare är drygt 230 km (Åre–Sollefteå) och för hängflygare 116 km.',
       ),
       records: [
         { title: 'Distansrekord skärm', value: '230 km', year: 2020 },
@@ -591,13 +591,13 @@ async function seed() {
 
   // ── Pages (placeholder content) ────────────────────────────────
   const pagesSeed = [
-    { title: 'Flygregler', slug: 'flygregler', category: 'flygregler' as const, body: richText('Sammanfattning av de viktigaste flygreglerna. Samarbetsavtalet med Skistar. Regler för kommersiella aktörer.'), order: 1 },
-    { title: 'Säkerhet & nödsituation', slug: 'sakerhet', category: 'sakerhet' as const, body: richText('Rutiner vid nödsituation. Säkerhet och ansvar. Etik och hänsyn.'), order: 2 },
-    { title: 'Cross country & luftrum', slug: 'xc', category: 'xc' as const, body: richText('Information om XC-flygning, luftrumskartor, rutiner för flygning i kontrollerat luftrum, länkar och telefonnummer.'), order: 3 },
-    { title: 'Acro', slug: 'acro', category: 'acro' as const, body: richText('Information om acroflygning, räddningsbåt, acrobox.'), order: 4 },
-    { title: 'Speedrider', slug: 'speedrider', category: 'speedrider' as const, body: richText('Information om speedriding i Åre.'), order: 5 },
-    { title: 'Hängflyg', slug: 'hangflyg', category: 'hangflyg' as const, body: richText('Information om hängflygning från Skutan.'), order: 6 },
-    { title: 'Paramotor', slug: 'paramotor', category: 'paramotor' as const, body: richText('Information om paramotorflygning i Åre.'), order: 7 },
+    { title: 'Flygregler', slug: 'flygregler', category: 'flygregler' as const, body: richText('Vid nerflyg utan höjdvinst ska alltid kabinbanevajrarna passeras söder om stötta 1. Piloter som är lokalt oerfarna, elevlicensare och P1:or följer alltid denna regel. Samarbetsavtalet med Skistar reglerar körning på Skistarvägar — maxhastighet 40 km/h, ingen uppkörning när liftarna körs för cykling, och grinden ska låsas efter nedkörning. Draklanda är den officiella landningsplatsen; alla andra landningar betraktas som utelandningar vid XC-flyg.'), order: 1 },
+    { title: 'Säkerhet & nödsituation', slug: 'sakerhet', category: 'sakerhet' as const, body: richText('Vid nödsituation: ring 112 (SOS Alarm) för akutvård vid allvarlig sjukdom eller skada — de kan även stänga av strömmen i kontaktledningarna. Ring 1177 för sjukvårdsrådgivning vid lindrigare skador. Trafikverkets driftcentral i Ånge (+46 690 523 20) leder tågtrafiken och kan stänga av strömmen om du landat nära järnvägen. Vid landning på Draklanda vid öppet vatten krävs minst 25 höjdflygningar om piloten inte flyger under instruktörs ansvar. Landning nära bäckutloppet på Åresjön är förbjuden — isen är extremt svag där.'), order: 2 },
+    { title: 'Cross country & luftrum', slug: 'xc', category: 'xc' as const, body: richText('Åre skärmflygklubb har ett samarbetsavtal med ATS Östersund för flygning inom ESNZ TMA, sektorerna Tore 4 och Tore 5 upp till FL 95 (daterat 2022-03-30). Dagen före: mejla ats.ostersund@lfv.se med planerat område, höjd, in- och utfartstider, rutt, radiofrekvens samt telefonnummer för mark och luft. Kontrollera öppettider på aro.lfv.se (tider i UTC). Flygdagen: ring tornet 08-511 886 17 strax innan start för klartecken. Om NOTAM visar öppet men tornet inte svarar efter två försök med fem minuters intervall, kontakta WS ATCC 08-858 547 00. Avgång och ändringar rapporteras omgående till ATS per telefon.'), order: 3 },
+    { title: 'Acro', slug: 'acro', category: 'acro' as const, body: richText('Information om acroflygning, räddningsbåt och acrobox i Åre.'), order: 4 },
+    { title: 'Speedrider', slug: 'speedrider', category: 'speedrider' as const, body: richText('Information om speedriding i Åreområdet. Kontakta klubben för aktuella regler.'), order: 5 },
+    { title: 'Hängflyg', slug: 'hangflyg', category: 'hangflyg' as const, body: richText('Hängflygning har lång tradition på Åreskutan — klubben grundades 1975 som Åre Drakflygklubb. Under 1980-talet dominerades flygningen från Skutan av drakar, men på 1990-talet tog skärmarna över och idag görs ca 95 % av all flygning med skärm. Startplatserna är anpassade för båda typerna och hängflygare har generellt bredare vindtolerans. Distansrekordet för hängflygare från Åreskutan är 116 km.'), order: 6 },
+    { title: 'Paramotor', slug: 'paramotor', category: 'paramotor' as const, body: richText('Information om paramotorflygning i Åreområdet. Kontakta klubben för aktuella regler.'), order: 7 },
     { title: 'Klubbprodukter', slug: 'klubbprodukter', category: 'klubbprodukter' as const, body: richText('Klubbtröjor och merchandise. Beställ via vår webbshop.'), order: 1 },
     { title: 'Stadgar', slug: 'stadgar', category: 'stadgar' as const, body: richText('Klubbens stadgar. Se dokumentarkivet för fullständigt dokument.'), order: 2 },
   ]
