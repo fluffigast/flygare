@@ -61,6 +61,22 @@ const HomeView: React.FC = () => {
             background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
           }}
         />
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-16">
+          <p
+            className="font-serif italic text-white/90 mb-1"
+            style={{ fontSize: "clamp(20px, 2.5vw, 40px)" }}
+            data-payload-field="heroTagline"
+          >
+            {site.heroTagline ?? localSiteSettings.heroTagline}
+          </p>
+          <h1
+            className="font-serif font-bold text-white leading-[0.96] tracking-tight"
+            style={{ fontSize: "clamp(32px, 6vw, 96px)", letterSpacing: "-0.02em" }}
+            data-payload-field="heroDescription"
+          >
+            {site.heroDescription ?? localSiteSettings.heroDescription}
+          </h1>
+        </div>
         {/* Footer bar */}
         <div className="absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/70 text-xs tracking-wide">
           <span className="inline-flex items-center gap-2">
@@ -114,15 +130,6 @@ const HomeView: React.FC = () => {
                 </p>
               </div>
               <div className="flex flex-col gap-3 mt-5">
-                <a
-                  href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-serif transition-all hover:-translate-y-px"
-                  style={{ background: "#000", color: "#fff" }}
-                >
-                  Bli medlem
-                </a>
                 <Link
                   to="/flyga-i-are/flygregler"
                   className="group block px-5 py-4 transition-colors"
@@ -135,6 +142,15 @@ const HomeView: React.FC = () => {
                     Viktig info till alla som flyger i Åre — läs innan du startar.
                   </p>
                 </Link>
+                <a
+                  href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-serif transition-all hover:-translate-y-px"
+                  style={{ background: "#000", color: "#fff" }}
+                >
+                  Bli medlem
+                </a>
                 <Link to="/bli-medlem" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
                   Mer information →
                 </Link>
