@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
           }}
         >
           <span>&copy; 2026 Åre Skärm- och Drakflygklubb</span>
-          <span>Org.nr 802535-5765 &middot; info@areflygklubb.se</span>
+          <span>Org.nr 893203-0847 &middot; info@flygare.nu</span>
         </div>
       </div>
     </footer>
