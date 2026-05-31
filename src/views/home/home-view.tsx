@@ -5,18 +5,19 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
+import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
+
+const localSiteSettings = {
+  heroTagline: "Åre Skärm- och Drakflygklubb",
+  heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975",
+};
+
 const INFO_CARDS = [
   {
     to: "/flyga-i-are/startplatser",
     title: "Startplatser",
     desc: "Etablerade start- och landningsplatser i Åreområdet med karta, koordinater och lokala förhållanden.",
     img: "/assets/takeoff-hero.jpg",
-  },
-  {
-    to: "/flyga-i-are/flygregler",
-    title: "Flygregler",
-    desc: "Lokala regler, Skistar-avtal och säkerhetsrutiner. Läs innan du flyger.",
-    img: "/assets/hero-paragliding.jpg",
   },
   {
     to: "/flyga-i-are/klubbuss",
@@ -33,6 +34,9 @@ const INFO_CARDS = [
 ];
 
 const HomeView: React.FC = () => {
+  const { data: cmsSite } = useSiteSettings(localSiteSettings);
+  const site = useGlobalLivePreview(cmsSite);
+
   const [heroIn, setHeroIn] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setHeroIn(true), 60);
