@@ -28,7 +28,7 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden @md:flex flex-1 items-center gap-4 justify-center">
+          <nav className="hidden @lg:flex flex-1 items-center gap-3 justify-center text-sm">
             {nav.sections.map((section: any) => {
               if (section.children?.length > 0) {
                 return (
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
             })}
           </nav>
 
-          <div className="hidden @md:flex flex-1 justify-end">
+          <div className="hidden @lg:flex flex-1 justify-end">
             <Button href="/bli-medlem">Bli medlem</Button>
           </div>
 
