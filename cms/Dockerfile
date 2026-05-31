@@ -25,14 +25,14 @@ WORKDIR /app
 COPY --from=builder /app /app
 
 ENV PAYLOAD_SECRET=build-time-seed-secret
-ENV NODE_ENV=production
 ARG PAYLOAD_ADMIN_PASSWORD=changeme123
 ENV PAYLOAD_ADMIN_PASSWORD=$PAYLOAD_ADMIN_PASSWORD
-
-# Payload with push:true auto-creates schema on getPayload()
 ENV DATABASE_URL=file:./data/seeded.db
 
+# Use development mode so push:true auto-creates schema
+ENV NODE_ENV=development
 RUN npx tsx src/seed/index.ts
+ENV NODE_ENV=production
 
 # ── Production stage ─────────────────────────────────────
 FROM node:22-alpine AS runner
