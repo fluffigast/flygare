@@ -1,18 +1,7 @@
 import React from "react";
 import Separator from "../../components/separator";
 import { useBusRules, useGlobalLivePreview } from "../../hooks/useCMS";
-
-const localBusRules = {
-  rules: [
-    { text: 'Fullvärdigt medlemskap krävs' },
-    { text: 'Max 4 passagerare + 1 förare' },
-    { text: 'Passageraravgift: 20 kr per tur (Swish till föraren)' },
-    { text: 'Ungdomar under 18: gratis (kräver 3+ betalande passagerare)' },
-    { text: 'Max 40 km/h på Skistarvägar' },
-    { text: 'Tanka vid OK/Q8 Åre (klubbkort i kassan)' },
-    { text: 'Dagsutflykter max 20 mil (längre kräver styrelsebeslut)' },
-  ],
-};
+import { busRules as localBusRules } from "../../data/bus-rules";
 
 const KlubbussView: React.FC = () => {
   const { data: cmsBusRules } = useBusRules(localBusRules);

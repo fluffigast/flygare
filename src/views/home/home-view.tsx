@@ -22,24 +22,40 @@ const HomeView: React.FC = () => {
     <div className="w-full overflow-x-hidden">
       <Header />
 
-      <HeroBanner
-        imageUrl={getPlaceholderImage("home-hero")}
-        title={site.heroTagline ?? localSiteSettings.heroTagline}
-        subtitle={site.heroDescription ?? localSiteSettings.heroDescription}
-        titleField="heroTagline"
-        subtitleField="heroDescription"
-      />
+      {/* Hero + About side by side */}
+      <div className="flex flex-col md:flex-row">
+        {/* Hero image — left */}
+        <div className="flex-1 relative overflow-hidden bg-primary min-h-[200px] md:min-h-[400px]">
+          <img
+            src={getPlaceholderImage("home-hero")}
+            alt="Paragliding i Åre"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex flex-col justify-end p-6 md:p-10">
+            <h1 className="font-serif text-2xl md:text-4xl text-white leading-tight" data-payload-field="heroTagline">
+              {site.heroTagline ?? localSiteSettings.heroTagline}
+            </h1>
+          </div>
+        </div>
+
+        {/* About — right */}
+        <div className="flex-1 flex flex-col justify-center p-6 md:p-10 bg-muted/30">
+          <p className="font-serif italic text-muted-foreground text-sm mb-2">Om klubben</p>
+          <p className="text-foreground leading-relaxed" data-payload-field="heroDescription">
+            Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben
+            funnits. Idag görs 95% av all flygning med skärm. Klubben har ca 100 aktiva
+            medlemmar varav 30 bor i Åre kommun.
+          </p>
+          <p className="text-foreground leading-relaxed mt-3">
+            Distansrekordet ligger på 230 km — Åre till Sollefteå.
+          </p>
+          <Link to="/om" className="text-sm text-primary hover:underline mt-4">
+            Mer om klubben →
+          </Link>
+        </div>
+      </div>
 
       <main className="@container max-w-2xl mx-auto px-4 flex flex-col py-8 md:py-12">
-
-        {/* About — short club intro */}
-        <section className="mb-8 md:mb-12 max-w-prose">
-          <p className="text-muted-foreground leading-relaxed">
-            Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits.
-            Idag görs 95% av all flygning med skärm. Klubben har ca 100 aktiva medlemmar varav
-            30 bor i Åre kommun. Distansrekordet ligger på 230 km — Åre till Sollefteå.
-          </p>
-        </section>
 
         {/* Flygregler notice */}
         <div className="border-l-4 border-primary pl-4 py-3 mb-8 md:mb-12">
@@ -84,7 +100,7 @@ const HomeView: React.FC = () => {
 
         <Separator />
 
-        {/* Nyheter — just the slider, it has its own heading */}
+        {/* Nyheter — slider has its own heading */}
         <div className="flex justify-end py-2">
           <Link to="/nyheter" className="text-sm text-muted-foreground hover:text-primary transition-colors">
             Alla nyheter →
