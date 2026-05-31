@@ -92,6 +92,7 @@ export default buildConfig({
     ClubInfo,
   ],
   db: sqliteAdapter({
+    push: true,
     busyTimeout: 5000,
     client: {
       url: process.env.DATABASE_URL!,

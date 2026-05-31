@@ -6,6 +6,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
+import { initClickToEdit } from "./utils/click-to-edit";
 import HomeView from "./views/home/home-view.tsx";
 import NewsView from "./views/news/news-view.tsx";
 import NewsSingleView from "./views/news/news-single/news-single-view.tsx";
@@ -25,6 +26,9 @@ import PageView from "./views/page/page-view.tsx";
 import AktiviteterView from "./views/aktiviteter/aktiviteter-view.tsx";
 import FotonView from "./views/ovrigt/foton-view.tsx";
 import DokumentView from "./views/ovrigt/dokument-view.tsx";
+
+// Enable click-to-edit when inside CMS live preview iframe
+initClickToEdit();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
