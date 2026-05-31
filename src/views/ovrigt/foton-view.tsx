@@ -21,7 +21,7 @@ const FotonView: React.FC = () => {
       <div className="flex flex-col gap-8">
         {photos.map((album: any) => (
           <section key={album.id ?? album.title} className="flex flex-col gap-4">
-            <h3 className="font-serif text-xl">{album.title} ({album.year})</h3>
+            <h3 data-payload-field="title" className="font-serif text-xl">{album.title} ({album.year})</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {album.images?.map((img: any, i: number) => (
                 <img

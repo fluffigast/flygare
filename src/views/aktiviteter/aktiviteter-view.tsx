@@ -24,7 +24,7 @@ const AktiviteterView: React.FC = () => {
         {activities.map((activity: any) => (
           <div key={activity.id ?? activity.slug} className="flex flex-col gap-2 p-4 rounded-lg border border-border">
             <div className="flex gap-3 items-center">
-              <h3 className="font-serif text-xl">{activity.title}</h3>
+              <h3 data-payload-field="title" className="font-serif text-xl">{activity.title}</h3>
               <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                 {activity.type}
               </span>
