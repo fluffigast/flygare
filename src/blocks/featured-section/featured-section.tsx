@@ -6,6 +6,8 @@ export interface FeaturedSectionProps {
   content: string;
   imageUrl: string;
   alignment: "left" | "right";
+  titleField?: string;
+  contentField?: string;
 }
 
 const FeaturedSection: React.FC<FeaturedSectionProps> = ({
@@ -13,6 +15,8 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
   content,
   imageUrl,
   alignment = "left",
+  titleField,
+  contentField,
 }) => {
   return (
     <section className="flex flex-col md:flex-row items-stretch gap-4">
@@ -22,8 +26,13 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
           alignment === "left" ? "order-1" : "md:order-2"
         )}
       >
-        <h2>{title}</h2>
-        <p className="text-muted-foreground whitespace-pre-line">{content}</p>
+        <h2 {...(titleField ? { "data-payload-field": titleField } : {})}>{title}</h2>
+        <p
+          className="text-muted-foreground whitespace-pre-line"
+          {...(contentField ? { "data-payload-field": contentField } : {})}
+        >
+          {content}
+        </p>
       </div>
       <div
         className={cn(
