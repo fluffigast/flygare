@@ -50,79 +50,33 @@ const HomeView: React.FC = () => {
       <Header />
 
       {/* ═══════════════════════════════════════════
-          HERO — 520px, disc badge, gradient, footer stats
+          HERO — clean image with text overlay
           ═══════════════════════════════════════════ */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ height: "clamp(320px, 40vw, 520px)", background: "var(--hero-ring)" }}
+        style={{ height: "clamp(280px, 35vw, 480px)" }}
       >
-        {/* Background image */}
         <div
-          className={`absolute inset-0 bg-cover bg-center ${heroIn ? "hero-img-animate" : ""}`}
-          style={{
-            backgroundImage: `url(${getPlaceholderImage("home-hero")})`,
-            transform: heroIn ? undefined : "scale(1.02)",
-          }}
+          className={`absolute inset-0 bg-cover bg-center transition-transform duration-[6s] ease-out ${heroIn ? "scale-100" : "scale-[1.02]"}`}
+          style={{ backgroundImage: `url(${getPlaceholderImage("home-hero")})` }}
         />
-
-        {/* Gradient overlay */}
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 65%, rgba(0,0,0,.18) 100%)",
-          }}
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(0,0,0,.08) 0%, transparent 40%, transparent 60%, rgba(0,0,0,.35) 100%)" }}
         />
-
-        {/* Centered disc badge */}
-        <div
-          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid place-items-center rounded-full ${heroIn ? "hero-disc-animate" : "opacity-0"}`}
-          style={{
-            width: "clamp(180px, 16vw, 250px)",
-            height: "clamp(180px, 16vw, 250px)",
-            background: "var(--hero-accent)",
-            border: "clamp(14px, 1.3vw, 21px) solid var(--hero-ring)",
-            boxShadow:
-              "0 30px 60px -20px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12) inset",
-          }}
-        >
-          {/* Inner ring */}
-          <div
-            className="absolute rounded-full pointer-events-none"
-            style={{
-              inset: "10px",
-              border: "1px solid rgba(255,255,255,.28)",
-            }}
-          />
-          <div className="relative z-10 text-center text-white px-3" style={{ opacity: 0.92, textShadow: "0 1px 2px rgba(0,0,0,.25)" }}>
-            <span
-              className="block font-serif font-bold uppercase tracking-[0.14em]"
-              style={{ fontSize: "clamp(9px, 0.75vw, 12px)", opacity: 0.8, whiteSpace: "nowrap", marginBottom: 4 }}
-            >
-              Åre{"\u00A0\u00B7\u00A0"}1200{"\u00A0"}m
-            </span>
-            <span
-              className="block font-serif italic leading-snug"
-              style={{ fontSize: "clamp(13px, 1.15vw, 18px)", letterSpacing: "0.02em" }}
-              data-payload-field="heroDescription"
-            >
-              {site.heroDescription ?? localSiteSettings.heroDescription}
-            </span>
-          </div>
-        </div>
-
-        {/* Footer stats bar */}
-        <div
-          className={`absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/85 text-xs md:text-[13px] tracking-wide ${heroIn ? "hero-foot-animate" : "opacity-0"}`}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          <span className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-            Åreskutan, Jämtland
-          </span>
-          <span className="hidden sm:inline-flex items-center gap-2">
-            Säsong 2026
-          </span>
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:p-14">
+          <h1
+            className="font-serif font-bold text-white text-2xl md:text-4xl lg:text-5xl leading-tight max-w-2xl"
+            data-payload-field="heroTagline"
+          >
+            {site.heroTagline ?? localSiteSettings.heroTagline}
+          </h1>
+          <p
+            className="text-white/80 text-sm md:text-base mt-2 max-w-lg"
+            data-payload-field="heroDescription"
+          >
+            {site.heroDescription ?? localSiteSettings.heroDescription}
+          </p>
         </div>
       </section>
 
