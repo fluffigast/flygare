@@ -71,16 +71,16 @@ const HomeView: React.FC = () => {
             background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
           }}
         />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-16">
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-14">
           <p
-            className="font-serif italic text-white/90 mb-1"
-            style={{ fontSize: "clamp(20px, 2.5vw, 40px)" }}
+            className="font-serif italic text-white/80 mb-1"
+            style={{ fontSize: "clamp(13px, 1.2vw, 18px)" }}
           >
             {site.heroTagline ?? localSiteSettings.heroTagline}
           </p>
           <h1
-            className="font-serif font-bold text-white leading-[0.96] tracking-tight"
-            style={{ fontSize: "clamp(24px, 3.5vw, 56px)", letterSpacing: "-0.02em" }}
+            className="font-serif font-bold text-white leading-tight"
+            style={{ fontSize: "clamp(18px, 2vw, 32px)", letterSpacing: "-0.01em" }}
             data-payload-field="heroDescription"
           >
             {site.heroDescription ?? localSiteSettings.heroDescription}
