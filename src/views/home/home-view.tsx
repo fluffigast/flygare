@@ -7,14 +7,6 @@ import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
-const localSiteSettings = {
-  heroTagline: "Åre Skärm- och Drakflygklubb",
-  heroDescription: "Skandinaviens mest spektakulära flygplats",
-  foundedYear: 1975,
-  aboutTitle: "Välkommen till Åre Skärm- och Drakflygklubb!",
-  aboutText: "Åre Skärm- och Drakflygklubb har i många år varit en samlingspunkt för flygare i fjällmiljö. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området.\n\nKlubben drivs av sina medlemmar och bygger på engagemang, erfarenhetsutbyte och flygglädje. Målet är enkelt — att fler ska få uppleva friheten i luften på ett tryggt och hållbart sätt.",
-};
-
 const INFO_CARDS = [
   {
     to: "/flyga-i-are/startplatser",
@@ -36,9 +28,21 @@ const INFO_CARDS = [
   },
 ];
 
+function richTextToString(value: any): string {
+  if (typeof value === "string") return value;
+  if (value?.root?.children) {
+    return value.root.children
+      .map((block: any) =>
+        block.children?.map((child: any) => child.text ?? "").join("") ?? ""
+      )
+      .join("\n\n");
+  }
+  return "";
+}
+
 const HomeView: React.FC = () => {
-  const { data: cmsSite } = useSiteSettings(localSiteSettings);
-  const site = useGlobalLivePreview(cmsSite);
+  const { data: site, loading } = useSiteSettings({});
+  const liveSite = useGlobalLivePreview(site);
 
   const [heroIn, setHeroIn] = useState(false);
   useEffect(() => {
@@ -46,11 +50,13 @@ const HomeView: React.FC = () => {
     return () => clearTimeout(t);
   }, []);
 
+  const aboutText = richTextToString(liveSite.aboutText);
+
   return (
     <div className="w-full overflow-x-hidden">
       <Header />
 
-      {/* ═══ HERO — editorial, full-bleed image + large type ═══ */}
+      {/* ═══ HERO ═══ */}
       <section
         className="relative w-full overflow-hidden"
         style={{ height: "clamp(360px, 42vw, 640px)", background: "#1a1e2a" }}
@@ -68,24 +74,24 @@ const HomeView: React.FC = () => {
             background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
           }}
         />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-10">
-          <p
-            className="font-serif italic text-white/70 mb-1"
-            style={{ fontSize: "clamp(11px, 1vw, 14px)" }}
-            data-payload-field="heroTagline"
-          >
-            {site.heroTagline ?? localSiteSettings.heroTagline}
-          </p>
-          <h1
-            className="font-serif font-bold text-white/90 leading-tight"
-            style={{ fontSize: "clamp(16px, 1.8vw, 26px)", letterSpacing: "-0.01em" }}
-            data-payload-field="heroDescription"
-          >
-            {site.heroDescription ?? localSiteSettings.heroDescription}{" "}
-            sedan {site.foundedYear ?? localSiteSettings.foundedYear}
-          </h1>
-        </div>
-        {/* Footer bar */}
+        {!loading && (
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-10">
+            <p
+              className="font-serif italic text-white/70 mb-1"
+              style={{ fontSize: "clamp(11px, 1vw, 14px)" }}
+              data-payload-field="heroTagline"
+            >
+              {liveSite.heroTagline}
+            </p>
+            <h1
+              className="font-serif font-bold text-white/90 leading-tight"
+              style={{ fontSize: "clamp(16px, 1.8vw, 26px)", letterSpacing: "-0.01em" }}
+              data-payload-field="heroDescription"
+            >
+              {liveSite.heroDescription} sedan {liveSite.foundedYear}
+            </h1>
+          </div>
+        )}
         <div className="absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/70 text-xs tracking-wide">
           <span className="inline-flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-white/50" />
@@ -95,7 +101,7 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══ WELCOME ROW — image left + text right ═══ */}
+      {/* ═══ WELCOME ROW ═══ */}
       <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-0">
           <div
@@ -108,12 +114,9 @@ const HomeView: React.FC = () => {
           />
           <div className="flex flex-col justify-center py-8 lg:py-10 lg:px-12">
             <h2 className="font-serif font-bold text-2xl md:text-[32px] leading-tight tracking-tight mb-5" data-payload-field="aboutTitle">
-              {site.aboutTitle ?? localSiteSettings.aboutTitle}
+              {liveSite.aboutTitle}
             </h2>
-            {(typeof (site.aboutText ?? localSiteSettings.aboutText) === "string"
-              ? (site.aboutText ?? localSiteSettings.aboutText).split("\n\n")
-              : [(site.aboutText ?? localSiteSettings.aboutText)?.root?.children?.map((b: any) => b.children?.map((c: any) => c.text ?? "").join("")).join("") ?? ""]
-            ).map((p: string, i: number) => (
+            {aboutText && aboutText.split("\n\n").map((p: string, i: number) => (
               <p key={i} className="text-base leading-relaxed mb-4" style={{ color: "var(--ink-2, #0f172b)" }} {...(i === 0 ? { "data-payload-field": "aboutText" } : {})}>
                 {p}
               </p>
@@ -129,9 +132,9 @@ const HomeView: React.FC = () => {
           style={{ borderTop: "1px solid var(--border, #e2e8f0)", borderBottom: "1px solid var(--border, #e2e8f0)" }}
         >
           {[
-            { label: "Medlemmar", value: site.statsMembers ?? "~100" },
-            { label: "Distansrekord", value: site.statsDistanceRecord ?? "230 km" },
-            { label: "Startplatser", value: site.statsLaunchSites ?? "9" },
+            { label: "Medlemmar", value: liveSite.statsMembers },
+            { label: "Distansrekord", value: liveSite.statsDistanceRecord },
+            { label: "Startplatser", value: liveSite.statsLaunchSites },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center gap-1">
               <p className="font-serif font-bold text-2xl md:text-[40px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }}>
@@ -143,7 +146,7 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══ WEATHER + MEMBERSHIP ═══ */}
+      {/* ═══ WEATHER + LINKS ═══ */}
       <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
         <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
@@ -156,9 +159,7 @@ const HomeView: React.FC = () => {
               >
                 <div className="flex-1">
                   <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Flygregler</p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                    Läs innan du flyger i Åre.
-                  </p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>Läs innan du flyger i Åre.</p>
                 </div>
                 <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
               </Link>
@@ -169,9 +170,7 @@ const HomeView: React.FC = () => {
               >
                 <div className="flex-1">
                   <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Bli medlem</p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                    600 kr/år. Startplatser, Draklanda, klubbussen.
-                  </p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>Startplatser, Draklanda, klubbussen.</p>
                 </div>
                 <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
               </Link>
@@ -180,7 +179,7 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══ NEWS CAROUSEL ═══ */}
+      {/* ═══ NEWS ═══ */}
       <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
         <div className="flex justify-end mb-2">
           <Link to="/nyheter" className="text-sm hover:underline" style={{ color: "var(--ink-2, #0f172b)", borderBottom: "1px solid", paddingBottom: 2 }}>
@@ -190,7 +189,7 @@ const HomeView: React.FC = () => {
         <NewsSlider />
       </section>
 
-      {/* ═══ FLYGA I ÅRE — info cards grid ═══ */}
+      {/* ═══ INFO CARDS ═══ */}
       <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
         <div className="flex justify-between items-end mb-6">
           <h2 className="font-serif font-bold text-[32px] leading-none tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
@@ -202,26 +201,14 @@ const HomeView: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {INFO_CARDS.map((card) => (
-            <Link
-              key={card.to}
-              to={card.to}
-              className="group flex flex-col transition-transform duration-200 hover:-translate-y-0.5"
-            >
+            <Link key={card.to} to={card.to} className="group flex flex-col transition-transform duration-200 hover:-translate-y-0.5">
               <div
                 className="w-full bg-cover bg-center transition-[filter] duration-200 group-hover:brightness-105"
-                style={{
-                  backgroundImage: `url(${card.img})`,
-                  aspectRatio: "480 / 330",
-                  backgroundColor: "#e9eef3",
-                }}
+                style={{ backgroundImage: `url(${card.img})`, aspectRatio: "480 / 330", backgroundColor: "#e9eef3" }}
               />
               <div className="py-5 flex flex-col gap-3">
-                <h3 className="font-serif font-bold text-[26px] leading-none tracking-tight" style={{ color: "var(--ink, #020618)" }}>
-                  {card.title}
-                </h3>
-                <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                  {card.desc}
-                </p>
+                <h3 className="font-serif font-bold text-[26px] leading-none tracking-tight" style={{ color: "var(--ink, #020618)" }}>{card.title}</h3>
+                <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>{card.desc}</p>
                 <div className="w-7 h-7 grid place-items-center transition-transform duration-200 group-hover:translate-x-1.5" style={{ color: "var(--ink, #020618)" }}>
                   <ArrowRightIcon size={22} strokeWidth={1.4} />
                 </div>
