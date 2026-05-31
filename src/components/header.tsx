@@ -86,7 +86,7 @@ const Header: React.FC = () => {
 
           {/* Mobile menu toggle */}
           <button
-            className="@md:hidden p-2"
+            className="@5xl:hidden p-2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? "Stäng meny" : "Öppna meny"}
           >
@@ -102,7 +102,7 @@ const Header: React.FC = () => {
 
         {/* Mobile nav */}
         {menuOpen && (
-          <nav className="@md:hidden flex flex-col gap-2 pt-4">
+          <nav className="@5xl:hidden flex flex-col gap-2 pt-4">
             {nav.sections.map((section: any) => (
               <div key={section.label}>
                 <Link to={section.path} className={`${navLinkClass} font-semibold`} onClick={closeAll}>
