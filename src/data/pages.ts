@@ -69,11 +69,11 @@ export const pages = [
       {
         title: 'Licenskrav',
         items: [
-          'Elevlicens — minst 10 flygningar (kursflygen räknas). Flyg under instruktörs ansvar.',
-          'Pilot 1 — minst 10 flygningar för förnyelse.',
-          'Pilot 2 — minst 10 flygningar och 5 timmars flygtid för förnyelse.',
+          'Elevkort — grundkurs genomförd. Självständig flygning i liten backe. Höjdflygning kräver sällskap av erfaren pilot.',
+          'Pilot 1 — minst 50 flygningar (berg, vinsch eller bogsering) plus lämplighetsutlåtande. Självständig flygning utan instruktör.',
+          'Pilot 2 — lämplighetsutlåtande som P2. Självständig start i Sverige och utomlands. Möjlighet till tävlings- och tandemlicens.',
+          'Förnyelse: P1 kräver 10 flygningar/12 mån. P2 kräver 10 flygningar + 5 timmars flygtid/12 mån.',
           'Giltig licens och försäkring krävs för att flyga från klubbens startplatser (Skistar-avtal).',
-          'Licensförnyelse sker via paragliding.se — registrera flygtid i PilotPortalen, betala årsavgift.',
         ],
       },
     ],
