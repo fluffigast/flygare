@@ -23,11 +23,11 @@ const PageView: React.FC = () => {
   return (
     <div className="max-w-2xl px-4 flex gap-8 md:gap-16 flex-col w-full py-8 md:py-16">
       <section className="flex flex-col gap-6">
-        <h2 className="font-serif text-3xl">{title}</h2>
+        <h2 className="font-serif text-3xl" data-payload-field="title">{title}</h2>
         {typeof body === "string" ? (
-          <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
+          <p className="text-muted-foreground text-sm leading-relaxed" data-payload-field="body">{body}</p>
         ) : (
-          <div className="prose prose-sm max-w-none text-muted-foreground">
+          <div className="prose prose-sm max-w-none text-muted-foreground" data-payload-field="body">
             <p>{body?.root?.children?.[0]?.children?.[0]?.text ?? ""}</p>
           </div>
         )}
