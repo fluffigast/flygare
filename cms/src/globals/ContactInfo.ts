@@ -60,5 +60,13 @@ export const ContactInfo: GlobalConfig = {
       name: 'xcProcedures',
       type: 'richText',
     },
+    {
+      name: 'besoksadress',
+      type: 'text',
+    },
+    {
+      name: 'organisationsnummer',
+      type: 'text',
+    },
   ],
 }
