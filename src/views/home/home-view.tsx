@@ -11,33 +11,51 @@ import { articles } from "../../data/articles";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import FeaturedSection from "../../blocks/featured-section/featured-section";
 import Button from "../../components/button";
+import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 export interface HomeViewProps {}
 
-const stats = [
-  { value: "1975", label: "Grundat" },
-  { value: "~100", label: "Aktiva medlemmar" },
-  { value: "230 km", label: "Distansrekord (skärm)" },
-  { value: "9", label: "Startplatser" },
-];
+const localSiteSettings = {
+  heroTagline: "Skandinaviens mest spektakulära flygplats",
+  heroDescription:
+    "Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn.",
+  aboutTitle: "50 år av flygning från Skutan",
+  aboutText:
+    "Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.\n\nKlubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området.",
+  statsMembers: "~100",
+  statsDistanceRecord: "230 km",
+  statsLaunchSites: "9",
+};
 
 const HomeView: React.FC<HomeViewProps> = ({}) => {
+  const { data: cmsSite } = useSiteSettings(localSiteSettings);
+  const site = useGlobalLivePreview(cmsSite);
+
+  const stats = [
+    { value: "1975", label: "Grundat" },
+    { value: site.statsMembers ?? localSiteSettings.statsMembers, label: "Aktiva medlemmar" },
+    { value: site.statsDistanceRecord ?? localSiteSettings.statsDistanceRecord, label: "Distansrekord (skärm)" },
+    { value: site.statsLaunchSites ?? localSiteSettings.statsLaunchSites, label: "Startplatser" },
+  ];
+
   return (
     <div className="w-full overflow-x-hidden">
       <Header />
       <HeroBanner
         imageUrl={getPlaceholderImage("home-hero")}
-        title="Skandinaviens mest spektakulära flygplats"
-        subtitle="Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn."
+        title={site.heroTagline ?? localSiteSettings.heroTagline}
+        subtitle={site.heroDescription ?? localSiteSettings.heroDescription}
+        titleField="heroTagline"
+        subtitleField="heroDescription"
       />
       <main className="@container max-w-2xl mx-auto px-4 flex gap-8 md:gap-16 flex-col py-8 md:py-16">
         <FeaturedSection
-          title="50 år av flygning från Skutan"
-          content="Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.
-
-Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området."
+          title={site.aboutTitle ?? localSiteSettings.aboutTitle}
+          content={site.aboutText ?? localSiteSettings.aboutText}
           imageUrl={getPlaceholderImage("home-featured")}
           alignment="right"
+          titleField="aboutTitle"
+          contentField="aboutText"
         />
 
         {/* Stats */}
@@ -67,10 +85,18 @@ Klubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktiv
 
         {/* CTA */}
         <section className="text-center flex flex-col gap-4 items-center py-8">
-          <p className="font-serif italic text-muted-foreground text-sm">
+          <p
+            className="font-serif italic text-muted-foreground text-sm"
+            data-payload-field="ctaSubtitle"
+          >
             Bli en del av klubben
           </p>
-          <h2 className="font-serif text-3xl">Redo att flyga?</h2>
+          <h2
+            className="font-serif text-3xl"
+            data-payload-field="ctaTitle"
+          >
+            Redo att flyga?
+          </h2>
           <div className="flex gap-3 flex-wrap justify-center mt-2">
             <Button href="/bli-medlem">Bli medlem — 600 kr/år</Button>
             <Link
