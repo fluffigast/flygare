@@ -3,14 +3,18 @@ export const membershipInfo = {
   validity: "Giltigt t.o.m. 31 december 2026",
   shopUrl:
     "https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/",
+  description:
+    "Skanna QR-koden eller använd länken nedan för att bli medlem. Din inbetalning går direkt tillbaka till dig i form av förbättrade start- och landningsplatser, förbättrad information, vindmätare och vindstrutar på start och landningsplats, tävlingar etc. Notera även att uppfärd på berget med klubbussen endast är för medlemmar.",
   benefits: [
+    "Fullvärdigt medlemskap",
     "Tillgång till alla startplatser på Åreskutan",
     "Tillgång till landningsplatsen Draklanda",
     "Räddningsbåt vid Draklanda",
     "Åka med klubbussen upp på berget",
-    "Rösträtt på årsmöte",
-    "Delta i klubbtävlingar som Åre PPC",
+    "Rösträtt vid årsmöte",
+    "Delta i klubbtävlingar",
     "Hjälp med licensförnyelse",
+    "Förbättrad infrastruktur (vindmätare, vindstrutar)",
     "Vinterpreparerade startplatser",
     "Sommarklippning av Draklanda",
   ],
@@ -22,4 +26,6 @@ export const membershipInfo = {
       requirements: "Minst 10 höjdflygningar + 5 timmar flygtid",
     },
   ],
+  licenseNote:
+    "Om du inte uppfyller kravet kan du ändå förnya din licens, men du erhåller då en lägre licensnivå.",
 };
