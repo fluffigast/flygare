@@ -22,22 +22,21 @@ function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
 }
 
 // ── Live Preview wrapper for globals ──
-// Use this in views that display a single CMS global.
-// The Payload admin sends live field changes via postMessage.
-// Returns the live-updated data when inside the CMS iframe, otherwise returns initialData unchanged.
-// Only activate live preview when loaded inside the CMS iframe.
-// This is a module-level constant — the branch never changes between renders,
-// so the hook count is stable across the component lifecycle.
-const isInIframe = typeof window !== "undefined" && window.self !== window.top;
+// The Payload admin sends live field changes via postMessage when the
+// frontend is loaded in the CMS iframe. useLivePreview listens for these
+// events and merges incoming data into the returned object.
+// We always call the hook (Rules of Hooks) but only use its output when
+// we detect we're inside an iframe with a valid CMS URL.
 
 export function useGlobalLivePreview<T extends Record<string, any>>(initialData: T): T {
-  if (!CMS_URL || !isInIframe) return initialData;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data } = useLivePreview<T>({
     initialData,
-    serverURL: CMS_URL,
+    serverURL: CMS_URL || "https://localhost:3001",
     depth: 2,
   });
+  // Outside the iframe or without CMS_URL, return initialData unchanged.
+  // Inside the iframe, return the live-merged data from postMessage.
+  if (!CMS_URL) return initialData;
   return data;
 }
 
