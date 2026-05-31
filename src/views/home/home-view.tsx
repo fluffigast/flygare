@@ -96,9 +96,9 @@ const HomeView: React.FC = () => {
             <span
               className="block font-serif italic leading-snug"
               style={{ fontSize: "clamp(13px, 1.15vw, 18px)", letterSpacing: "0.02em" }}
-              data-payload-field="heroDescription"
+              data-payload-field="heroTagline"
             >
-              {site.heroDescription ?? localSiteSettings.heroDescription}
+              {site.heroTagline ?? localSiteSettings.heroTagline}
             </span>
           </div>
         </div>
@@ -164,6 +164,9 @@ const HomeView: React.FC = () => {
                 >
                   Bli medlem
                 </a>
+                <Link to="/flyga-i-are/flygregler" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
+                  Flygregler →
+                </Link>
                 <Link to="/bli-medlem" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
                   Mer information →
                 </Link>
