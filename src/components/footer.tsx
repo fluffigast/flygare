@@ -17,13 +17,13 @@ const Footer: React.FC<FooterProps> = ({}) => {
             <h4>Flyga i Åre</h4>
             <ul className="flex flex-col gap-2">
               <li>
-                <Link to="/startplatser" className={linkClass}>
+                <Link to="/flyga-i-are/startplatser" className={linkClass}>
                   Startplatser
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/information/luftrum-are"
+                  to="/flyga-i-are/luftrum-are"
                   className={linkClass}
                 >
                   Luftrum
@@ -31,7 +31,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
               </li>
               <li>
                 <Link
-                  to="/information/sakerhet-och-ansvar"
+                  to="/flyga-i-are/sakerhet-och-ansvar"
                   className={linkClass}
                 >
                   Säkerhet och ansvar
@@ -39,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
               </li>
               <li>
                 <Link
-                  to="/information/nodinformation"
+                  to="/flyga-i-are/nodinformation"
                   className={linkClass}
                 >
                   Nödinformation
@@ -47,7 +47,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
               </li>
               <li>
                 <Link
-                  to="/information/etik-och-hansyn"
+                  to="/flyga-i-are/etik-och-hansyn"
                   className={linkClass}
                 >
                   Etik och hänsyn
@@ -65,8 +65,8 @@ const Footer: React.FC<FooterProps> = ({}) => {
                 </Link>
               </li>
               <li>
-                <Link to="/information" className={linkClass}>
-                  Information
+                <Link to="/flyga-i-are" className={linkClass}>
+                  Flygguiden
                 </Link>
               </li>
               <li>
@@ -80,7 +80,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
                 </Link>
               </li>
               <li>
-                <Link to="/vader" className={linkClass}>
+                <Link to="/flyga-i-are/vader" className={linkClass}>
                   Väder
                 </Link>
               </li>
