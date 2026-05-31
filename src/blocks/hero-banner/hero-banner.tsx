@@ -17,7 +17,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
   subtitleField,
 }) => {
   return (
-    <section className="bg-primary text-primary-foreground aspect-[4/1] md:aspect-[5/1] overflow-hidden relative">
+    <section className="bg-primary text-primary-foreground aspect-[3/1] md:aspect-[4/1] overflow-hidden relative">
       <img
         src={imageUrl}
         alt="Hero banner"
