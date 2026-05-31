@@ -2,41 +2,25 @@ import React from "react";
 import { Link } from "react-router";
 import Header from "../../components/header";
 import HeroBanner from "../../blocks/hero-banner/hero-banner";
-import ArticlesGrid from "../../blocks/articles-grid/articles-grid";
-import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
 import NewsSlider from "../../blocks/news-slider/news-slider";
+import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
 import Separator from "../../components/separator";
-import { articles } from "../../data/articles";
-import { getPlaceholderImage } from "../../utils/placeholder";
-import FeaturedSection from "../../blocks/featured-section/featured-section";
 import Button from "../../components/button";
+import { getPlaceholderImage } from "../../utils/placeholder";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
-export interface HomeViewProps {}
-
 const localSiteSettings = {
-  heroTagline: "Skandinaviens mest spektakulära flygplats",
-  heroDescription:
-    "Jakten på termiken startar i mars. Har du tur får du sällskap av en kungsörn.",
-  aboutTitle: "50 år av flygning från Skutan",
-  aboutText:
-    "Åre Drakflygklubb bildades 1975 och sedan 1988 har även skärmflygklubben funnits. Idag görs 95% av all flygning med skärm. Distansrekordet ligger på 230 km — Åre till Sollefteå.\n\nKlubben har ca 100 aktiva medlemmar varav 30 bor i Åre kommun. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området.",
+  heroTagline: "Åre Skärm- och Drakflygklubb",
+  heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975",
   statsMembers: "~100",
   statsDistanceRecord: "230 km",
   statsLaunchSites: "9",
 };
 
-const HomeView: React.FC<HomeViewProps> = ({}) => {
+const HomeView: React.FC = () => {
   const { data: cmsSite } = useSiteSettings(localSiteSettings);
   const site = useGlobalLivePreview(cmsSite);
-
-  const stats = [
-    { value: "1975", label: "Grundat" },
-    { value: site.statsMembers ?? localSiteSettings.statsMembers, label: "Aktiva medlemmar" },
-    { value: site.statsDistanceRecord ?? localSiteSettings.statsDistanceRecord, label: "Distansrekord (skärm)" },
-    { value: site.statsLaunchSites ?? localSiteSettings.statsLaunchSites, label: "Startplatser" },
-  ];
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -48,23 +32,55 @@ const HomeView: React.FC<HomeViewProps> = ({}) => {
         titleField="heroTagline"
         subtitleField="heroDescription"
       />
-      <main className="@container max-w-2xl mx-auto px-4 flex gap-8 md:gap-16 flex-col py-8 md:py-16">
-        <FeaturedSection
-          title={site.aboutTitle ?? localSiteSettings.aboutTitle}
-          content={site.aboutText ?? localSiteSettings.aboutText}
-          imageUrl={getPlaceholderImage("home-featured")}
-          alignment="right"
-          titleField="aboutTitle"
-          contentField="aboutText"
-        />
 
-        {/* Stats */}
-        <section className="bg-primary text-primary-foreground rounded-lg p-4 md:p-8 lg:p-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
-            {stats.map((s) => (
+      <main className="@container max-w-2xl mx-auto px-4 flex gap-6 md:gap-10 flex-col py-6 md:py-10">
+
+        {/* 1. Viktig info / FLYGREGLER — PPTX slide 1 top-left */}
+        <Link
+          to="/flyga-i-are/flygregler"
+          className="block bg-primary text-primary-foreground rounded-lg p-6 md:p-8 hover:opacity-90 transition-opacity"
+        >
+          <h2 className="font-serif text-xl md:text-2xl font-bold" data-payload-field="heroTagline">
+            Viktig info till alla som flyger i Åre — FLYGREGLER
+          </h2>
+          <p className="text-primary-foreground/70 text-sm mt-2">
+            Läs reglerna under Flyga i Åre innan du startar →
+          </p>
+        </Link>
+
+        {/* 2. Aktuellt väder — PPTX slide 1 top-right */}
+        <WindWidget />
+
+        <Separator />
+
+        {/* 3. Nyheter — PPTX slide 1 center */}
+        <section className="flex flex-col gap-4">
+          <div className="flex justify-between items-end">
+            <h2 className="font-serif text-2xl md:text-3xl">Nyheter</h2>
+            <Link
+              to="/nyheter"
+              className="text-sm text-primary hover:underline"
+            >
+              Alla nyheter →
+            </Link>
+          </div>
+          <NewsSlider />
+        </section>
+
+        <Separator />
+
+        {/* Stats — compact bar */}
+        <section className="bg-muted rounded-lg p-4 md:p-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            {[
+              { value: "1975", label: "Grundat" },
+              { value: site.statsMembers ?? localSiteSettings.statsMembers, label: "Aktiva medlemmar" },
+              { value: site.statsDistanceRecord ?? localSiteSettings.statsDistanceRecord, label: "Distansrekord" },
+              { value: site.statsLaunchSites ?? localSiteSettings.statsLaunchSites, label: "Startplatser" },
+            ].map((s) => (
               <div key={s.label}>
-                <p className="font-serif text-3xl md:text-4xl">{s.value}</p>
-                <p className="text-xs uppercase tracking-widest text-primary-foreground/50 mt-1">
+                <p className="font-serif text-2xl md:text-3xl font-bold">{s.value}</p>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
                   {s.label}
                 </p>
               </div>
@@ -73,39 +89,37 @@ const HomeView: React.FC<HomeViewProps> = ({}) => {
         </section>
 
         <Separator />
-        <NewsSlider />
-        <ArticlesGrid
-          articles={articles.map((article) => ({
-            ...article,
-            imageUrl: getPlaceholderImage(article.id),
-          }))}
-        />
-        <Separator />
-        <WeatherForecast />
 
-        {/* CTA */}
-        <section className="text-center flex flex-col gap-4 items-center py-8">
-          <p
-            className="font-serif italic text-muted-foreground text-sm"
-            data-payload-field="ctaSubtitle"
-          >
-            Bli en del av klubben
-          </p>
-          <h2
-            className="font-serif text-3xl"
-            data-payload-field="ctaTitle"
-          >
-            Redo att flyga?
-          </h2>
-          <div className="flex gap-3 flex-wrap justify-center mt-2">
-            <Button href="/bli-medlem">Bli medlem — 600 kr/år</Button>
-            <Link
-              to="/flyga-i-are/startplatser"
-              className="inline-flex items-center px-4 py-2 rounded-full border border-border text-sm hover:bg-muted transition-colors"
-            >
-              Se startplatser
-            </Link>
+        {/* 4. Bli medlem — PPTX slide 1 bottom-right */}
+        <section className="flex flex-col md:flex-row gap-6 items-center justify-between bg-primary text-primary-foreground rounded-lg p-6 md:p-8">
+          <div className="flex flex-col gap-2">
+            <h2 className="font-serif text-2xl font-bold">Bli medlem</h2>
+            <p className="text-primary-foreground/70 text-sm">
+              Medlemskap 600 kr/år. Tillgång till alla startplatser, klubbussen och Draklanda.
+            </p>
           </div>
+          <Button href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/">
+            Köp medlemskap →
+          </Button>
+        </section>
+
+        {/* Quick links */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { label: "Flyga i Åre", path: "/flyga-i-are", desc: "Starter, väder, regler" },
+            { label: "Startplatser", path: "/flyga-i-are/startplatser", desc: "Karta och info" },
+            { label: "Tävlingar", path: "/tavlingar", desc: "PPC, Topplandning" },
+            { label: "Om klubben", path: "/om", desc: "Historia och styrelse" },
+          ].map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="flex flex-col gap-1 p-4 rounded-lg border border-border hover:border-primary transition-colors"
+            >
+              <p className="text-sm font-semibold">{link.label}</p>
+              <p className="text-muted-foreground text-xs">{link.desc}</p>
+            </Link>
+          ))}
         </section>
       </main>
       <Footer />
