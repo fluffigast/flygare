@@ -25,6 +25,7 @@ import FlyingGuideIndex from "./views/flyga-i-are/flyga-i-are-index.tsx";
 import KlubbussView from "./views/flyga-i-are/klubbuss-view.tsx";
 import PageView from "./views/page/page-view.tsx";
 import AktiviteterView from "./views/aktiviteter/aktiviteter-view.tsx";
+import AktivitetSingleView from "./views/aktiviteter/aktivitet-single-view.tsx";
 import FotonView from "./views/ovrigt/foton-view.tsx";
 import DokumentView from "./views/ovrigt/dokument-view.tsx";
 
@@ -52,7 +53,10 @@ createRoot(document.getElementById("root")!).render(
             <Route path=":slug" element={<NewsSingleView />} />
           </Route>
           {/* Aktiviteter */}
-          <Route path="aktiviteter" element={<AktiviteterView />} />
+          <Route path="aktiviteter">
+            <Route index element={<AktiviteterView />} />
+            <Route path=":slug" element={<AktivitetSingleView />} />
+          </Route>
           {/* Tävlingar */}
           <Route path="tavlingar" element={<TavlingarView />} />
           {/* Om klubben */}
