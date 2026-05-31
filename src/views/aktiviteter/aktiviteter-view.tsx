@@ -1,39 +1,47 @@
 import React from "react";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import Separator from "../../components/separator";
 import { useActivities } from "../../hooks/useCMS";
 
 const AktiviteterView: React.FC = () => {
   const { data: activities, loading } = useActivities([]);
 
   return (
-    <div className="max-w-2xl px-4 flex gap-8 md:gap-16 flex-col w-full py-8 md:py-16">
-      <section className="flex flex-col gap-6">
-        <div>
-          <p className="font-serif italic text-muted-foreground text-sm">Aktiviteter</p>
-          <h2 className="font-serif text-3xl">Klubbens aktiviteter</h2>
-        </div>
+    <div className="w-full">
+      <section className="px-4 md:px-[110px] pt-16 md:pt-24 pb-8">
+        <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Aktiviteter</p>
+        <h1
+          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
+          style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
+        >
+          Klubbens aktiviteter
+        </h1>
       </section>
-      <Separator />
-      {loading && <p className="text-sm text-muted-foreground">Laddar...</p>}
-      {!loading && activities.length === 0 && (
-        <p className="text-sm text-muted-foreground">Inga aktiviteter planerade just nu.</p>
-      )}
-      <div className="flex flex-col gap-6">
-        {activities.map((activity: any) => (
-          <div key={activity.id ?? activity.slug} className="flex flex-col gap-2 p-4 rounded-lg border border-border">
-            <div className="flex gap-3 items-center">
-              <h3 data-payload-field="title" className="font-serif text-xl">{activity.title}</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                {activity.type}
-              </span>
+
+      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+        {loading && <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>Laddar...</p>}
+        {!loading && activities.length === 0 && (
+          <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>Inga aktiviteter planerade just nu.</p>
+        )}
+        <div className="flex flex-col gap-4">
+          {activities.map((activity: any) => (
+            <div
+              key={activity.id ?? activity.slug}
+              className="flex flex-col gap-2 p-5"
+              style={{ border: "1px solid var(--border, #e2e8f0)" }}
+            >
+              <div className="flex gap-3 items-center">
+                <h3 data-payload-field="title" className="font-serif font-bold text-base" style={{ color: "var(--ink, #020618)" }}>{activity.title}</h3>
+                <span className="text-xs px-2 py-0.5" style={{ background: "var(--paper, #fafbfc)", color: "var(--hero-accent, #3774a3)" }}>
+                  {activity.type}
+                </span>
+              </div>
+              <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>
+                {activity.date ? format(new Date(activity.date), "d MMMM yyyy", { locale: sv }) : ""}
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              {format(new Date(activity.date), "d MMMM yyyy", { locale: sv })}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
