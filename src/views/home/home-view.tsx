@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
 import Header from "../../components/header";
-import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
