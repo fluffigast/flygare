@@ -5,13 +5,6 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
-import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
-
-const localSiteSettings = {
-  heroTagline: "Åre Skärm- och Drakflygklubb",
-  heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975",
-};
-
 const INFO_CARDS = [
   {
     to: "/flyga-i-are/startplatser",
@@ -40,9 +33,6 @@ const INFO_CARDS = [
 ];
 
 const HomeView: React.FC = () => {
-  const { data: cmsSite } = useSiteSettings(localSiteSettings);
-  const site = useGlobalLivePreview(cmsSite);
-
   const [heroIn, setHeroIn] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setHeroIn(true), 60);
