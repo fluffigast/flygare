@@ -5,6 +5,15 @@
   --font-serif: "Source Serif 4 Variable", serif;
   --font-sans: "Karla Variable", sans-serif;
 
+  /* Design-handoff palette */
+  --hero-accent: #3774a3;
+  --hero-ring: #1a1e2a;
+  --ink: #020618;
+  --ink-2: #0f172b;
+  --slate: #62748e;
+  --slate-2: #90a1b9;
+  --slate-3: #45556c;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -210,4 +219,66 @@
 }
 .sites-map-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
   border-left-color: var(--popover);
+}
+
+/* ─── Hero disc animations ─── */
+@keyframes disc-float {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes foot-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.hero-disc-animate {
+  animation: disc-float 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.hero-foot-animate {
+  animation: foot-fade 1.2s ease 0.3s both;
+}
+
+/* Hero image Ken Burns */
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.hero-img-animate {
+  animation: hero-zoom 6s ease-out both;
+}
+
+/* Info card hover lift */
+.info-card-lift {
+  transition: transform 0.25s ease;
+}
+.info-card-lift:hover {
+  transform: translateY(-2px);
+}
+.info-card-lift .info-card-img {
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.25s ease;
+}
+.info-card-lift:hover .info-card-img {
+  transform: scale(1.05);
+  filter: brightness(1.04);
+}
+.info-card-lift .info-card-arrow {
+  transition: transform 0.2s ease;
+}
+.info-card-lift:hover .info-card-arrow {
+  transform: translateX(6px);
 }
