@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1600" />
+<title>Åre Skärm- och Drakflygklubb</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,700;1,8..60,400;1,8..60,500&family=Karla:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #ffffff;
+    --paper: #fafbfc;
+    --ink: #020618;          /* near-black navy */
+    --ink-2: #0f172b;        /* heading navy */
+    --slate: #62748e;        /* muted body */
+    --slate-2: #90a1b9;      /* dim text */
+    --slate-3: #45556c;      /* article body */
+    --border: #e2e8f0;
+    --border-2: #cacaca;
+    --accent: #3774a3;        /* hero blue */
+    --ring: #1a1e2a;          /* hero ring */
+    --black: #000000;
+    --serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+    --sans: "Karla", "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
+
+  /* ---------- Layout ---------- */
+  .page { width: 1600px; margin: 0 auto; background: var(--bg); }
+  .container { max-width: 1480px; margin: 0 auto; padding: 0 60px; }
+
+  /* ---------- Topbar ---------- */
+  .topbar {
+    height: 60px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    justify-content: space-between;
+    border-bottom: 1px solid transparent;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar.scrolled { border-bottom-color: var(--border); }
+  .brand {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: -0.005em;
+  }
+  .nav { display: flex; gap: 28px; }
+  .nav a {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    padding: 4px 0;
+    position: relative;
+    transition: color .15s ease;
+  }
+  .nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 1px; background: var(--ink);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .2s ease;
+  }
+  .nav a:hover::after, .nav a.active::after { transform: scaleX(1); }
+  .nav a.active { font-weight: 500; }
+  .pill {
+    background: var(--black);
+    color: #fff;
+    border-radius: 999px;
+    padding: 7px 22px;
+    font-family: var(--serif);
+    font-size: 14px;
+    transition: transform .12s ease, background .15s ease;
+  }
+  .pill:hover { background: var(--ink-2); transform: translateY(-1px); }
+
+  /* ---------- Headers / type ---------- */
+  .h-section {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink-2);
+    letter-spacing: -0.01em;
+  }
+  .h-news {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--ink-2);
+  }
+  .eyebrow {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--ink-2);
+  }
+  .eyebrow-sm {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--slate);
+  }
+  .display {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 96px;
+    line-height: 0.96;
+    color: var(--ink-2);
+    letter-spacing: -0.02em;
+  }
+  .display-on-image { color: #fff; }
+  .label-italic {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--ink-2);
+  }
+  .label-bold {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--ink-2);
+  }
+  .body { font-size: 16px; line-height: 24px; color: var(--ink-2); }
+  .body-muted { color: var(--slate); }
+  .body-mute2 { color: var(--slate-3); }
+  .meta { font-family: var(--sans); font-size: 14px; line-height: 1; color: #666; }
+
+  /* ---------- HERO (homepage) ---------- */
+  .hero {
+    position: relative;
+    width: 1600px;
+    height: 700px;
+    overflow: hidden;
+    background: #1a1e2a;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    background: url("assets/hero-paragliding.jpg") center/cover no-repeat;
+    transform: scale(1.02);
+    transition: transform 6s ease-out;
+  }
+  .hero.in .hero-img { transform: scale(1); }
+  .hero-grad {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 65%, rgba(0,0,0,.18) 100%);
+    pointer-events: none;
+  }
+  .hero-disc {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 21px solid var(--ring);
+    display: grid; place-items: center;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.35);
+    overflow: hidden;
+  }
+  .hero-disc .disc-inner {
+    color: #fff;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: 0.02em;
+    opacity: .92;
+    text-shadow: 0 1px 2px rgba(0,0,0,.25);
+  }
+  .hero-disc .disc-inner b {
+    display: block;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: .8;
+  }
+  .hero-foot {
+    position: absolute;
+    left: 0; right: 0; bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 60px;
+    color: rgba(255,255,255,.85);
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  .hero-foot .stack { display: inline-flex; gap: 8px; align-items: center; }
+  .hero-foot .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.6); }
+
+  /* ---------- Welcome row ---------- */
+  .welcome {
+    display: grid;
+    grid-template-columns: 840px 640px;
+    gap: 0;
+    margin-top: 100px;
+  }
+  .welcome-img {
+    width: 840px; height: 462px;
+    background: url("assets/news-fjall.jpg") center/cover no-repeat;
+  }
+  .welcome-text {
+    padding: 60px 50px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .welcome-text h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.1;
+    margin: 0 0 24px 0;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .welcome-text p { margin: 0 0 16px 0; }
+  .welcome-text p:last-child { margin-bottom: 0; }
+
+  /* ---------- News slider ---------- */
+  .news-section { margin-top: 100px; }
+  .news-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .news-controls { display: flex; gap: 6px; }
+  .icon-btn {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .icon-btn:hover { background: #f5f7fa; border-color: var(--ink-2); }
+  .icon-btn:disabled { opacity: .35; cursor: not-allowed; }
+  .news-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    overflow: hidden;
+  }
+  .news-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    transition: transform .4s cubic-bezier(.2,.6,.2,1);
+  }
+  .news-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0;
+    padding: 0 0 0 0;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .news-card:last-child { border-right: 0; }
+  .news-card .thumb {
+    width: 120px; height: 100px;
+    background-size: cover; background-position: center;
+  }
+  .news-card .body-c {
+    padding: 12px 20px;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 8px;
+  }
+  .news-card .title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--ink);
+    transition: color .15s ease;
+  }
+  .news-card:hover .title { color: var(--accent); }
+  .news-card .date { font-size: 14px; color: #666; }
+  .dots {
+    display: flex; justify-content: center; gap: 8px;
+    margin-top: 16px;
+  }
+  .dots .d {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border-2);
+    transition: background .15s ease, transform .15s ease;
+    cursor: pointer; border: 0; padding: 0;
+  }
+  .dots .d.active { background: var(--ink); transform: scale(1.3); }
+
+  /* ---------- Flyga i Åre cards ---------- */
+  .cards-section { margin-top: 100px; }
+  .cards-head { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: end; }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .info-card {
+    display: flex; flex-direction: column;
+    background: #fff;
+    transition: transform .25s ease;
+    cursor: pointer;
+  }
+  .info-card:hover { transform: translateY(-2px); }
+  .info-card .img {
+    width: 100%; aspect-ratio: 480 / 560;
+    background-size: cover; background-position: center;
+    background-color: #e9eef3;
+    transition: filter .25s ease;
+  }
+  .info-card:hover .img { filter: brightness(1.04); }
+  .info-card .meta-row {
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .info-card h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .info-card p {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+    margin: 0;
+  }
+  .info-card .arrow {
+    margin-top: 4px;
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    color: var(--ink);
+    transform: translateX(0);
+    transition: transform .2s ease;
+  }
+  .info-card:hover .arrow { transform: translateX(6px); }
+
+  /* ---------- Weather ---------- */
+  .weather-section { margin-top: 100px; padding-top: 0; }
+  .weather-head {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: end;
+    margin-bottom: 32px;
+  }
+  .weather-head .source { color: var(--slate-2); font-size: 14px; }
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    padding: 0 20px;
+  }
+  .day {
+    display: flex; flex-direction: column; gap: 20px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .day-head { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
+  .day-name {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink-2);
+    letter-spacing: -0.01em;
+  }
+  .day-date {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--slate-2);
+    letter-spacing: 0.02em;
+  }
+  .day-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 5px;
+  }
+  .day-cell { display: flex; flex-direction: column; gap: 4px; }
+  .day-cell .l {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--ink-2);
+  }
+  .day-cell .v {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+    display: inline-flex; gap: 6px; align-items: center;
+  }
+  .day-cell .v .arrow-icon {
+    width: 18px; height: 18px;
+    display: inline-grid; place-items: center;
+    color: var(--slate-3);
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    margin-top: 100px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 100px 0;
+  }
+  .site-footer .row {
+    display: grid;
+    grid-template-columns: 350px 350px 1fr;
+    gap: 10px;
+  }
+  .footer-col { display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    transition: color .12s ease;
+  }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-about .title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .footer-about p {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    margin: 0;
+    max-width: 520px;
+    line-height: 1.5;
+  }
+  .footer-fine {
+    margin-top: 30px;
+    padding: 20px 0 40px 0;
+    color: var(--slate-2);
+    font-size: 13px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ---------- Page header (interior) ---------- */
+  .interior-header {
+    padding: 100px 110px 0 110px;
+  }
+  .interior-eyebrow { color: var(--ink-2); }
+  .interior-display { margin-top: -8px; }
+
+  .image-header {
+    width: 100%;
+    height: 700px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .image-header::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.0) 0%, rgba(0,0,0,.0) 50%, rgba(0,0,0,.4) 100%);
+  }
+
+  /* ---------- Nyheter list ---------- */
+  .nyheter-hero {
+    padding: 100px 110px 50px 110px;
+  }
+  .nyheter-hero .interior-eyebrow {
+    color: var(--accent);
+  }
+  .filter-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    display: flex; gap: 28px; justify-content: center;
+    margin-bottom: 50px;
+  }
+  .filter-bar button {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    padding: 6px 4px;
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s, color .15s;
+  }
+  .filter-bar button.active {
+    border-bottom-color: var(--ink);
+    font-weight: 600;
+  }
+  .filter-bar button:hover { color: var(--accent); }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 20px;
+  }
+  .news-item {
+    display: flex; flex-direction: column;
+    cursor: pointer;
+    transition: transform .25s ease;
+  }
+  .news-item:hover { transform: translateY(-2px); }
+  .news-item .img {
+    width: 100%;
+    aspect-ratio: 730 / 380;
+    background-size: cover; background-position: center;
+    background-color: #d6dde6;
+  }
+  .news-item .meta-row { padding: 24px 0 0 0; display: flex; flex-direction: column; gap: 12px; }
+  .news-item .tag {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .news-item h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.05;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+  }
+  .news-item p {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+    margin: 0;
+  }
+  .news-item .arrow {
+    transition: transform .2s ease;
+    color: var(--ink);
+  }
+  .news-item:hover .arrow { transform: translateX(6px); }
+
+  .pagination {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 0;
+    display: flex; gap: 28px; justify-content: center;
+    margin-top: 60px;
+  }
+  .pagination button {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background .15s;
+  }
+  .pagination button.active { background: var(--ink); color: #fff; }
+  .pagination button:hover:not(.active) { background: var(--paper); }
+
+  /* ---------- Article (single-news / single-takeoff) ---------- */
+  .article-shell {
+    padding: 100px 0 0 0;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .article-head { margin-bottom: 50px; }
+  .article-head .eyebrow-sm { display: block; margin-bottom: 14px; }
+  .article-head h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1;
+    margin: 0;
+    color: var(--ink-2);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .article-meta {
+    margin-top: 24px;
+    color: var(--slate-2);
+    font-size: 16px;
+  }
+  .article-cols {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 100px;
+  }
+  .article-lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.3;
+    color: var(--ink-2);
+    text-wrap: pretty;
+    margin: 0 0 32px 0;
+  }
+  .article-body p {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate-3);
+    margin: 0 0 16px 0;
+  }
+  .article-aside { display: flex; flex-direction: column; gap: 32px; }
+  .aside-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink-2);
+    margin: 0 0 24px 0;
+  }
+  .aside-card {
+    border-left: 0;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .aside-card h4 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+    color: var(--ink-2);
+  }
+  .aside-card p {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+    margin: 0;
+  }
+  .aside-card a.read-more {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--accent);
+    margin-top: 4px;
+    display: inline-flex; gap: 6px; align-items: center;
+  }
+  .aside-card a.read-more:hover { text-decoration: underline; }
+
+  /* ---------- Takeoff page ---------- */
+  .takeoff-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 50px;
+  }
+  .takeoff-overview h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink-2);
+    margin: 0 0 24px 0;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field-label {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--ink-2);
+  }
+  .field-label.muted { color: var(--slate); }
+  .field-value {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+  }
+  .field-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .stack-20 { display: flex; flex-direction: column; gap: 20px; }
+  .compass {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at center, #fff 40%, transparent 41%),
+      conic-gradient(from -25deg, var(--accent) 0deg, var(--accent) 60deg, #e9eef3 60deg);
+    border: 1px solid var(--border);
+    position: relative;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .compass::before {
+    content: "N";
+    position: absolute; top: 6px;
+    font-family: var(--mono);
+    font-size: 10px; color: var(--slate);
+  }
+  .compass::after {
+    content: "";
+    position: absolute; left: 50%; top: 50%;
+    width: 2px; height: 28px;
+    background: var(--ink);
+    transform-origin: center top;
+    transform: translate(-50%, 0) rotate(155deg);
+  }
+  .compass-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
+    background: #fff;
+    padding: 2px 4px;
+    border-radius: 2px;
+  }
+
+  .takeoff-section h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink-2);
+    margin: 0 0 14px 0;
+  }
+  .takeoff-section + .takeoff-section { margin-top: 32px; }
+  .takeoff-section p {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+    margin: 0 0 12px 0;
+  }
+  .risk-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .risk-list li {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--slate);
+    padding-left: 20px;
+    position: relative;
+  }
+  .risk-list li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 11px;
+    width: 12px; height: 1px;
+    background: var(--slate-2);
+  }
+  .danger-card {
+    background: #fff8ee;
+    border: 1px solid #f3e0bd;
+    padding: 20px 22px;
+    margin-top: 8px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .danger-card .ico {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    display: grid; place-items: center;
+    color: #b07700;
+    margin-top: 1px;
+  }
+  .danger-card strong {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--ink-2);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .danger-card span { color: var(--slate-3); font-size: 15px; line-height: 22px; }
+
+  /* ---------- Misc ---------- */
+  .badge-row { display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--slate);
+    background: #f1f4f8;
+    padding: 4px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Page transition ---------- */
+  .route-fade-enter { opacity: 0; transform: translateY(6px); }
+  .route-fade-enter-active { opacity: 1; transform: translateY(0); transition: all .3s ease; }
+
+  /* ---------- Selection ---------- */
+  ::selection { background: var(--ink); color: #fff; }
+
+  /* ---------- Subtle dotted divider ---------- */
+  .hairline {
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" data-presets="react">
+// data.jsx — content for the site
+
+const PH = {
+  ph1: { local: true, src: "assets/hero-paragliding.jpg", pos: "center 20%", filter: "saturate(1.05) contrast(1.05)" },
+  ph2: { local: true, src: "assets/takeoff-hero.jpg",     pos: "center 35%", filter: "saturate(0.85) contrast(1.1)" },
+  ph3: { local: true, src: "assets/news-fjall.jpg",       pos: "center 65%", filter: "saturate(1.1) brightness(0.95)" },
+  ph4: { local: true, src: "assets/takeoff-hero.jpg",     pos: "center 60%", filter: "saturate(0.9)" },
+  ph5: { local: true, src: "assets/luftrum.png",          pos: "center 30%", filter: "saturate(1.2) contrast(1.1)" },
+  ph6: { local: true, src: "assets/hero-paragliding.jpg", pos: "center 70%", filter: "saturate(0.7) contrast(1.15)" },
+  ph7: { local: true, src: "assets/news-fjall.jpg",       pos: "center 25%", filter: "saturate(0.8) brightness(1.05)" },
+  ph8: { local: true, src: "assets/luftrum.png",          pos: "center 70%", filter: "saturate(1.0) contrast(1.05)" },
+  ph9: { local: true, src: "assets/klubbussen.png",       pos: "center center", filter: "saturate(0.95)" },
+};
+
+
+const NEWS = [
+  {
+    slug: "sasongsstart",
+    img: "assets/luftrum.png",
+    tag: "Aktuellt",
+    title: "Säsongsstart i Årefjällen",
+    date: "25 Januari, 2026",
+    excerpt: "Vår och sommar närmar sig och flygsäsongen i Åre står för dörren. Förutsättningarna börjar falla på plats och många ser fram emot årets första turer.",
+    lede: "Vår och sommar närmar sig och flygsäsongen i Åre står för dörren. Förutsättningarna börjar falla på plats och många ser fram emot årets första flyg.",
+    body: [
+      "Med längre dagar och mer stabila väderlägen går vi in i en ny flygsäsong i Årefjällen. Som alltid vill klubben påminna om vikten av god förberedelse inför säsongsstarten.",
+      "Se över utrustningen, uppdatera dig på aktuella regler och ta del av den lokala informationen om starter, landningar och luftrum. Fjällmiljön ställer höga krav och förhållanden kan ändras snabbt, även under till synes fina dagar.",
+      "Genom att flyga med marginaler, visa hänsyn och dela information med varandra skapar vi en trygg och trivsam säsong för alla. Vi ser fram emot många fina flygdagar och möten både på berget och i luften.",
+    ],
+    category: "Aktuellt",
+  },
+  {
+    slug: "gemensam-flygdag",
+    img: PH.ph1,
+    tag: "Aktiviteter",
+    title: "Gemensam flygdag planeras",
+    date: "20 Januari, 2026",
+    excerpt: "Klubben planerar en gemensam flygdag på 1000-meter Syd så snart vädret tillåter. Anmälan sker via medlemsforumet.",
+    category: "Aktiviteter",
+  },
+  {
+    slug: "respektera-startytor",
+    img: PH.ph2,
+    tag: "Säkerhet",
+    title: "Viktigt att respektera start och landningsytor",
+    date: "12 Januari, 2026",
+    excerpt: "För att kunna fortsätta flyga i Åre är det viktigt att vi visar hänsyn till markägare, besökare och andra friluftsutövare.",
+    category: "Säkerhet",
+  },
+  {
+    slug: "luftrum-paminnelse",
+    img: "assets/klubbussen.png", // unique
+    tag: "Aktuellt",
+    title: "Påminnelse om luftrum i Åreområdet",
+    date: "08 Januari, 2026",
+    excerpt: "Luftrumsförhållanden kan variera och det är varje pilots ansvar att vara uppdaterad.",
+    category: "Aktuellt",
+  },
+  {
+    slug: "starter-areskutan",
+    img: PH.ph3,
+    tag: "Säkerhet",
+    title: "Uppdaterad information om starter på Åreskutan",
+    date: "02 Januari, 2026",
+    excerpt: "Arbetet med att samla och strukturera information om startplatserna på Åreskutan fortsätter.",
+    category: "Säkerhet",
+  },
+];
+
+const INFO_CARDS = [
+  { slug: "1000-meter-syd", img: PH.ph4, title: "Starter och landningar", desc: "Information om etablerade start- och landningsplatser, lokala förhållanden och tips för trygg takeoff och säkra landningar." },
+  { slug: "vader", img: PH.ph5, title: "Väder och vind", desc: "Råd om hur man tolkar väder, vindriktningar och termik i Årefjällen. Viktigt för att planera flygning och hålla säkerheten hög." },
+  { slug: "regler", img: PH.ph6, title: "Säkerhet och regler", desc: "Lokala regler, nationella bestämmelser och säkerhetsrutiner för skärm- och drakflyg. Fokus på ansvar och förebyggande åtgärder." },
+  { slug: "nod", img: PH.ph7, title: "Nödinformation", desc: "Vad man gör vid incidenter, nödsignalering och viktiga kontaktvägar till räddningstjänst och klubb." },
+  { slug: "luftrum", img: PH.ph8, title: "Luftrum", desc: "Information om kontrollerade och obevakade luftrum, restriktioner och hur man flyger säkert bland andra luftfarkoster." },
+  { slug: "klubbussen", img: PH.ph9, title: "Klubbussen", desc: "Allt om klubbens buss: transport av piloter och utrustning, planering av turer och hur man använder den på ett säkert sätt." },
+];
+
+const WEATHER_DAYS = [
+  { day: "Tisdag", date: "3 februari", windDir: "Sydlig", windDirShort: "S", windSpeed: "2-6 m/s", temp: "12°C", rain: "0 mm" },
+  { day: "Onsdag", date: "4 februari", windDir: "Ostlig", windDirShort: "O", windSpeed: "2-6 m/s", temp: "12°C", rain: "0 mm" },
+  { day: "Torsdag", date: "5 februari", windDir: "Ostlig", windDirShort: "O", windSpeed: "7-10 m/s", temp: "12°C", rain: "12 mm" },
+];
+
+const TAKEOFF = {
+  slug: "1000-meter-syd",
+  title: "1000-meter Syd",
+  eyebrow: "Startplats",
+  hero: "assets/takeoff-hero.jpg",
+  pos: { wgs84: "63.4087° N, 13.0796° E", sweref: "7036521, 411208" },
+  altitudeStart: "1 200 m ö h",
+  altitudeOver: "ca 700 m över landning",
+  windDir: "Syd- till sydost",
+  windNote: "Känslig för rotor vid nordliga vindar. Termik kan vara kraftig soliga dagar. Snabba väderomslag förekommer. Molnbas kan sjunka snabbt. Uppmärksamma katabatiska vindar sena eftermiddagar.",
+  level: "Medel till avancerad pilot med god fjällerfarenhet.",
+  updated: "2026-01-15",
+  description: [
+    "Startplats på Västerskutan med god höjd över dalen och fina möjligheter vid rätt vind. Används av både skärm- och drakflyg och kräver god startteknik.",
+    "Brant fjällstart med begränsat utrymme. Kräver kontrollerad uppdragning och tydligt beslut innan start. Ej lämplig för nybörjare vid marginalförhållanden.",
+    "Visa hänsyn till vandrare och skidåkare. Blockera aldrig leder eller stigar. Lämna platsen i samma skick som du fann den.",
+    "Startplatsen nås till fots från markerad led. Klubbussen används ibland vid gemensamma flygdagar. Parkering enligt lokala anvisningar.",
+  ],
+  risks: [
+    "Rotor vid fel vindriktning",
+    "Stenigt underlag",
+    "Begränsade nödlandningsytor nära start",
+    "Turbulens vid termiska förhållanden",
+  ],
+  emergency: "Vid olycka ring 112. Ange Åreskutan, 1000-meter syd startplats. Klubbens kontaktperson finns under Nödsituationer.",
+};
+
+const NAV = [
+  { id: "info", label: "Information", to: "#/information" },
+  { id: "vader", label: "Väder", to: "#/information#vader" },
+  { id: "regler", label: "Regler", to: "#/information#regler" },
+  { id: "om", label: "Om klubben", to: "#/om" },
+];
+
+const FOOTER_LINKS_1 = ["Regler", "Riktlinjer", "Startplatser", "Landningar", "Luftrum", "Nödinformation"];
+const FOOTER_LINKS_2 = ["Bli medlem", "Dokument", "Kontakt"];
+
+Object.assign(window, { NEWS, INFO_CARDS, WEATHER_DAYS, TAKEOFF, NAV, FOOTER_LINKS_1, FOOTER_LINKS_2 });
+
+</script>
+<script type="text/babel" data-presets="react">
+// components.jsx — shared UI
+
+const { useState, useEffect, useRef } = React;
+
+// Icons (inline SVG)
+function IconChevronLeft({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  );
+}
+function IconChevronRight({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  );
+}
+function IconArrowRight({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="13 6 19 12 13 18"></polyline>
+    </svg>
+  );
+}
+function IconWindArrow({ dir = "S" }) {
+  // arrow pointing FROM the labelled direction toward center (i.e. wind FROM south points up)
+  const rot = { N: 180, NE: 225, E: 270, SE: 315, S: 0, SW: 45, W: 90, NW: 135, O: 270 }[dir] ?? 0;
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ transform: `rotate(${rot}deg)` }}>
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <polyline points="6 13 12 19 18 13"></polyline>
+    </svg>
+  );
+}
+function IconAlert({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+      <line x1="12" y1="9" x2="12" y2="13"></line>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+  );
+}
+
+// ---------- Topbar ----------
+function Topbar({ route, navigate }) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 4);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const item = (label, target, key) => {
+    const active =
+      (key === "info" && (route.page === "information" || route.page === "takeoff")) ||
+      (key === "news" && (route.page === "nyheter" || route.page === "news")) ||
+      (key === "om" && route.page === "om");
+    return (
+      <a
+        key={key}
+        href={target}
+        className={active ? "active" : ""}
+        onClick={(e) => { e.preventDefault(); navigate(target); }}
+      >{label}</a>
+    );
+  };
+
+  return (
+    <div className={`topbar ${scrolled ? "scrolled" : ""}`}>
+      <a className="brand" href="#/" onClick={(e)=>{e.preventDefault(); navigate("#/");}}>
+        Åre Skärm- och Drakflygklubb
+      </a>
+      <nav className="nav">
+        {item("Information", "#/information", "info")}
+        {item("Nyheter", "#/nyheter", "news")}
+        {item("Väder", "#/information#vader", "vader")}
+        {item("Om klubben", "#/om", "om")}
+      </nav>
+      <a className="pill" href="#/medlem" onClick={(e)=>{e.preventDefault(); navigate("#/medlem");}}>Bli medlem</a>
+    </div>
+  );
+}
+
+// ---------- Footer ----------
+function Footer({ navigate }) {
+  return (
+    <footer className="site-footer">
+      <div className="container">
+        <div className="row">
+          <div className="footer-col">
+            {window.FOOTER_LINKS_1.map((l) => (
+              <a key={l} href="#/information" onClick={(e)=>{e.preventDefault(); navigate("#/information");}}>{l}</a>
+            ))}
+          </div>
+          <div className="footer-col">
+            {window.FOOTER_LINKS_2.map((l) => (
+              <a key={l} href="#/medlem" onClick={(e)=>{e.preventDefault(); navigate("#/medlem");}}>{l}</a>
+            ))}
+          </div>
+          <div className="footer-about">
+            <div className="title">Om Åre Skärm- och Drakflygklubb</div>
+            <p>Åre Skärm- och Drakflygklubb är en ideell förening för skärm- och drakflyg i Åreområdet.</p>
+          </div>
+        </div>
+        <div className="footer-fine">
+          <span>© 2026 Åre Skärm- och Drakflygklubb</span>
+          <span>Org.nr 802xxx-xxxx · info@areflygklubb.se</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ---------- News carousel (3-up strip) ----------
+function NewsCarousel({ items, navigate, label = "Nyheter" }) {
+  const [page, setPage] = useState(0);
+  const pages = Math.max(1, Math.ceil(items.length / 3));
+  const visible = items.slice(page * 3, page * 3 + 3);
+  // pad to 3
+  while (visible.length < 3) visible.push(null);
+
+  return (
+    <section className="news-section">
+      <div className="container">
+        <div className="news-head">
+          <h2 className="h-news">{label}</h2>
+          <div className="news-controls">
+            <button className="icon-btn" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0} aria-label="Föregående">
+              <IconChevronLeft />
+            </button>
+            <button className="icon-btn" onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} disabled={page >= pages - 1} aria-label="Nästa">
+              <IconChevronRight />
+            </button>
+          </div>
+        </div>
+        <div className="news-strip">
+          <div className="news-track">
+            {visible.map((it, i) => it ? (
+              <a key={it.slug} className="news-card" href={`#/nyhet/${it.slug}`} onClick={(e)=>{e.preventDefault(); navigate(`#/nyhet/${it.slug}`);}}>
+                {typeof it.img === "string"
+                  ? <div className="thumb" style={{ backgroundImage: `url(${it.img})` }} />
+                  : <div className="thumb" style={{ backgroundImage: `url(${it.img.src})`, backgroundPosition: it.img.pos, backgroundSize: "cover", filter: it.img.filter }} />}
+                <div className="body-c">
+                  <div className="title">{it.title}</div>
+                  <div className="date">{it.date}</div>
+                </div>
+              </a>
+            ) : <div key={i} />)}
+          </div>
+        </div>
+        <div className="dots">
+          {Array.from({ length: pages }).map((_, i) => (
+            <button key={i} className={`d ${i === page ? "active" : ""}`} onClick={() => setPage(i)} aria-label={`Sida ${i+1}`} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- Info card ----------
+function InfoCard({ card, navigate }) {
+  return (
+    <a className="info-card" href={`#/startplats/${card.slug}`} onClick={(e)=>{e.preventDefault(); navigate(`#/startplats/${card.slug}`);}}>
+      {typeof card.img === "string"
+        ? <div className="img" style={{ backgroundImage: `url(${card.img})` }} />
+        : <div className="img" style={{ backgroundImage: `url(${card.img.src})`, backgroundPosition: card.img.pos, backgroundSize: "cover", filter: card.img.filter }} />}
+      <div className="meta-row">
+        <h3>{card.title}</h3>
+        <p>{card.desc}</p>
+        <div className="arrow"><IconArrowRight /></div>
+      </div>
+    </a>
+  );
+}
+
+// ---------- Weather day ----------
+function WeatherDay({ d }) {
+  return (
+    <div className="day">
+      <div className="day-head">
+        <div className="day-name">{d.day}</div>
+        <div className="day-date">{d.date}</div>
+      </div>
+      <div className="day-grid">
+        <div className="day-cell">
+          <div className="l">Vindriktning</div>
+          <div className="v"><span className="arrow-icon"><IconWindArrow dir={d.windDirShort} /></span>{d.windDir}</div>
+        </div>
+        <div className="day-cell">
+          <div className="l">Vindstyrka</div>
+          <div className="v">{d.windSpeed}</div>
+        </div>
+        <div className="day-cell">
+          <div className="l">Temperatur</div>
+          <div className="v">{d.temp}</div>
+        </div>
+        <div className="day-cell">
+          <div className="l">Nederbörd</div>
+          <div className="v">{d.rain}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------- News item (small card on Nyheter list) ----------
+function NewsItem({ item, navigate }) {
+  return (
+    <a className="news-item" href={`#/nyhet/${item.slug}`} onClick={(e)=>{e.preventDefault(); navigate(`#/nyhet/${item.slug}`);}}>
+      {typeof item.img === "string"
+        ? <div className="img" style={{ backgroundImage: `url(${item.img})` }} />
+        : <div className="img" style={{ backgroundImage: `url(${item.img.src})`, backgroundPosition: item.img.pos, backgroundSize: "cover", filter: item.img.filter }} />}
+      <div className="meta-row">
+        <span className="tag">{item.tag}</span>
+        <h3>{item.title}</h3>
+        <p>{item.excerpt}</p>
+        <div className="date">{item.date}</div>
+      </div>
+    </a>
+  );
+}
+
+// ---------- Single news article ----------
+function SingleNewsPage({ slug, navigate }) {
+  const item = (window.NEWS || []).find((n) => n.slug === slug) || window.NEWS[0];
+  return (
+    <main>
+      <Header navigate={navigate} />
+      {typeof item.img === "string"
+        ? <div className="image-header" style={{ backgroundImage: `url(${item.img})`, height: 540 }} />
+        : <div className="image-header" style={{ backgroundImage: `url(${item.img.src})`, backgroundPosition: item.img.pos, backgroundSize: "cover", filter: item.img.filter, height: 540 }} />}
+      <article className="article-shell">
+        <header className="article-head">
+          <span className="eyebrow-sm">{item.tag}</span>
+          <h1>{item.title}</h1>
+          <div className="article-meta">Publicerad {item.date}</div>
+        </header>
+        <div className="article-cols">
+          <div className="article-body">
+            <p className="article-lede">{item.lede || item.excerpt}</p>
+            {(item.body || [item.excerpt]).map((p, i) => <p key={i}>{p}</p>)}
+          </div>
+          <aside className="article-aside">
+            <h3 className="aside-title">Relaterad information</h3>
+            <div className="aside-card">
+              <h4>Säkerhet och regler</h4>
+              <p>Lokala regler, nationella bestämmelser och säkerhetsrutiner för skärm- och drakflyg.</p>
+              <a className="read-more" href="#/information" onClick={(e)=>{e.preventDefault(); navigate("#/information");}}>Läs mer →</a>
+            </div>
+            <div className="aside-card">
+              <h4>Klubbussen</h4>
+              <p>Allt om klubbens buss: transport av piloter och utrustning, planering av turer.</p>
+              <a className="read-more" href="#/information" onClick={(e)=>{e.preventDefault(); navigate("#/information");}}>Läs mer →</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <NewsCarousel items={(window.NEWS || []).filter((n) => n.slug !== slug)} navigate={navigate} label="Fler nyheter" />
+      <Footer navigate={navigate} />
+    </main>
+  );
+}
+
+// ---------- Single takeoff ----------
+function SingleTakeoffPage({ slug, navigate }) {
+  const t = window.TAKEOFF;
+  return (
+    <main>
+      <div className="image-header" style={{ backgroundImage: `url(${t.hero})`, height: 540 }} />
+      <article className="article-shell">
+        <header className="article-head">
+          <span className="eyebrow-sm">{t.eyebrow}</span>
+          <h1>{t.title}</h1>
+        </header>
+
+        <div className="takeoff-grid">
+          <aside className="takeoff-overview">
+            <h2>Översikt</h2>
+            <div className="stack-20">
+              <div className="field">
+                <div className="field-label">Position</div>
+                <div className="field-grid-2">
+                  <div className="field">
+                    <div className="label-italic">WGS84</div>
+                    <div className="field-value" style={{ fontFamily: "var(--mono)", fontSize: 14 }}>{t.pos.wgs84}</div>
+                  </div>
+                  <div className="field">
+                    <div className="label-italic">Sweref99</div>
+                    <div className="field-value" style={{ fontFamily: "var(--mono)", fontSize: 14 }}>{t.pos.sweref}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="field">
+                <div className="field-label">Höjd</div>
+                <div className="field-value">Start ca {t.altitudeStart}<br/>Höjd över landning {t.altitudeOver}</div>
+              </div>
+              <div className="field">
+                <div className="field-label">Optimala vindförhållanden</div>
+                <div style={{ display: "flex", gap: 24, alignItems: "center", marginTop: 4 }}>
+                  <div>
+                    <div className="label-italic" style={{ color: "var(--slate)" }}>Vindriktning</div>
+                    <div className="field-value">{t.windDir}</div>
+                  </div>
+                  <div className="compass" aria-label="Vindrosen">
+                    <span className="compass-label">SSO</span>
+                  </div>
+                </div>
+                <p style={{ color: "var(--slate)", marginTop: 12, fontSize: 15, lineHeight: "22px" }}>{t.windNote}</p>
+              </div>
+              <div className="field">
+                <div className="field-label muted">Rekommenderad erfarenhetsnivå</div>
+                <div className="field-value">{t.level}</div>
+              </div>
+              <div className="field">
+                <div className="field-label">Senast uppdaterad</div>
+                <div className="field-value" style={{ fontFamily: "var(--mono)", fontSize: 14 }}>{t.updated}</div>
+              </div>
+            </div>
+          </aside>
+
+          <div>
+            <section className="takeoff-section">
+              <h3>Beskrivning</h3>
+              {t.description.map((p, i) => <p key={i}>{p}</p>)}
+            </section>
+
+            <section className="takeoff-section">
+              <h3>Potentiella risker och faror</h3>
+              <ul className="risk-list">
+                {t.risks.map((r, i) => <li key={i}>{r}</li>)}
+              </ul>
+              <div className="danger-card">
+                <span className="ico"><IconAlert /></span>
+                <div>
+                  <strong>Visa marginaler vid termik</strong>
+                  <span>Soliga eftermiddagar kan termiken bli stark över sydsluttningen. Planera tidiga eller sena flygpass om förhållandena känns kraftiga.</span>
+                </div>
+              </div>
+            </section>
+
+            <section className="takeoff-section">
+              <h3>Nödinformation</h3>
+              <p>{t.emergency}</p>
+              <div className="field" style={{ marginTop: 16 }}>
+                <div className="field-label">Position</div>
+                <div className="field-grid-2" style={{ maxWidth: 500 }}>
+                  <div className="field">
+                    <div className="label-italic">WGS84</div>
+                    <div className="field-value" style={{ fontFamily: "var(--mono)", fontSize: 14 }}>{t.pos.wgs84}</div>
+                  </div>
+                  <div className="field">
+                    <div className="label-italic">Sweref99</div>
+                    <div className="field-value" style={{ fontFamily: "var(--mono)", fontSize: 14 }}>{t.pos.sweref}</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </article>
+
+      <NewsCarousel items={window.NEWS} navigate={navigate} label="Relaterade nyheter" />
+      <Footer navigate={navigate} />
+    </main>
+  );
+}
+
+
+
+const { useEffect: _ue, useState: _us } = React;
+
+function HomePage({ navigate }) {
+  const [heroIn, setHeroIn] = _us(false);
+  _ue(() => { const t = setTimeout(() => setHeroIn(true), 50); return () => clearTimeout(t); }, []);
+
+  return (
+    <main>
+      <section className={`hero ${heroIn ? "in" : ""}`}>
+        <div className="hero-img" />
+        <div className="hero-grad" />
+        <div className="hero-disc">
+          <div className="disc-inner">
+            <b>Åre · 1 200 m</b>
+            sydlig vind<br/>2–6 m/s
+          </div>
+        </div>
+        <div className="hero-foot">
+          <span className="stack"><span className="dot" />Åreskutan, Jämtland</span>
+          <span className="stack">Säsong 2026 · Inflygning från syd</span>
+        </div>
+      </section>
+
+      <div className="container">
+        <section className="welcome">
+          <div className="welcome-img" />
+          <div className="welcome-text">
+            <h2>Välkommen till Åre Skärm- och Drakflygklubb!</h2>
+            <p className="body">Åre Skärm- och Drakflygklubb har i många år varit en samlingspunkt för flygare i fjällmiljö. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området.</p>
+            <p className="body">Klubben drivs av sina medlemmar och bygger på engagemang, erfarenhetsutbyte och flygglädje. Målet är enkelt. Att fler ska få uppleva friheten i luften på ett tryggt och hållbart sätt.</p>
+          </div>
+        </section>
+      </div>
+
+      <NewsCarousel items={window.NEWS} navigate={navigate} />
+
+      <section className="cards-section">
+        <div className="container">
+          <div className="cards-head">
+            <h2 className="h-section">Flyga i Åre</h2>
+            <a href="#/information" onClick={(e)=>{e.preventDefault(); navigate("#/information");}} style={{ fontSize: 14, color: "var(--ink-2)", borderBottom: "1px solid var(--ink-2)", paddingBottom: 2 }}>
+              Se all information
+            </a>
+          </div>
+          <div className="cards-grid">
+            {window.INFO_CARDS.slice(0, 3).map((c) => <InfoCard key={c.slug} card={c} navigate={navigate} />)}
+          </div>
+          <div className="cards-grid" style={{ marginTop: 20 }}>
+            {window.INFO_CARDS.slice(3, 6).map((c) => <InfoCard key={c.slug} card={c} navigate={navigate} />)}
+          </div>
+        </div>
+      </section>
+
+      <section className="weather-section">
+        <div className="container">
+          <div className="weather-head">
+            <div>
+              <div className="eyebrow-sm" style={{ fontSize: 16, marginBottom: 4 }}>Väder</div>
+              <h2 className="h-section">Väderprognos för Åreskutan</h2>
+            </div>
+            <div className="source">Källa: SMHI · Uppdaterad 02:00</div>
+          </div>
+          <div className="weather-grid">
+            {window.WEATHER_DAYS.map((d) => <WeatherDay key={d.day} d={d} />)}
+          </div>
+        </div>
+      </section>
+
+      <Footer navigate={navigate} />
+    </main>
+  );
+}
+
+function InformationPage({ navigate }) {
+  return (
+    <main>
+      <section style={{ padding: "100px 110px 0 110px" }}>
+        <div className="eyebrow">Information</div>
+        <h1 className="display interior-display" style={{ marginTop: -4 }}>Att flyga i Åre</h1>
+        <p className="body body-muted" style={{ maxWidth: 720, marginTop: 32, fontSize: 18, lineHeight: 1.5 }}>
+          En samlad guide till starter, väder, regler och säkerhet i Åreområdet. Innehållet underhålls av klubbens medlemmar.
+        </p>
+      </section>
+
+      <section style={{ marginTop: 80 }}>
+        <div className="container">
+          <div className="cards-grid">
+            {window.INFO_CARDS.slice(0, 3).map((c) => <InfoCard key={c.slug} card={c} navigate={navigate} />)}
+          </div>
+          <div className="cards-grid" style={{ marginTop: 20 }}>
+            {window.INFO_CARDS.slice(3, 6).map((c) => <InfoCard key={c.slug} card={c} navigate={navigate} />)}
+          </div>
+        </div>
+      </section>
+
+      <NewsCarousel items={window.NEWS} navigate={navigate} />
+      <Footer navigate={navigate} />
+    </main>
+  );
+}
+
+function NyheterPage({ navigate }) {
+  const [filter, setFilter] = _us("Alla");
+  const cats = ["Alla", "Aktiviteter", "Aktuellt", "Säkerhet", "Tävlingar", "Åre"];
+  const items = filter === "Alla" ? window.NEWS : window.NEWS.filter((n) => n.category === filter);
+
+  return (
+    <main>
+      <section className="nyheter-hero">
+        <div className="eyebrow" style={{ color: "var(--accent)" }}>Aktuellt</div>
+        <h1 className="display" style={{ marginTop: -4 }}>Senaste nytt</h1>
+      </section>
+
+      <div className="container">
+        <div className="filter-bar">
+          {cats.map((c) => (
+            <button key={c} className={filter === c ? "active" : ""} onClick={() => setFilter(c)}>{c}</button>
+          ))}
+        </div>
+
+        <section className="news-grid">
+          {items.map((it) => <NewsItem key={it.slug} item={it} navigate={navigate} />)}
+        </section>
+
+        <div className="pagination">
+          <button>Föregående</button>
+          {[1,2,3,4,5].map((n) => <button key={n} className={n === 1 ? "active" : ""}>{n}</button>)}
+          <button>Nästa sida</button>
+        </div>
+      </div>
+
+      <Footer navigate={navigate} />
+    </main>
+  );
+}
+
+// ---------- Generic stub for "om" / "medlem" ----------
+function StubPage({ title, navigate }) {
+  return (
+    <main>
+      <section style={{ padding: "100px 110px 60px 110px" }}>
+        <div className="eyebrow">{title}</div>
+        <h1 className="display" style={{ marginTop: -4 }}>Kommer snart</h1>
+        <p className="body body-muted" style={{ maxWidth: 720, marginTop: 32, fontSize: 18 }}>
+          Denna sida är under uppbyggnad. Vänligen återkom senare eller kontakta klubben direkt för mer information.
+        </p>
+      </section>
+      <Footer navigate={navigate} />
+    </main>
+  );
+}
+
+Object.assign(window, { HomePage, InformationPage, NyheterPage, SingleNewsPage, SingleTakeoffPage, StubPage });
+
+</script>
+<script type="text/babel" data-presets="react">
+// app.jsx — hash router + mount
+
+function parseHash() {
+  const h = window.location.hash.replace(/^#/, "") || "/";
+  // patterns: /, /information, /nyheter, /nyhet/<slug>, /startplats/<slug>, /om, /medlem
+  const parts = h.split("#")[0].split("/").filter(Boolean);
+  if (parts.length === 0) return { page: "home" };
+  if (parts[0] === "information") return { page: "information" };
+  if (parts[0] === "nyheter") return { page: "nyheter" };
+  if (parts[0] === "nyhet" && parts[1]) return { page: "news", slug: parts[1] };
+  if (parts[0] === "startplats" && parts[1]) return { page: "takeoff", slug: parts[1] };
+  if (parts[0] === "om") return { page: "om" };
+  if (parts[0] === "medlem") return { page: "medlem" };
+  return { page: "home" };
+}
+
+function App() {
+  const [route, setRoute] = React.useState(parseHash());
+
+  React.useEffect(() => {
+    const onHash = () => {
+      setRoute(parseHash());
+      window.scrollTo({ top: 0, behavior: "instant" });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const navigate = (target) => {
+    if (target.startsWith("#")) {
+      window.location.hash = target.slice(1);
+    } else {
+      window.location.hash = target;
+    }
+  };
+
+  let content;
+  switch (route.page) {
+    case "home":         content = <HomePage navigate={navigate} />; break;
+    case "information":  content = <InformationPage navigate={navigate} />; break;
+    case "nyheter":      content = <NyheterPage navigate={navigate} />; break;
+    case "news":         content = <SingleNewsPage slug={route.slug} navigate={navigate} />; break;
+    case "takeoff":      content = <SingleTakeoffPage slug={route.slug} navigate={navigate} />; break;
+    case "om":           content = <StubPage title="Om klubben" navigate={navigate} />; break;
+    case "medlem":       content = <StubPage title="Bli medlem" navigate={navigate} />; break;
+    default:             content = <HomePage navigate={navigate} />;
+  }
+
+  return (
+    <div className="page" key={route.page + (route.slug || "")}>
+      <Topbar route={route} navigate={navigate} />
+      {content}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+</script>
+</body>
+</html>
