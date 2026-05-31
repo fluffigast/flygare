@@ -125,6 +125,38 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
+      {/* ═══ WEATHER + MEMBERSHIP ═══ */}
+      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
+        <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
+          <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
+            <WindWidget />
+            <div className="flex flex-col justify-between">
+              <div>
+                <p className="font-serif italic text-sm mb-1" style={{ color: "var(--slate, #62748e)" }}>Medlemskap</p>
+                <h2 className="font-serif font-bold text-2xl mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>Bli medlem</h2>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+                  600 kr/år. Tillgång till alla startplatser, Draklanda, klubbussen och räddningsbåten.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 mt-5">
+                <a
+                  href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-serif transition-all hover:-translate-y-px"
+                  style={{ background: "#000", color: "#fff" }}
+                >
+                  Bli medlem
+                </a>
+                <Link to="/bli-medlem" className="text-xs text-center" style={{ color: "var(--slate-2, #90a1b9)" }}>
+                  Mer information →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ NEWS CAROUSEL ═══ */}
       <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
         <div className="flex justify-end mb-2">
@@ -173,38 +205,6 @@ const HomeView: React.FC = () => {
               </div>
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* ═══ WEATHER + MEMBERSHIP ═══ */}
-      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
-        <div className="border-t pt-6 mb-8" style={{ borderColor: "var(--border, #e2e8f0)" }}>
-          <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
-            <WindWidget />
-            <div className="flex flex-col justify-between">
-              <div>
-                <p className="font-serif italic text-sm mb-1" style={{ color: "var(--slate, #62748e)" }}>Medlemskap</p>
-                <h2 className="font-serif font-bold text-2xl mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>Bli medlem</h2>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-                  600 kr/år. Tillgång till alla startplatser, Draklanda, klubbussen och räddningsbåten.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 mt-5">
-                <a
-                  href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-serif transition-all hover:-translate-y-px"
-                  style={{ background: "#000", color: "#fff" }}
-                >
-                  Bli medlem
-                </a>
-                <Link to="/bli-medlem" className="text-xs text-center transition-colors" style={{ color: "var(--slate-2, #90a1b9)" }}>
-                  Mer information →
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
