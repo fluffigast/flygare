@@ -25,10 +25,10 @@ const PageView: React.FC = () => {
   const title = livePage.title || fallback.title;
   const body = livePage.body || (fallback as any).body;
   const lede = (livePage as any).lede || (fallback as any).lede;
-  const sections = (livePage as any).sections || (fallback as any).sections;
+  const groups = (livePage as any).groups || (livePage as any).sections || (fallback as any).groups || (fallback as any).sections;
 
-  // Structured sections mode (flygregler etc.)
-  if (sections?.length) {
+  // Grouped sections mode (flygregler etc.)
+  if (groups?.length) {
     return (
       <div className="w-full">
         <section className="px-4 md:px-[110px] pt-16 md:pt-24 pb-8">
@@ -50,27 +50,37 @@ const PageView: React.FC = () => {
         </section>
 
         <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
-          {sections.map((section: any, i: number) => (
-            <section
-              key={i}
-              className="py-8"
-              style={i > 0 ? { borderTop: "1px solid var(--border, #e2e8f0)" } : undefined}
-            >
+          {groups.map((group: any, gi: number) => (
+            <div key={gi} className={gi > 0 ? "mt-16" : ""}>
               <h2
-                className="font-serif font-bold text-lg md:text-xl mb-5"
-                style={{ color: "var(--ink-2, #0f172b)" }}
+                className="font-serif font-bold text-xl md:text-[32px] leading-none tracking-tight mb-8"
+                style={{ color: "var(--ink-2, #0f172b)", borderTop: gi > 0 ? "1px solid var(--border, #e2e8f0)" : undefined, paddingTop: gi > 0 ? 24 : undefined }}
               >
-                {section.title}
+                {group.heading}
               </h2>
-              <ul className="flex flex-col gap-3">
-                {section.items.map((item: string, j: number) => (
-                  <li key={j} className="flex gap-3 items-baseline text-base leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>
-                    <span className="shrink-0 w-3 h-px mt-3" style={{ background: "var(--slate-2, #90a1b9)" }} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </section>
+              {group.sections.map((section: any, si: number) => (
+                <div
+                  key={si}
+                  className="py-5"
+                  style={si > 0 ? { borderTop: "1px solid var(--border, #e2e8f0)" } : undefined}
+                >
+                  <h3
+                    className="font-serif font-bold text-base mb-3"
+                    style={{ color: "var(--ink, #020618)" }}
+                  >
+                    {section.title}
+                  </h3>
+                  <ul className="flex flex-col gap-2">
+                    {section.items.map((item: string, j: number) => (
+                      <li key={j} className="flex gap-3 items-baseline text-sm leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>
+                        <span className="shrink-0 w-3 h-px mt-2.5" style={{ background: "var(--slate-2, #90a1b9)" }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           ))}
         </div>
 
