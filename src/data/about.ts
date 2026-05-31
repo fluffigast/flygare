@@ -9,14 +9,14 @@ export const boardMembers = [
 ];
 
 export const milestones = [
-  { year: 1975, text: "Åre Drakflygklubb bildas" },
+  { year: 1976, text: "Åre Drakflygklubb bildas" },
   { year: 1988, text: "Åre Skärmflygklubb bildas" },
   { year: 1995, text: "Klubbarna slås ihop till Åre Skärm- & Drakflygklubb" },
   { year: 2023, text: "1000m-projektet slutförs" },
   { year: 2026, text: "~100 aktiva medlemmar, varav ca 30 bor i Åre Kommun" },
 ];
 
-export const clubHistory = `Åre Drakflygklubb bildades redan 1975 och sedan 1988 har även Åre Skärmflygklubb funnits. 1995 slogs klubbarna ihop och fick nuvarande namn Åre Skärm- och Drakflygklubb. Klubben har ca 100 medlemmar, varav de flesta är mycket aktiva. Ca 30 st av medlemmarna bor i Åre Kommun.
+export const clubHistory = `Åre Drakflygklubb bildades redan 1976 och sedan 1988 har även Åre Skärmflygklubb funnits. 1995 slogs klubbarna ihop och fick nuvarande namn Åre Skärm- och Drakflygklubb. Klubben har ca 100 medlemmar, varav de flesta är mycket aktiva. Ca 30 st av medlemmarna bor i Åre Kommun.
 
 Åreskutan har genom alla år varit ett av Sveriges centrum för skärm- och drakflygare. Under 1980-talet dominerades flygningen av drakar, eller hängflyg som det officiella namnet är, men under 1990-talet har skärmarna tagit över mer och mer. Idag görs 95 % av all flygning från Skutan med skärm.
 

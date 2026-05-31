@@ -40,8 +40,19 @@ function richTextToString(value: any): string {
   return "";
 }
 
+const localSiteSettings = {
+  heroTagline: "Skandinaviens mest spektakulära flygplats",
+  heroDescription: "Skärm- och drakflyg från Åreskutan",
+  foundedYear: 1976,
+  aboutTitle: "Välkommen till Åre Skärm- och Drakflygklubb!",
+  aboutText: "Åre Skärm- och Drakflygklubb bildades 1976 som drakflygklubb och har sedan 1988 även omfattat skärmflyg. Med ca 100 aktiva medlemmar och 9 startplatser på Åreskutan är vi en av Sveriges mest aktiva flygklubbar.",
+  statsMembers: "~100",
+  statsDistanceRecord: "230 km",
+  statsLaunchSites: "9",
+};
+
 const HomeView: React.FC = () => {
-  const { data: site, loading } = useSiteSettings({});
+  const { data: site } = useSiteSettings(localSiteSettings);
   const liveSite = useGlobalLivePreview(site);
 
   const [heroIn, setHeroIn] = useState(false);
@@ -74,8 +85,7 @@ const HomeView: React.FC = () => {
             background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
           }}
         />
-        {!loading && (
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-10">
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 lg:px-14 lg:pb-10">
             <p
               className="font-serif italic text-white/70 mb-1"
               style={{ fontSize: "clamp(11px, 1vw, 14px)" }}
@@ -91,7 +101,6 @@ const HomeView: React.FC = () => {
               {liveSite.heroDescription} sedan {liveSite.foundedYear}
             </h1>
           </div>
-        )}
         <div className="absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/70 text-xs tracking-wide">
           <span className="inline-flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-white/50" />

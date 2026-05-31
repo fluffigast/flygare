@@ -20,11 +20,8 @@ export const membershipInfo = {
   ],
   licenseRequirements: [
     { level: "Elevlicens", requirements: "Minst 10 flygningar" },
-    { level: "Pilot 1", requirements: "Minst 10 flygningar" },
-    {
-      level: "Pilot 2",
-      requirements: "Minst 10 höjdflygningar + 5 timmar flygtid",
-    },
+    { level: "Pilot 1", requirements: "Minst 50 flygningar för initial licens, 10 flygningar för förnyelse" },
+    { level: "Pilot 2", requirements: "Minst 10 flygningar + 5 timmars flygtid för förnyelse" },
   ],
   licenseNote:
     "Om du inte uppfyller kravet kan du ändå förnya din licens, men du erhåller då en lägre licensnivå.",
