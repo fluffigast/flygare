@@ -5,7 +5,6 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
-import { getPlaceholderImage } from "../../utils/placeholder";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const localSiteSettings = {
