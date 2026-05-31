@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  frontend:
-    name: Build frontend
+  deploy-frontend:
+    name: Build & Deploy frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,32 +27,16 @@ jobs:
         env:
           VITE_CMS_URL: ${{ vars.VITE_CMS_URL }}
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: dist/
-          retention-days: 7
-
-  deploy-frontend:
-    name: Deploy frontend to Azure
-    needs: [frontend]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: frontend-dist
-          path: dist/
-
-      - run: npm install -g @azure/static-web-apps-cli
-      - run: swa deploy ./dist --api-location ./api --deployment-token "$SWA_TOKEN" --env production --api-language node --api-version 22
+      - name: Deploy to Azure SWA
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          npm install -g @azure/static-web-apps-cli
+          swa deploy ./dist --api-location ./api --deployment-token "$SWA_TOKEN" --env production --api-language node --api-version 22
         env:
           SWA_TOKEN: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
 
-  cms:
-    name: Build CMS image
+  deploy-cms:
+    name: Build & Deploy CMS
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,17 +64,15 @@ jobs:
           docker push ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }}
           docker push ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:latest
 
-  deploy-cms:
-    name: Deploy CMS to Azure
-    needs: [cms]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: azure/login@v2
+      - name: Deploy to Azure Container App
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: azure/CLI@v2
+      - name: Update container image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az containerapp update \
