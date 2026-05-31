@@ -423,6 +423,7 @@ async function seed() {
   await payload.updateGlobal({
     slug: 'membership-info',
     data: {
+      description: 'Skanna QR-koden eller använd länken nedan för att bli medlem. Din inbetalning går direkt tillbaka till dig i form av förbättrade start- och landningsplatser, förbättrad information, vindmätare och vindstrutar på start och landningsplats, tävlingar etc. Notera att uppfärd på berget med klubbussen endast är för medlemmar.',
       price: '600 kr / år',
       validity: 'Giltigt t.o.m. 31 december 2026',
       shopUrl: 'https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/',
