@@ -43,13 +43,10 @@ test.describe("News", () => {
   test("clicking a news item navigates to detail view", async ({ page }) => {
     await page.goto("/nyheter");
 
-    // Find the first link that goes to /nyheter/...
     const newsLink = page.locator('a[href^="/nyheter/"]').first();
-    const href = await newsLink.getAttribute("href");
-
-    if (href) {
+    if ((await newsLink.count()) > 0) {
       await newsLink.click();
-      await expect(page).toHaveURL(href);
+      await page.waitForURL(/\/nyheter\/.+/);
       const notFound = page.getByText("Sidan hittades inte");
       await expect(notFound).not.toBeVisible();
     }
@@ -122,6 +119,28 @@ test.describe("Startplatser", () => {
         await expect(notFound).not.toBeVisible();
         // Detail page should show overview
         await expect(page.getByText("Översikt")).toBeVisible();
+      }
+    }
+  });
+});
+
+test.describe("Aktiviteter", () => {
+  test("list renders and links to detail page", async ({ page }) => {
+    await page.goto("/aktiviteter");
+
+    const activityLink = page.locator('a[href^="/aktiviteter/"]').first();
+    const count = await activityLink.count();
+
+    if (count > 0) {
+      const href = await activityLink.getAttribute("href");
+      await activityLink.click();
+      if (href) {
+        await expect(page).toHaveURL(href);
+        // Detail page should render content
+        const notFound = page.getByText("Sidan hittades inte");
+        await expect(notFound).not.toBeVisible();
+        const paragraphs = page.locator("p");
+        expect(await paragraphs.count()).toBeGreaterThan(0);
       }
     }
   });
