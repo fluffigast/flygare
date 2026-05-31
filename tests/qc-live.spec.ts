@@ -8,13 +8,21 @@ const CMS_API =
 const pages = [
   { path: "/", name: "Hem" },
   { path: "/nyheter", name: "Nyheter" },
-  { path: "/information", name: "Flygguiden" },
-  { path: "/startplatser", name: "Startplatser" },
-  { path: "/vader", name: "Väder" },
-  { path: "/om", name: "Om klubben" },
-  { path: "/bli-medlem", name: "Bli medlem" },
-  { path: "/kontakt", name: "Kontakt" },
+  { path: "/flyga-i-are", name: "Flyga i Åre" },
+  { path: "/flyga-i-are/startplatser", name: "Startplatser" },
+  { path: "/flyga-i-are/vader", name: "Väder" },
+  { path: "/flyga-i-are/flygregler", name: "Flygregler" },
+  { path: "/flyga-i-are/sakerhet", name: "Säkerhet" },
+  { path: "/flyga-i-are/xc", name: "Cross country" },
+  { path: "/flyga-i-are/klubbuss", name: "Klubbuss" },
+  { path: "/aktiviteter", name: "Aktiviteter" },
   { path: "/tavlingar", name: "Tävlingar" },
+  { path: "/om", name: "Om klubben" },
+  { path: "/om/styrelsen", name: "Styrelsen" },
+  { path: "/kontakt", name: "Kontakt" },
+  { path: "/bli-medlem", name: "Bli medlem" },
+  { path: "/ovrigt/foton", name: "Foton" },
+  { path: "/ovrigt/dokument", name: "Dokument" },
 ];
 
 const viewports = [
@@ -79,11 +87,12 @@ test("[functional] Desktop nav has all links", async ({ page: p }) => {
   const navLinks = await p.locator("header nav a").allTextContents();
   const expected = [
     "Hem",
-    "Flygguiden",
-    "Väder",
-    "Startplatser",
+    "Flyga i Åre",
     "Nyheter",
+    "Aktiviteter",
+    "Tävling",
     "Om klubben",
+    "Övrigt",
   ];
   for (const label of expected) {
     expect(
@@ -136,6 +145,32 @@ test("[api] CMS returns news", async ({ request }) => {
   expect(res.status()).toBe(200);
   const data = await res.json();
   expect(data.totalDocs).toBeGreaterThan(0);
+});
+
+test("[api] CMS returns pages", async ({ request }) => {
+  const res = await request.get(`${CMS_API}/pages?limit=1`);
+  expect(res.status()).toBe(200);
+});
+
+test("[api] CMS returns site-navigation", async ({ request }) => {
+  const res = await request.get(`${CMS_API}/globals/site-navigation`);
+  expect(res.status()).toBe(200);
+  const data = await res.json();
+  expect(data.sections.length).toBeGreaterThan(0);
+});
+
+test("[api] CMS returns club-info", async ({ request }) => {
+  const res = await request.get(`${CMS_API}/globals/club-info`);
+  expect(res.status()).toBe(200);
+});
+
+test("[functional] Desktop nav has dropdown menus", async ({ page: p }) => {
+  await p.setViewportSize({ width: 1280, height: 800 });
+  await p.goto(BASE, { waitUntil: "networkidle" });
+
+  await p.hover("text=Flyga i Åre");
+  await expect(p.locator("text=Starter & landningar")).toBeVisible();
+  await expect(p.locator("text=Flygregler")).toBeVisible();
 });
 
 test("[api] SMHI proxy returns weather data", async ({ request }) => {
