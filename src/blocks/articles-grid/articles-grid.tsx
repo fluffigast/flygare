@@ -22,7 +22,7 @@ const ArticlesGrid: React.FC<ArticlesGridProps> = ({
         ))}
       </div>
       {showPagination && (
-        <Pagination currentPage={1} totalPages={1} basePath="/information" />
+        <Pagination currentPage={1} totalPages={1} basePath="/flyga-i-are" />
       )}
     </section>
   );

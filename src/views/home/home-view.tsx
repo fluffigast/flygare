@@ -100,7 +100,7 @@ const HomeView: React.FC<HomeViewProps> = ({}) => {
           <div className="flex gap-3 flex-wrap justify-center mt-2">
             <Button href="/bli-medlem">Bli medlem — 600 kr/år</Button>
             <Link
-              to="/startplatser"
+              to="/flyga-i-are/startplatser"
               className="inline-flex items-center px-4 py-2 rounded-full border border-border text-sm hover:bg-muted transition-colors"
             >
               Se startplatser

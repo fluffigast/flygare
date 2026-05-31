@@ -49,7 +49,7 @@ const ArticlesSingleView: React.FC<ArticlesSingleViewProps> = ({}) => {
               {articles.slice(0, 2).map((a) => (
                 <li key={a.id}>
                   <h4>
-                    <Link to={`/information/${a.slug}`}>{a.title}</Link>
+                    <Link to={`/flyga-i-are/${a.slug}`}>{a.title}</Link>
                   </h4>
                   <p>{a.excerpt}</p>
                 </li>
