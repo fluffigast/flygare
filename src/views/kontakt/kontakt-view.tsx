@@ -23,7 +23,7 @@ const KontaktView: React.FC = () => {
           <h2 className="font-serif text-3xl">Kontakta oss</h2>
         </div>
         <div className="flex flex-col gap-4 text-muted-foreground text-sm leading-relaxed">
-          <p>
+          <p data-payload-field="email">
             E-post:{" "}
             <a
               href={`mailto:${contactInfo.email}`}
@@ -42,6 +42,7 @@ const KontaktView: React.FC = () => {
         <h3 className="font-serif text-xl">Sociala medier</h3>
         <div className="flex flex-col gap-3">
           <a
+            data-payload-field="facebookUrl"
             href={contactInfo.facebook.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -50,6 +51,7 @@ const KontaktView: React.FC = () => {
             {contactInfo.facebook.label}
           </a>
           <a
+            data-payload-field="youtubeUrl"
             href={contactInfo.youtube.url}
             target="_blank"
             rel="noopener noreferrer"

@@ -28,7 +28,7 @@ const DokumentView: React.FC = () => {
             className="flex justify-between items-center p-4 rounded-lg border border-border hover:border-primary transition-colors"
           >
             <div className="flex flex-col gap-1">
-              <p className="text-sm font-semibold">{doc.title}</p>
+              <p data-payload-field="title" className="text-sm font-semibold">{doc.title}</p>
               <p className="text-muted-foreground text-xs">{doc.category} {doc.year ? `· ${doc.year}` : ''}</p>
             </div>
             <span className="text-sm text-primary">Ladda ner ↓</span>

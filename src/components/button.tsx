@@ -4,6 +4,7 @@ export interface ButtonProps {
   href?: string;
   onClick?: () => void;
   children: React.ReactNode;
+  [key: string]: unknown;
 }
 
 const Button: React.FC<ButtonProps> = ({

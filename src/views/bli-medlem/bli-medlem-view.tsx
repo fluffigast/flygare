@@ -32,11 +32,11 @@ const BliMedlemView: React.FC = () => {
 
       {/* Price card */}
       <section className="bg-primary text-primary-foreground rounded-lg p-8 flex flex-col gap-4 items-center text-center">
-        <p className="font-serif text-4xl">{membershipInfo.price}</p>
-        <p className="text-primary-foreground/50 text-sm">
+        <p data-payload-field="price" className="font-serif text-4xl">{membershipInfo.price}</p>
+        <p data-payload-field="validity" className="text-primary-foreground/50 text-sm">
           {membershipInfo.validity}
         </p>
-        <Button href={membershipInfo.shopUrl}>Köp medlemskap</Button>
+        <Button data-payload-field="shopUrl" href={membershipInfo.shopUrl}>Köp medlemskap</Button>
       </section>
 
       <Separator />
