@@ -1,4 +1,4 @@
-const CMS_URL = import.meta.env.VITE_CMS_URL || "";
+const CMS_URL = import.meta.env.VITE_PAYLOAD_URL || "";
 
 interface CollectionResponse<T> {
   docs: T[];
