@@ -7,7 +7,6 @@ import { news as localNews } from "../../data/news";
 import { useNews } from "../../hooks/useCMS";
 import { getPlaceholderImage } from "../../utils/placeholder";
 
-const CATEGORIES = ["Alla", "Aktiviteter", "Aktuellt", "Information", "Klubben", "Säkerhet"];
 const ITEMS_PER_PAGE = 6;
 
 const NewsView: React.FC = () => {
@@ -20,10 +19,15 @@ const NewsView: React.FC = () => {
     title: item.title,
     slug: item.slug ?? item.id?.toString(),
     category: item.category ?? "Information",
-    excerpt: item.excerpt ?? "",
+    excerpt: item.description ?? item.excerpt ?? "",
     publishedAt: item.publishedAt ?? item.date ?? item.createdAt,
-    imageUrl: getPlaceholderImage(item.id?.toString() ?? item.slug),
+    imageUrl: item.image?.url ?? item.image?.sizes?.hero?.url ?? getPlaceholderImage(item.id?.toString() ?? item.slug),
   }));
+
+  const CATEGORIES = useMemo(() => {
+    const cats = [...new Set(news.map((n: any) => n.category))].sort();
+    return ["Alla", ...cats];
+  }, [news]);
 
   const filtered = useMemo(() => {
     if (activeCategory === "Alla") return news;
@@ -140,7 +144,7 @@ const NewsView: React.FC = () => {
                     className="text-sm"
                     style={{ color: "var(--slate-2, #90a1b9)" }}
                   >
-                    {format(item.publishedAt, "d MMMM, yyyy", { locale: sv })}
+                    {format(new Date(item.publishedAt), "d MMMM, yyyy", { locale: sv })}
                   </span>
                   <span
                     className="transition-transform duration-200 group-hover:translate-x-1.5"

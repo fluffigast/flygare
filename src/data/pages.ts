@@ -4,99 +4,129 @@ export const pages = [
     slug: 'flygregler',
     category: 'flygregler',
     lede: 'Guiden är tänkt att främja vår flygsäkerhet samt informera om starter och landningar. Läs igenom innan du flyger. Vi önskar dig många härliga flyg från Åreskutan!',
-    sections: [
+    groups: [
       {
-        title: 'Start och landning',
-        items: [
-          'Draklanda är den officiella landningsplatsen. Alla andra landningar är utelandningar.',
-          'Minst 25 höjdflygningar krävs för att landa på Draklanda vid öppet vatten, om du inte flyger under instruktörs ansvar.',
-          'Markerade startplatser på kartan ska nyttjas i första hand.',
-          'Cykelleder, vandringsleder och skidpister får inte användas som startplats — och får bara användas som landningsplats i nödfall.',
+        heading: 'Flygning',
+        sections: [
+          {
+            title: 'Start och landning',
+            items: [
+              'Draklanda är den officiella landningsplatsen. Alla andra landningar är utelandningar.',
+              'Minst 25 höjdflygningar krävs för att landa på Draklanda vid öppet vatten, om du inte flyger under instruktörs ansvar.',
+              'Markerade startplatser på kartan ska nyttjas i första hand.',
+              'Cykelleder, vandringsleder och skidpister får inte användas som startplats — och får bara användas som landningsplats i nödfall.',
+            ],
+          },
+          {
+            title: 'Kabinbanevajrarna',
+            items: [
+              'Vid nerflyg utan höjdvinst ska kabinbanevajrarna alltid passeras söder om Stötta 1.',
+              'Piloter som är lokalt oerfarna, elevlicensare och P1:or följer alltid denna regel.',
+            ],
+          },
+          {
+            title: 'Inflygning Draklanda',
+            items: [
+              'Landningsfältet ligger mellan järnvägen och Åresjön.',
+              'Minimipassage av kabinbanevajrarna med god höjdmarginal.',
+              'Minst 360° sväng efter passage av järnvägen.',
+              'Anpassa efter rådande vindförhållanden.',
+            ],
+          },
         ],
       },
       {
-        title: 'Kabinbanevajrarna',
-        items: [
-          'Vid nerflyg utan höjdvinst ska kabinbanevajrarna alltid passeras söder om Stötta 1.',
-          'Piloter som är lokalt oerfarna, elevlicensare och P1:or följer alltid denna regel.',
+        heading: 'Säsong',
+        sections: [
+          {
+            title: 'Vinterregler',
+            items: [
+              'Åresjöns is kan användas som nödlandning vintertid, men landa aldrig nära utloppet — isen är mycket svag där.',
+              'Elevpiloter med fjällcertifiering tillåts under nationella regler med individuellt godkännande.',
+            ],
+          },
+          {
+            title: 'Sommarregler',
+            items: [
+              'Landningen på Draklanda kan vara krävande sommartid.',
+              'Minst 25 höjdflygningar krävs för att landa utan instruktörs ansvar.',
+            ],
+          },
         ],
       },
       {
-        title: 'Inflygning Draklanda',
-        items: [
-          'Landningsfältet ligger mellan järnvägen och Åresjön.',
-          'Minimipassage av kabinbanevajrarna med god höjdmarginal.',
-          'Minst 360° sväng efter passage av järnvägen.',
-          'Anpassa efter rådande vindförhållanden.',
+        heading: 'Skistar-avtal',
+        sections: [
+          {
+            title: 'Vägar och transport',
+            items: [
+              'All körning på Skistarvägar sker på deras villkor. Maxhastighet 40 km/h.',
+              'Biltrafik ej tillåten under lifts öppettider — kör med aktsamhet och minimera slitage.',
+              'Fyrhjulsdrivna bilar ska eftersträvas på markerade vägar.',
+              'Hummeln: kör bara uppför i markerad stig.',
+              'Lås alltid Skistargrinden efter nedkörning.',
+              'Undantag: när enbart Stjärnliften är öppen, upp- och nedfart via väg 3.',
+              'Tillstånd krävs för skoter på Åreskutan. Skistars skoterregler gäller.',
+            ],
+          },
+          {
+            title: 'Flygverksamhet',
+            items: [
+              'All flygverksamhet ska i första hand bedrivas under liftarnas öppettider.',
+              'Giltig licens och försäkring krävs för att flyga från klubbens startplatser.',
+            ],
+          },
         ],
       },
       {
-        title: 'Vinterregler',
-        items: [
-          'Åresjöns is kan användas som nödlandning vintertid, men landa aldrig nära utloppet — isen är mycket svag där.',
-          'Elevpiloter med fjällcertifiering tillåts under nationella regler med individuellt godkännande.',
+        heading: 'Väder',
+        sections: [
+          {
+            title: 'Fjällväder',
+            items: [
+              'Hastiga väderskiften förekommer — lugnt väder kan snabbt övergå i kraftiga vindbyar och temperaturfall.',
+              'Vindrelaterade fenomen som vågor och vindbyar förekommer.',
+              'Molnbankar kan begränsa sikten kraftigt.',
+              'Mobilnätet har begränsad täckning i terrängen.',
+            ],
+          },
         ],
       },
       {
-        title: 'Sommarregler',
-        items: [
-          'Landningen på Draklanda kan vara krävande sommartid.',
-          'Minst 25 höjdflygningar krävs för att landa utan instruktörs ansvar.',
-        ],
-      },
-      {
-        title: 'Skistar-avtal',
-        items: [
-          'All flygverksamhet ska i första hand bedrivas under liftarnas öppettider.',
-          'All körning på Skistarvägar sker på deras villkor. Maxhastighet 40 km/h.',
-          'Biltrafik ej tillåten under lifts öppettider — kör med aktsamhet och minimera slitage.',
-          'Fyrhjulsdrivna bilar ska eftersträvas på markerade vägar.',
-          'Hummeln: kör bara uppför i markerad stig.',
-          'Lås alltid Skistargrinden efter nedkörning.',
-          'Undantag: när enbart Stjärnliften är öppen, upp- och nedfart via väg 3.',
-          'Tillstånd krävs för skoter på Åreskutan. Skistars skoterregler gäller.',
-        ],
-      },
-      {
-        title: 'Fjällväder',
-        items: [
-          'Hastiga väderskiften förekommer — lugnt väder kan snabbt övergå i kraftiga vindbyar och temperaturfall.',
-          'Vindrelaterade fenomen som vågor och vindbyar förekommer.',
-          'Molnbankar kan begränsa sikten kraftigt.',
-          'Mobilnätet har begränsad täckning i terrängen.',
-        ],
-      },
-      {
-        title: 'Elevkort',
-        items: [
-          'Grundkurs genomförd.',
-          'Självständig flygning i liten backe.',
-          'Höjdflygning kräver sällskap av erfaren pilot.',
-        ],
-      },
-      {
-        title: 'Pilot 1',
-        items: [
-          'Minst 50 flygningar (berg, vinsch eller bogsering).',
-          'Lämplighetsutlåtande krävs.',
-          'Självständig flygning utan instruktör.',
-          'Förnyelse: minst 10 flygningar per 12 månader.',
-        ],
-      },
-      {
-        title: 'Pilot 2',
-        items: [
-          'Lämplighetsutlåtande som P2.',
-          'Självständig start i Sverige och utomlands.',
-          'Möjlighet till tävlings- och tandemlicens.',
-          'Förnyelse: minst 10 flygningar + 5 timmars flygtid per 12 månader.',
-        ],
-      },
-      {
-        title: 'Licens och försäkring',
-        items: [
-          'Giltig licens och försäkring krävs för att flyga från klubbens startplatser (Skistar-avtal).',
-          'Licensförnyelse sker via paragliding.se — registrera flygtid i PilotPortalen, betala årsavgift.',
+        heading: 'Licenser',
+        sections: [
+          {
+            title: 'Elevkort',
+            items: [
+              'Grundkurs genomförd.',
+              'Självständig flygning i liten backe.',
+              'Höjdflygning kräver sällskap av erfaren pilot.',
+            ],
+          },
+          {
+            title: 'Pilot 1',
+            items: [
+              'Minst 50 flygningar (berg, vinsch eller bogsering).',
+              'Lämplighetsutlåtande krävs.',
+              'Självständig flygning utan instruktör.',
+              'Förnyelse: minst 10 flygningar per 12 månader.',
+            ],
+          },
+          {
+            title: 'Pilot 2',
+            items: [
+              'Lämplighetsutlåtande som P2.',
+              'Självständig start i Sverige och utomlands.',
+              'Möjlighet till tävlings- och tandemlicens.',
+              'Förnyelse: minst 10 flygningar + 5 timmars flygtid per 12 månader.',
+            ],
+          },
+          {
+            title: 'Förnyelse',
+            items: [
+              'Licensförnyelse sker via paragliding.se — registrera flygtid i PilotPortalen, betala årsavgift.',
+            ],
+          },
         ],
       },
     ],
