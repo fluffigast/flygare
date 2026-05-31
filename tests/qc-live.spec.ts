@@ -237,3 +237,87 @@ for (const page of pages) {
     }
   });
 }
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 5: CMS — login, edit, verify change propagates
+// ═══════════════════════════════════════════════════════════
+
+const CMS_BASE = "https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io";
+
+test("[cms] Can login to CMS admin", async ({ request }) => {
+  const res = await request.post(`${CMS_API}/users/login`, {
+    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+  });
+  expect(res.status()).toBe(200);
+  const data = await res.json();
+  expect(data.token).toBeDefined();
+});
+
+test("[cms] Can update site settings via API", async ({ request }) => {
+  // Login
+  const loginRes = await request.post(`${CMS_API}/users/login`, {
+    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+  });
+  const { token } = await loginRes.json();
+
+  // Read current settings
+  const getRes = await request.get(`${CMS_API}/globals/site-settings`, {
+    headers: { Authorization: `JWT ${token}` },
+  });
+  const original = await getRes.json();
+
+  // Update
+  const testTagline = `Test ${Date.now()}`;
+  const updateRes = await request.post(`${CMS_API}/globals/site-settings`, {
+    headers: { Authorization: `JWT ${token}` },
+    data: { heroTagline: testTagline },
+  });
+  expect(updateRes.status()).toBeLessThan(400);
+
+  // Verify
+  const verifyRes = await request.get(`${CMS_API}/globals/site-settings`);
+  const updated = await verifyRes.json();
+  expect(updated.heroTagline).toBe(testTagline);
+
+  // Restore
+  await request.post(`${CMS_API}/globals/site-settings`, {
+    headers: { Authorization: `JWT ${token}` },
+    data: { heroTagline: original.heroTagline },
+  });
+});
+
+test("[cms] New pages collection is editable", async ({ request }) => {
+  const loginRes = await request.post(`${CMS_API}/users/login`, {
+    data: { email: "admin@flygare.nu", password: "Flygare2026!" },
+  });
+  const { token } = await loginRes.json();
+
+  // Fetch a page
+  const pagesRes = await request.get(`${CMS_API}/pages?limit=1`, {
+    headers: { Authorization: `JWT ${token}` },
+  });
+  const pages = await pagesRes.json();
+  expect(pages.totalDocs).toBeGreaterThan(0);
+
+  const pageId = pages.docs[0].id;
+  const originalTitle = pages.docs[0].title;
+
+  // Update title
+  const testTitle = `Test ${Date.now()}`;
+  const updateRes = await request.patch(`${CMS_API}/pages/${pageId}`, {
+    headers: { Authorization: `JWT ${token}` },
+    data: { title: testTitle },
+  });
+  expect(updateRes.status()).toBeLessThan(400);
+
+  // Verify
+  const verifyRes = await request.get(`${CMS_API}/pages/${pageId}`);
+  const updated = await verifyRes.json();
+  expect(updated.title).toBe(testTitle);
+
+  // Restore
+  await request.patch(`${CMS_API}/pages/${pageId}`, {
+    headers: { Authorization: `JWT ${token}` },
+    data: { title: originalTitle },
+  });
+});
