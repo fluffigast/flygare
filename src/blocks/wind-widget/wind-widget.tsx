@@ -48,7 +48,14 @@ const WindWidget: React.FC = () => {
   useEffect(() => {
     fetch("/api/wind")
       .then((res) => res.ok ? res.json() : Promise.reject())
-      .then(setData)
+      .then((d) => {
+        // Handle both formats: nested { meac, skistar } and flat { station, wind_ms }
+        if (d.meac !== undefined) {
+          setData(d);
+        } else if (d.wind_ms !== undefined) {
+          setData({ meac: d, skistar: null, timestamp: new Date().toISOString() });
+        }
+      })
       .catch(() => setError(true));
   }, []);
 
