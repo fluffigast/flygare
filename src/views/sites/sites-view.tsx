@@ -2,11 +2,15 @@ import React from "react";
 import SitesGrid from "../../blocks/sites-grid/sites-grid";
 import SitesMap from "../../blocks/sites-map/sites-map";
 import Separator from "../../components/separator";
-import { sites, sitesIntro } from "../../data/sites";
+import { sites as localSites, sitesIntro } from "../../data/sites";
+import { useLaunches } from "../../hooks/useCMS";
+import { mapLaunchToSite } from "../../lib/map-launch";
 
-export interface SitesViewProps {}
-
-const SitesView: React.FC<SitesViewProps> = ({}) => {
+const SitesView: React.FC = () => {
+  const { data: cmsLaunches } = useLaunches([]);
+  const sites = cmsLaunches.length > 0
+    ? cmsLaunches.map(mapLaunchToSite)
+    : localSites;
   return (
     <>
       <SitesMap sites={sites} />

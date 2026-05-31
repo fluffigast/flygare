@@ -59,12 +59,13 @@ export function initClickToEdit() {
     if (!fieldName) return;
 
     // Send message to CMS admin to focus this field
+    const cmsOrigin = (import.meta as any).env?.VITE_PAYLOAD_URL || "*";
     window.parent.postMessage(
       {
         type: "payload-focus-field",
         field: fieldName,
       },
-      "*"
+      cmsOrigin
     );
 
     // Visual feedback

@@ -1,8 +1,10 @@
 import React from "react";
 import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
-import { weatherLinks } from "../../data/weather-links";
+import { weatherLinks as localWeatherLinks } from "../../data/weather-links";
+import { useWeatherLinks } from "../../hooks/useCMS";
 
 const VaderView: React.FC = () => {
+  const { data: weatherLinks } = useWeatherLinks(localWeatherLinks);
   return (
     <div className="w-full">
       {/* Editorial header */}

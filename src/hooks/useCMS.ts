@@ -25,8 +25,14 @@ function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
 // Use this in views that display a single CMS global.
 // The Payload admin sends live field changes via postMessage.
 // Returns the live-updated data when inside the CMS iframe, otherwise returns initialData unchanged.
+// Only activate live preview when loaded inside the CMS iframe.
+// This is a module-level constant — the branch never changes between renders,
+// so the hook count is stable across the component lifecycle.
+const isInIframe = typeof window !== "undefined" && window.self !== window.top;
+
 export function useGlobalLivePreview<T extends Record<string, any>>(initialData: T): T {
-  if (!CMS_URL) return initialData;
+  if (!CMS_URL || !isInIframe) return initialData;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data } = useLivePreview<T>({
     initialData,
     serverURL: CMS_URL,
@@ -96,3 +102,6 @@ export const useClubInfo = (fallback: any) =>
 
 export const useBusRules = (fallback: any) =>
   useCMSData(() => fetchGlobal("bus-rules"), fallback);
+
+export const useFlyingGuide = (fallback: any) =>
+  useCMSData(() => fetchGlobal("flying-guide"), fallback);

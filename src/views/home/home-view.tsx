@@ -9,7 +9,8 @@ import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const localSiteSettings = {
   heroTagline: "Åre Skärm- och Drakflygklubb",
-  heroDescription: "Skandinaviens mest spektakulära flygplats sedan 1975",
+  heroDescription: "Skandinaviens mest spektakulära flygplats",
+  foundedYear: 1975,
   aboutTitle: "Välkommen till Åre Skärm- och Drakflygklubb!",
   aboutText: "Åre Skärm- och Drakflygklubb har i många år varit en samlingspunkt för flygare i fjällmiljö. Vi arbetar aktivt med utbildning, säkerhet och samarbete med markägare och andra aktörer i området.\n\nKlubben drivs av sina medlemmar och bygger på engagemang, erfarenhetsutbyte och flygglädje. Målet är enkelt — att fler ska få uppleva friheten i luften på ett tryggt och hållbart sätt.",
 };
@@ -80,7 +81,8 @@ const HomeView: React.FC = () => {
             style={{ fontSize: "clamp(16px, 1.8vw, 26px)", letterSpacing: "-0.01em" }}
             data-payload-field="heroDescription"
           >
-            {site.heroDescription ?? localSiteSettings.heroDescription}
+            {site.heroDescription ?? localSiteSettings.heroDescription}{" "}
+            sedan {site.foundedYear ?? localSiteSettings.foundedYear}
           </h1>
         </div>
         {/* Footer bar */}
@@ -117,6 +119,27 @@ const HomeView: React.FC = () => {
               </p>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ═══ STATS BAR ═══ */}
+      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-16">
+        <div
+          className="grid grid-cols-3 gap-4 py-6"
+          style={{ borderTop: "1px solid var(--border, #e2e8f0)", borderBottom: "1px solid var(--border, #e2e8f0)" }}
+        >
+          {[
+            { label: "Medlemmar", value: site.statsMembers ?? "~100" },
+            { label: "Distansrekord", value: site.statsDistanceRecord ?? "230 km" },
+            { label: "Startplatser", value: site.statsLaunchSites ?? "9" },
+          ].map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center gap-1">
+              <p className="font-serif font-bold text-2xl md:text-[40px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }}>
+                {stat.value}
+              </p>
+              <p className="text-xs" style={{ color: "var(--slate, #62748e)" }}>{stat.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 

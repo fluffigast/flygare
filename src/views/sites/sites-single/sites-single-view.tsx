@@ -5,15 +5,21 @@ import { useParams } from "react-router";
 
 import HeroBanner from "../../../blocks/hero-banner/hero-banner";
 import { WindCompassWedge } from "../../../components/wind-compass-wedge";
-import { sites, type Site } from "../../../data/sites";
+import { sites as localSites, type Site } from "../../../data/sites";
 import { formatSweref99, formatWgs84 } from "../../../utils/coordinates";
 import { getPlaceholderImage } from "../../../utils/placeholder";
 import { windDirectionCaption } from "../../../utils/wind-direction";
 import WeatherForecast from "../../../blocks/weather-forecast/weather-forecast";
 import Separator from "../../../components/separator";
+import { useLaunches } from "../../../hooks/useCMS";
+import { mapLaunchToSite } from "../../../lib/map-launch";
 
 const SitesSingleView: React.FC = () => {
   let { slug } = useParams();
+  const { data: cmsLaunches } = useLaunches([]);
+  const sites = cmsLaunches.length > 0
+    ? cmsLaunches.map(mapLaunchToSite)
+    : localSites;
   const sitesItem = sites.find((n: Site) => n.slug === slug);
 
   if (!sitesItem) {

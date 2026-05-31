@@ -1,19 +1,23 @@
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-  testDir: "./tests",
-  timeout: 30000,
+  testDir: ".",
+  testMatch: ["tests/**/*.spec.ts", "e2e/**/*.spec.ts"],
+  timeout: 30_000,
   expect: {
-    toHaveScreenshot: {
-      maxDiffPixelRatio: 0.01,
-      animations: "disabled",
-    },
+    timeout: 5_000,
   },
   use: {
-    baseURL: "https://brave-tree-08c5f0c03.4.azurestaticapps.net",
+    baseURL: "http://localhost:5173",
     screenshot: "only-on-failure",
     trace: "on-first-retry",
   },
   retries: 0,
   workers: 1,
+  webServer: {
+    command: "pnpm dev",
+    url: "http://localhost:5173",
+    reuseExistingServer: true,
+    timeout: 60_000,
+  },
 });

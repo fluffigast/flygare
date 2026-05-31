@@ -8,6 +8,10 @@ export const MembershipInfo: GlobalConfig = {
   },
   fields: [
     {
+      name: 'description',
+      type: 'textarea',
+    },
+    {
       name: 'price',
       type: 'text',
       defaultValue: '600 kr / år',

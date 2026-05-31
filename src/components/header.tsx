@@ -18,6 +18,11 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
   const closeMenu = () => setMenuOpen(false);
 
   // Check if a nav section is active
@@ -85,6 +90,7 @@ const Header: React.FC = () => {
           className="md:hidden p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? "Stäng meny" : "Öppna meny"}
+          aria-expanded={menuOpen}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6}>
             {menuOpen ? (

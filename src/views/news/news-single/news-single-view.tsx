@@ -34,7 +34,7 @@ const NewsSingleView: React.FC = () => {
     );
   }
 
-  const imageUrl = getPlaceholderImage(slug ?? "fallback");
+  const imageUrl = (newsItem as any).image?.url ?? (newsItem as any).image?.sizes?.hero?.url ?? getPlaceholderImage(slug ?? "fallback");
 
   return (
     <div className="w-full">
@@ -80,7 +80,7 @@ const NewsSingleView: React.FC = () => {
           <p className="mt-5 text-base" style={{ color: "var(--slate-2, #90a1b9)" }}>
             Publicerad{" "}
             {format(
-              (newsItem as any).publishedAt ?? (newsItem as any).date ?? new Date(),
+              new Date((newsItem as any).publishedAt ?? (newsItem as any).date ?? new Date()),
               "d MMMM, yyyy",
               { locale: sv }
             )}
@@ -95,10 +95,10 @@ const NewsSingleView: React.FC = () => {
               className="font-serif italic text-lg md:text-2xl leading-snug mb-8"
               style={{ color: "var(--ink-2, #0f172b)" }}
             >
-              {newsItem.excerpt}
+              {(newsItem as any).description ?? newsItem.excerpt}
             </p>
             <div className="flex flex-col gap-4">
-              {((newsItem as any).content ?? "")
+              {((newsItem as any).content ?? (newsItem as any).description ?? "")
                 .split("\n")
                 .filter((p: string) => p.trim())
                 .map((p: string, i: number) => (

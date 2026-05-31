@@ -46,24 +46,29 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
     }
 
     // Otherwise, fetch from SMHI API
+    let cancelled = false;
     const loadForecast = async () => {
       try {
         setLoading(true);
         setError(null);
         const data = await fetchSMHIForecast(ARESKUTAN_LAT, ARESKUTAN_LON);
+        if (cancelled) return;
         const transformed = transformSMHIData(data, 3);
+        if (cancelled) return;
         setForecastItems(transformed);
       } catch (err) {
+        if (cancelled) return;
         setError(
           err instanceof Error ? err.message : "Failed to load forecast"
         );
         console.error("Error fetching weather forecast:", err);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     loadForecast();
+    return () => { cancelled = true; };
   }, [items]);
 
   // Fallback default items if API fails

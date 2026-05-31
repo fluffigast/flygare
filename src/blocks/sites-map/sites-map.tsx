@@ -170,7 +170,7 @@ const SitesMap: React.FC<SitesMapProps> = ({
 
       map.on("click", "sites-circles", (e) => {
         const slug = e.features?.[0]?.properties?.slug;
-        if (typeof slug === "string") navigate(`/startplatser/${slug}`);
+        if (typeof slug === "string") navigate(`/flyga-i-are/startplatser/${slug}`);
       });
 
       map.on("mousemove", "sites-circles", (e) => {

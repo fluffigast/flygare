@@ -7,6 +7,7 @@ const BliMedlemView: React.FC = () => {
   const liveMembership = useGlobalLivePreview(cmsMembership);
   const membershipInfo = {
     ...localMembership,
+    description: liveMembership.description ?? localMembership.description,
     price: liveMembership.price ?? localMembership.price,
     validity: liveMembership.validity ?? localMembership.validity,
     shopUrl: liveMembership.shopUrl ?? localMembership.shopUrl,
@@ -61,7 +62,7 @@ const BliMedlemView: React.FC = () => {
               style={{ fontSize: "clamp(48px, 5vw, 96px)", lineHeight: 0.96 }}
               data-payload-field="price"
             >
-              600 kr
+              {membershipInfo.price?.replace(/ \/ år$/, "") ?? "600 kr"}
             </p>
             <p className="text-white/60 text-sm" data-payload-field="validity">
               {membershipInfo.validity}
@@ -94,19 +95,22 @@ const BliMedlemView: React.FC = () => {
               Vad ingår i medlemskapet
             </h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {membershipInfo.benefits.map((benefit: string) => (
-                <li
-                  key={benefit}
-                  className="flex gap-3 items-baseline text-base leading-relaxed"
-                  style={{ color: "var(--slate, #62748e)" }}
-                >
-                  <span
-                    className="shrink-0 w-3 h-px mt-3"
-                    style={{ background: "var(--slate-2, #90a1b9)" }}
-                  />
-                  {benefit}
-                </li>
-              ))}
+              {membershipInfo.benefits.map((benefit: any) => {
+                const text = typeof benefit === "string" ? benefit : benefit?.text ?? "";
+                return (
+                  <li
+                    key={text}
+                    className="flex gap-3 items-baseline text-base leading-relaxed"
+                    style={{ color: "var(--slate, #62748e)" }}
+                  >
+                    <span
+                      className="shrink-0 w-3 h-px mt-3"
+                      style={{ background: "var(--slate-2, #90a1b9)" }}
+                    />
+                    {text}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>
@@ -153,12 +157,12 @@ const BliMedlemView: React.FC = () => {
                 </div>
               ))}
             </div>
-            {localMembership.licenseNote && (
+            {membershipInfo.licenseNote && (
               <p
                 className="mt-4 text-sm leading-relaxed"
                 style={{ color: "var(--slate, #62748e)" }}
               >
-                {localMembership.licenseNote}
+                {membershipInfo.licenseNote}
               </p>
             )}
           </div>

@@ -76,6 +76,11 @@ export interface Config {
     'weather-links': WeatherLink;
     media: Media;
     users: User;
+    pages: Page;
+    activities: Activity;
+    documents: Document;
+    photos: Photo;
+    links: Link;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +97,11 @@ export interface Config {
     'weather-links': WeatherLinksSelect<false> | WeatherLinksSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    photos: PhotosSelect<false> | PhotosSelect<true>;
+    links: LinksSelect<false> | LinksSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -107,6 +117,8 @@ export interface Config {
     'contact-info': ContactInfo;
     'bus-rules': BusRule;
     'flying-guide': FlyingGuide;
+    'site-navigation': SiteNavigation;
+    'club-info': ClubInfo;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
@@ -114,6 +126,8 @@ export interface Config {
     'contact-info': ContactInfoSelect<false> | ContactInfoSelect<true>;
     'bus-rules': BusRulesSelect<false> | BusRulesSelect<true>;
     'flying-guide': FlyingGuideSelect<false> | FlyingGuideSelect<true>;
+    'site-navigation': SiteNavigationSelect<false> | SiteNavigationSelect<true>;
+    'club-info': ClubInfoSelect<false> | ClubInfoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -150,24 +164,11 @@ export interface UserAuthOperations {
 export interface News {
   id: number;
   title: string;
-  category: 'Aktiviteter' | 'Information' | 'Tävlingar';
+  slug: string;
+  category: 'Aktiviteter' | 'Aktuellt' | 'Information' | 'Klubben' | 'Säkerhet' | 'Tävlingar' | 'Övrigt';
   date: string;
   image?: (number | null) | Media;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  description?: string | null;
   featured?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -228,11 +229,22 @@ export interface BoardMember {
 export interface Launch {
   id: number;
   name: string;
+  slug: string;
   type: 'Starter' | 'Landning';
-  direction?: string | null;
-  elevation?: string | null;
-  coords?: string | null;
-  heightDiff?: string | null;
+  excerpt?: string | null;
+  position?: {
+    wgs84Lat?: number | null;
+    wgs84Lon?: number | null;
+    sweref99Lat?: number | null;
+    sweref99Lon?: number | null;
+  };
+  altitudeMeters?: number | null;
+  heightAboveLanding?: number | null;
+  windDirMin?: number | null;
+  windDirMax?: number | null;
+  windNotes?: string | null;
+  experienceLevel?: ('nybörjare' | 'medel' | 'avancerad') | null;
+  experienceNotes?: string | null;
   description?: {
     root: {
       type: string;
@@ -248,6 +260,13 @@ export interface Launch {
     };
     [k: string]: unknown;
   } | null;
+  risks?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  emergencyLocation?: string | null;
   extra?: {
     root: {
       type: string;
@@ -388,6 +407,130 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug: string;
+  category:
+    | 'flygregler'
+    | 'sakerhet'
+    | 'xc'
+    | 'acro'
+    | 'speedrider'
+    | 'hangflyg'
+    | 'paramotor'
+    | 'klubbuss'
+    | 'stadgar'
+    | 'klubbprodukter';
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  order?: number | null;
+  image?: (number | null) | Media;
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities".
+ */
+export interface Activity {
+  id: number;
+  title: string;
+  slug: string;
+  type: 'kalender' | 'klubbresa' | 'arsmote' | 'ovrigt';
+  date: string;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  attachments?:
+    | {
+        file: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  title: string;
+  category: 'arsmote' | 'stadgar' | 'ovrigt';
+  file: number | Media;
+  year?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "photos".
+ */
+export interface Photo {
+  id: number;
+  title: string;
+  year: number;
+  images?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "links".
+ */
+export interface Link {
+  id: number;
+  title: string;
+  url: string;
+  category: 'external' | 'partner' | 'resource';
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -445,6 +588,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'activities';
+        value: number | Activity;
+      } | null)
+    | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
+        relationTo: 'photos';
+        value: number | Photo;
+      } | null)
+    | ({
+        relationTo: 'links';
+        value: number | Link;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -494,6 +657,7 @@ export interface PayloadMigration {
  */
 export interface NewsSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   category?: T;
   date?: T;
   image?: T;
@@ -519,12 +683,32 @@ export interface BoardMembersSelect<T extends boolean = true> {
  */
 export interface LaunchesSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
   type?: T;
-  direction?: T;
-  elevation?: T;
-  coords?: T;
-  heightDiff?: T;
+  excerpt?: T;
+  position?:
+    | T
+    | {
+        wgs84Lat?: T;
+        wgs84Lon?: T;
+        sweref99Lat?: T;
+        sweref99Lon?: T;
+      };
+  altitudeMeters?: T;
+  heightAboveLanding?: T;
+  windDirMin?: T;
+  windDirMax?: T;
+  windNotes?: T;
+  experienceLevel?: T;
+  experienceNotes?: T;
   description?: T;
+  risks?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  emergencyLocation?: T;
   extra?: T;
   recommended?: T;
   sortOrder?: T;
@@ -658,6 +842,87 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  category?: T;
+  body?: T;
+  order?: T;
+  image?: T;
+  links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities_select".
+ */
+export interface ActivitiesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  type?: T;
+  date?: T;
+  body?: T;
+  attachments?:
+    | T
+    | {
+        file?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  file?: T;
+  year?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "photos_select".
+ */
+export interface PhotosSelect<T extends boolean = true> {
+  title?: T;
+  year?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "links_select".
+ */
+export interface LinksSelect<T extends boolean = true> {
+  title?: T;
+  url?: T;
+  category?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -735,6 +1000,7 @@ export interface SiteSetting {
  */
 export interface MembershipInfo {
   id: number;
+  description?: string | null;
   price?: string | null;
   validity?: string | null;
   shopUrl?: string | null;
@@ -761,8 +1027,14 @@ export interface MembershipInfo {
 export interface ContactInfo {
   id: number;
   email?: string | null;
-  facebookUrl?: string | null;
-  youtubeUrl?: string | null;
+  facebook?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  youtube?: {
+    label?: string | null;
+    url?: string | null;
+  };
   radioFrequencies?:
     | {
         label: string;
@@ -793,6 +1065,8 @@ export interface ContactInfo {
     };
     [k: string]: unknown;
   } | null;
+  besoksadress?: string | null;
+  organisationsnummer?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -886,6 +1160,94 @@ export interface FlyingGuide {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-navigation".
+ */
+export interface SiteNavigation {
+  id: number;
+  sections?:
+    | {
+        label: string;
+        path: string;
+        external?: boolean | null;
+        children?:
+          | {
+              label: string;
+              path: string;
+              external?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "club-info".
+ */
+export interface ClubInfo {
+  id: number;
+  history?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  records?:
+    | {
+        title: string;
+        value: string;
+        year?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  clubProducts?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  shopUrl?: string | null;
+  stadgar?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -908,6 +1270,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "membership-info_select".
  */
 export interface MembershipInfoSelect<T extends boolean = true> {
+  description?: T;
   price?: T;
   validity?: T;
   shopUrl?: T;
@@ -934,8 +1297,18 @@ export interface MembershipInfoSelect<T extends boolean = true> {
  */
 export interface ContactInfoSelect<T extends boolean = true> {
   email?: T;
-  facebookUrl?: T;
-  youtubeUrl?: T;
+  facebook?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  youtube?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
   radioFrequencies?:
     | T
     | {
@@ -952,6 +1325,8 @@ export interface ContactInfoSelect<T extends boolean = true> {
         id?: T;
       };
   xcProcedures?: T;
+  besoksadress?: T;
+  organisationsnummer?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -984,6 +1359,52 @@ export interface FlyingGuideSelect<T extends boolean = true> {
   hangGlidingTitle?: T;
   hangGlidingContent?: T;
   thermalMapTitle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-navigation_select".
+ */
+export interface SiteNavigationSelect<T extends boolean = true> {
+  sections?:
+    | T
+    | {
+        label?: T;
+        path?: T;
+        external?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              path?: T;
+              external?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "club-info_select".
+ */
+export interface ClubInfoSelect<T extends boolean = true> {
+  history?: T;
+  records?:
+    | T
+    | {
+        title?: T;
+        value?: T;
+        year?: T;
+        id?: T;
+      };
+  clubProducts?: T;
+  shopUrl?: T;
+  stadgar?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

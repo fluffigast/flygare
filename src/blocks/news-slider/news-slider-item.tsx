@@ -20,19 +20,22 @@ const NewsSliderItem: React.FC<NewsSliderItemProps> = ({
   imageUrl,
 }) => {
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return format(date, "d MMMM, yyyy", { locale: sv });
+    // Append T12:00:00 to date-only strings to avoid UTC timezone shift
+    const safe = dateString.includes("T") ? dateString : `${dateString}T12:00:00`;
+    return format(new Date(safe), "d MMMM, yyyy", { locale: sv });
   };
 
   const content = (
     <article className="flex gap-4 flex-1 min-w-0">
-      <div className="w-24 md:w-32 h-20 md:h-28 shrink-0 overflow-hidden rounded">
-        <img
-          src={imageUrl}
-          alt={title}
-          className="w-full h-full object-cover"
-        />
-      </div>
+      {imageUrl && (
+        <div className="w-24 md:w-32 h-20 md:h-28 shrink-0 overflow-hidden rounded">
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
 
       <div className="flex flex-col justify-start flex-1 min-w-0 text-ellipsis pt-4">
         <h4 className="line-clamp-2">{title}</h4>

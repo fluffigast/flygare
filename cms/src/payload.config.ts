@@ -40,13 +40,15 @@ export default buildConfig({
         const base = process.env.FRONTEND_URL || 'http://localhost:5173'
         const slug = collectionConfig?.slug || globalConfig?.slug
         const routes: Record<string, string> = {
-          'news': '/nyheter',
+          'news': data?.slug ? `/nyheter/${data.slug}` : '/nyheter',
           'board-members': '/om/styrelsen',
           'milestones': '/om',
-          'launches': '/flyga-i-are/startplatser',
+          'launches': data?.slug ? `/flyga-i-are/startplatser/${data.slug}` : '/flyga-i-are/startplatser',
           'competitions': '/tavlingar',
           'weather-links': '/flyga-i-are/vader',
-          'pages': `/flyga-i-are/${data?.slug ?? ''}`,
+          'pages': ['klubbprodukter', 'stadgar'].includes(data?.category)
+            ? `/om/${data?.slug ?? ''}`
+            : `/flyga-i-are/${data?.slug ?? ''}`,
           'activities': '/aktiviteter',
           'documents': '/ovrigt/dokument',
           'photos': '/ovrigt/foton',
