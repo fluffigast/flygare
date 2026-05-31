@@ -5,7 +5,6 @@ import HeroBanner from "../../blocks/hero-banner/hero-banner";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
-import Separator from "../../components/separator";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
@@ -22,6 +21,7 @@ const HomeView: React.FC = () => {
     <div className="w-full overflow-x-hidden">
       <Header />
 
+      {/* ─── HERO ─── */}
       <HeroBanner
         imageUrl={getPlaceholderImage("home-hero")}
         title={site.heroTagline ?? localSiteSettings.heroTagline}
@@ -30,96 +30,129 @@ const HomeView: React.FC = () => {
         subtitleField="heroDescription"
       />
 
-      <main className="@container max-w-2xl mx-auto px-4 flex flex-col py-8 md:py-12">
-
-        {/* About — club intro, right-aligned on desktop */}
-        <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-8 md:mb-12">
-          <div className="md:flex-1" />
-          <div className="md:flex-1">
-            <p className="text-foreground leading-relaxed">
+      {/* ─── INTRO + FLYGREGLER ─── */}
+      <section className="@container max-w-2xl mx-auto px-4 py-10 md:py-16">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-16">
+          {/* Left: about */}
+          <div className="md:w-1/2">
+            <p className="text-foreground leading-relaxed text-lg md:text-xl font-serif">
               Klubben bildades 1975 som drakflygklubb och har sedan 1988 även
-              omfattat skärmflyg. Med ca 100 aktiva medlemmar och 9 startplatser
+              omfattat skärmflyg.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mt-4">
+              Med ca 100 aktiva medlemmar och 9 startplatser
               på Åreskutan är vi en av Sveriges mest aktiva flygklubbar.
               Distansrekordet ligger på 230 km — Åre till Sollefteå.
             </p>
-            <Link to="/om" className="text-sm text-primary hover:underline mt-3 inline-block">
-              Mer om klubben →
+            <Link to="/om" className="inline-block mt-5 text-sm font-semibold text-primary hover:underline">
+              Om klubben →
             </Link>
           </div>
+
+          {/* Right: flygregler callout */}
+          <div className="md:w-1/2">
+            <Link to="/flyga-i-are/flygregler" className="group block border-l-4 border-primary pl-5 py-2 hover:bg-muted/50 -ml-1 rounded-r-lg transition-colors">
+              <p className="font-serif text-lg font-semibold group-hover:text-primary transition-colors">
+                Flygregler
+              </p>
+              <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
+                Viktig info till alla som flyger i Åre. Läs reglerna
+                under Flyga i Åre innan du startar.
+              </p>
+            </Link>
+
+            <div className="mt-6 flex flex-col gap-3">
+              <Link to="/flyga-i-are" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-primary" /> Starter & landningar
+              </Link>
+              <Link to="/flyga-i-are/xc" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-primary" /> Cross country & luftrum
+              </Link>
+              <Link to="/flyga-i-are/sakerhet" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-primary" /> Säkerhet & nödsituation
+              </Link>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Flygregler notice */}
-        <div className="border-l-4 border-primary pl-4 py-3 mb-8 md:mb-12">
-          <Link to="/flyga-i-are/flygregler" className="group">
-            <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
-              Viktig info till alla som flyger i Åre — Flygregler
-            </p>
-            <p className="text-muted-foreground text-sm mt-1">
-              Läs reglerna under Flyga i Åre innan du startar
-            </p>
-          </Link>
-        </div>
+      {/* ─── DIVIDER ─── */}
+      <div className="max-w-2xl mx-auto px-4"><div className="border-t border-border" /></div>
 
-        {/* Two-column: Wind + Bli medlem */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
-          <WindWidget />
+      {/* ─── WIND + MEMBERSHIP ─── */}
+      <section className="@container max-w-2xl mx-auto px-4 py-10 md:py-16">
+        <div className="flex flex-col md:flex-row gap-10 md:gap-16">
 
-          <section className="flex flex-col justify-between">
+          {/* Left: wind */}
+          <div className="md:w-3/5">
+            <WindWidget />
+          </div>
+
+          {/* Right: membership */}
+          <div className="md:w-2/5 flex flex-col justify-between">
             <div>
-              <p className="font-serif italic text-muted-foreground text-sm">Flyg med oss</p>
-              <h2 className="font-serif text-2xl mb-3">Bli medlem</h2>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Medlemskap 600 kr/år ger dig tillgång till alla startplatser på
-                Åreskutan, landningsplatsen Draklanda, klubbussen och räddningsbåten.
+              <p className="font-serif text-lg font-semibold">Bli medlem</p>
+              <p className="text-muted-foreground text-sm leading-relaxed mt-2">
+                Medlemskap ger dig tillgång till alla startplatser,
+                Draklanda, klubbussen och räddningsbåten.
               </p>
             </div>
-            <div className="flex flex-col gap-3 mt-4">
+
+            <div className="mt-6 flex flex-col gap-3">
               <a
                 href="https://cloud.paragliding.se/product-category/klubbmedlemskap-stod-support-eller-for-nybliven-pilot/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center px-6 py-3.5 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-opacity"
               >
                 Köp medlemskap — 600 kr/år
               </a>
-              <Link to="/bli-medlem" className="text-sm text-center text-muted-foreground hover:text-primary transition-colors">
-                Mer information om medlemskap →
+              <Link to="/bli-medlem" className="text-xs text-center text-muted-foreground hover:text-primary transition-colors">
+                Mer information →
               </Link>
             </div>
-          </section>
+          </div>
         </div>
+      </section>
 
-        <Separator />
+      {/* ─── DIVIDER ─── */}
+      <div className="max-w-2xl mx-auto px-4"><div className="border-t border-border" /></div>
 
-        {/* Nyheter */}
-        <div className="flex justify-end py-2">
+      {/* ─── NEWS ─── */}
+      <section className="@container max-w-2xl mx-auto px-4 py-10 md:py-16">
+        <div className="flex justify-end mb-2">
           <Link to="/nyheter" className="text-sm text-muted-foreground hover:text-primary transition-colors">
             Alla nyheter →
           </Link>
         </div>
         <NewsSlider />
+      </section>
 
-        <Separator />
+      {/* ─── DIVIDER ─── */}
+      <div className="max-w-2xl mx-auto px-4"><div className="border-t border-border" /></div>
 
-        {/* Quick navigation */}
-        <section className="py-8 md:py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link to="/flyga-i-are" className="group p-5 rounded-lg border border-border hover:border-primary transition-colors">
-              <h3 className="font-serif text-lg group-hover:text-primary transition-colors">Flyga i Åre</h3>
-              <p className="text-muted-foreground text-sm mt-1">Startplatser, väder, flygregler, säkerhet och mer</p>
+      {/* ─── NAV GRID ─── */}
+      <section className="@container max-w-2xl mx-auto px-4 py-10 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded-lg overflow-hidden">
+          {[
+            { to: "/flyga-i-are", title: "Flyga i Åre", desc: "Startplatser, väder, regler" },
+            { to: "/tavlingar", title: "Tävlingar", desc: "PPC, Topplandning, Larsa Open" },
+            { to: "/om", title: "Om klubben", desc: "Historia, styrelse, kontakt" },
+          ].map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="group bg-background p-6 hover:bg-muted/50 transition-colors"
+            >
+              <p className="font-serif text-lg font-semibold group-hover:text-primary transition-colors">
+                {item.title}
+              </p>
+              <p className="text-muted-foreground text-sm mt-1">{item.desc}</p>
             </Link>
-            <Link to="/tavlingar" className="group p-5 rounded-lg border border-border hover:border-primary transition-colors">
-              <h3 className="font-serif text-lg group-hover:text-primary transition-colors">Tävlingar</h3>
-              <p className="text-muted-foreground text-sm mt-1">Åre PPC, Topplandning, Larsa Open</p>
-            </Link>
-            <Link to="/om" className="group p-5 rounded-lg border border-border hover:border-primary transition-colors">
-              <h3 className="font-serif text-lg group-hover:text-primary transition-colors">Om klubben</h3>
-              <p className="text-muted-foreground text-sm mt-1">Historia, styrelse, kontakt, stadgar</p>
-            </Link>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-      </main>
       <Footer />
     </div>
   );
