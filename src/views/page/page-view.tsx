@@ -31,7 +31,7 @@ const PageView: React.FC = () => {
   if (groups?.length) {
     return (
       <div className="w-full">
-        <section className="px-4 md:px-[110px] pt-16 md:pt-24 pb-8">
+        <section className="px-4 sm:px-8 md:px-16 lg:px-[110px] pt-16 md:pt-24 pb-8">
           <h1
             className="font-serif font-bold leading-[0.96] tracking-tight"
             style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
@@ -111,7 +111,7 @@ const PageView: React.FC = () => {
 
   return (
     <div className="w-full">
-      <section className="px-4 md:px-[110px] pt-16 md:pt-24 pb-8">
+      <section className="px-4 sm:px-8 md:px-16 lg:px-[110px] pt-16 md:pt-24 pb-8">
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight"
           style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
