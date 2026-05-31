@@ -98,7 +98,7 @@ const HomeView: React.FC = () => {
               style={{ fontSize: "clamp(16px, 1.8vw, 26px)", letterSpacing: "-0.01em" }}
               data-payload-field="heroDescription"
             >
-              {liveSite.heroDescription} sedan {liveSite.foundedYear}
+              {liveSite.heroDescription}
             </h1>
           </div>
         <div className="absolute left-0 right-0 bottom-4 md:bottom-6 flex justify-between px-6 md:px-14 text-white/70 text-xs tracking-wide">
