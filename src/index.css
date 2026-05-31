@@ -169,36 +169,6 @@
   transform: scaleX(1);
 }
 
-@keyframes fade-slide-right {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fade-slide-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-fade-slide-right {
-  animation: fade-slide-right 0.4s ease-out;
-}
-
-.animate-fade-slide-left {
-  animation: fade-slide-left 0.4s ease-out;
-}
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -236,45 +206,6 @@
 }
 .sites-map-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
   border-left-color: var(--popover);
-}
-
-/* ─── Hero disc animations ─── */
-@keyframes disc-float {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -46%) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-@keyframes foot-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-.hero-disc-animate {
-  animation: disc-float 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-.hero-foot-animate {
-  animation: foot-fade 1.2s ease 0.3s both;
-}
-
-/* Hero image Ken Burns */
-@keyframes hero-zoom {
-  from {
-    transform: scale(1.02);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-.hero-img-animate {
-  animation: hero-zoom 6s ease-out both;
 }
 
 /* Info card hover lift */

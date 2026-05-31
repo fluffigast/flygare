@@ -71,11 +71,6 @@ export const useMembershipInfo = (fallback: any) =>
 export const useContactInfo = (fallback: any) =>
   useCMSData(() => fetchGlobal("contact-info"), fallback);
 
-// ── New collection hooks ──
-
-export const usePages = (fallback: any[]) =>
-  useCMSData(() => fetchCollection("pages", "&sort=order"), fallback);
-
 export const usePage = (slug: string, fallback: any) =>
   useCMSData(() => fetchCollection("pages", `&where[slug][equals]=${slug}&limit=1`).then(docs => docs[0] ?? fallback), fallback);
 
@@ -88,10 +83,7 @@ export const useDocuments = (fallback: any[]) =>
 export const usePhotos = (fallback: any[]) =>
   useCMSData(() => fetchCollection("photos", "&sort=-year"), fallback);
 
-export const useLinks = (fallback: any[]) =>
-  useCMSData(() => fetchCollection("links", "&sort=order"), fallback);
-
-// ── New global hooks ──
+// ── Global hooks ──
 
 export const useSiteNavigation = (fallback: any) =>
   useCMSData(() => fetchGlobal("site-navigation"), fallback);
