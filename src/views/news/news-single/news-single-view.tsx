@@ -1,21 +1,30 @@
 import React from "react";
 import { Link, useParams } from "react-router";
-import { news } from "../../../data/news";
+import { news as localNews } from "../../../data/news";
 import { articles } from "../../../data/articles";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import HeroBanner from "../../../blocks/hero-banner/hero-banner";
 import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
+import { useNews } from "../../../hooks/useCMS";
 
-export interface NewsSingleViewProps {}
+const NewsSingleView: React.FC = () => {
+  const { slug } = useParams();
+  const { data: cmsNews } = useNews(localNews);
 
-const NewsSingleView: React.FC<NewsSingleViewProps> = ({}) => {
-  let { slug } = useParams();
-  const newsItem = news.find((n) => n.slug === slug);
+  // Look up by slug in CMS data first, then local data
+  const newsItem = cmsNews.find((n: any) => n.slug === slug || n.id?.toString() === slug)
+    ?? localNews.find((n) => n.slug === slug);
 
   if (!newsItem) {
-    return <div>News item not found</div>;
+    return (
+      <div className="max-w-2xl px-4 py-24 text-center flex flex-col gap-4">
+        <h1 className="text-4xl font-bold">Nyheten hittades inte</h1>
+        <p className="text-muted-foreground">Innehållet du söker finns inte.</p>
+        <Link to="/nyheter" className="text-primary hover:underline">Tillbaka till nyheter</Link>
+      </div>
+    );
   }
   return (
     <>
