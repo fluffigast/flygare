@@ -75,6 +75,16 @@ const WindWidget: React.FC = () => {
   const top = skistar?.readings?.find((r) => r.location === "top");
   const valley = skistar?.readings?.find((r) => r.location === "valley");
 
+  const sourceLinks = (
+    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+      <a href="https://meac.se/sub_2/hummeln/wind.asp" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">MEAC</a>
+      <a href="https://www.windguru.cz/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Windguru</a>
+      <a href="https://www.yr.no/nb/detaljer/tabell/2-2720396" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Yr.no</a>
+      <a href="https://www.smhi.se/vader/prognoser/fjallvader" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">SMHI</a>
+      <a href="https://xcmeteo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">XCMeteo</a>
+    </div>
+  );
+
   if (error) {
     return (
       <section className="flex flex-col gap-3">
@@ -85,6 +95,7 @@ const WindWidget: React.FC = () => {
             Se MEAC direkt →
           </a>
         </p>
+        {sourceLinks}
       </section>
     );
   }
@@ -209,16 +220,10 @@ const WindWidget: React.FC = () => {
             </div>
           )}
 
-          {/* Source links */}
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            <a href="https://meac.se/sub_2/hummeln/wind.asp" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">MEAC</a>
-            <a href="https://www.windguru.cz/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Windguru</a>
-            <a href="https://www.yr.no/nb/detaljer/tabell/2-2720396" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Yr.no</a>
-            <a href="https://www.smhi.se/vader/prognoser/fjallvader" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">SMHI</a>
-            <a href="https://xcmeteo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">XCMeteo</a>
-          </div>
         </div>
       )}
+
+      {sourceLinks}
     </section>
   );
 };

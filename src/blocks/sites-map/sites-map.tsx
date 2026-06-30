@@ -10,6 +10,7 @@ import { cn } from "../../utils/cn";
 
 const OPENTOPO_STYLE: StyleSpecification = {
   version: 8,
+  projection: { type: "mercator" },
   sources: {
     opentopomap: {
       type: "raster",
@@ -128,6 +129,11 @@ const SitesMap: React.FC<SitesMapProps> = ({
     const el = containerRef.current;
     if (!el || sites.length === 0) return;
 
+    // React 19 strict mode mounts effects twice; if the container already has a
+    // canvas from a previous mount, clear it before constructing a new map —
+    // maplibre's style migration crashes when a leftover instance is present.
+    while (el.firstChild) el.removeChild(el.firstChild);
+
     const bounds = sitesLngLatBounds(sites);
 
     const map = new maplibregl.Map({
@@ -136,6 +142,7 @@ const SitesMap: React.FC<SitesMapProps> = ({
       bounds,
       fitBoundsOptions: { padding: 56, maxZoom: 13, duration: 0 },
     });
+    map.on("style.load", () => map.setProjection({ type: "mercator" }));
 
     map.addControl(new maplibregl.NavigationControl(), "top-right");
 

@@ -15,7 +15,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'foundedYear',
       type: 'number',
-      defaultValue: 1975,
+      defaultValue: 1976,
     },
     {
       name: 'heroSubtitle',

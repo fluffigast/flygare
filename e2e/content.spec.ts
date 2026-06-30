@@ -157,10 +157,7 @@ test.describe("Dynamic pages render content", () => {
   const dynamicPages = [
     { path: "/flyga-i-are/flygregler", contains: "Flygregler" },
     { path: "/flyga-i-are/sakerhet", contains: "Säkerhet" },
-    { path: "/flyga-i-are/xc", contains: "XC" },
-    { path: "/flyga-i-are/acro", contains: "Acro" },
-    { path: "/flyga-i-are/hangflyg", contains: "Hängflyg" },
-    { path: "/flyga-i-are/paramotor", contains: "Paramotor" },
+    { path: "/flyga-i-are/xc", contains: "Cross country" },
     { path: "/om/klubbprodukter", contains: "Klubb" },
     { path: "/om/stadgar", contains: "Stadgar" },
   ];

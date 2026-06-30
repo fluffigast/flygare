@@ -15,7 +15,7 @@ export const navigation = {
     },
     { label: 'Nyheter', path: '/nyheter', children: [] },
     { label: 'Aktiviteter', path: '/aktiviteter', children: [] },
-    { label: 'Flygregler', path: '/flyga-i-are/flygregler', children: [] },
+    { label: 'Tävlingar', path: '/tavlingar', children: [] },
     {
       label: 'Om klubben',
       path: '/om',

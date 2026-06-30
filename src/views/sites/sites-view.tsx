@@ -8,9 +8,13 @@ import { mapLaunchToSite } from "../../lib/map-launch";
 
 const SitesView: React.FC = () => {
   const { data: cmsLaunches } = useLaunches([]);
-  const sites = cmsLaunches.length > 0
-    ? cmsLaunches.map(mapLaunchToSite)
-    : localSites;
+  // Merge CMS over local by slug so production CMS gaps don't hide sites.
+  const bySlug = new Map(localSites.map((s) => [s.slug, s]));
+  for (const launch of cmsLaunches) {
+    const mapped = mapLaunchToSite(launch);
+    bySlug.set(mapped.slug, mapped);
+  }
+  const sites = Array.from(bySlug.values());
   return (
     <>
       <SitesMap sites={sites} />
