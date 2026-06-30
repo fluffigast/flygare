@@ -17,10 +17,15 @@ import { mapLaunchToSite } from "../../../lib/map-launch";
 const SitesSingleView: React.FC = () => {
   let { slug } = useParams();
   const { data: cmsLaunches } = useLaunches([]);
-  const sites = cmsLaunches.length > 0
-    ? cmsLaunches.map(mapLaunchToSite)
-    : localSites;
-  const sitesItem = sites.find((n: Site) => n.slug === slug);
+  // Merge CMS over local by slug, so a slug missing from CMS falls back to local
+  // instead of rendering "not found" (production CMS may not have every site yet).
+  const bySlug = new Map<string, Site>();
+  for (const site of localSites) bySlug.set(site.slug, site);
+  for (const launch of cmsLaunches) {
+    const mapped = mapLaunchToSite(launch);
+    bySlug.set(mapped.slug, mapped);
+  }
+  const sitesItem = bySlug.get(slug ?? "");
 
   if (!sitesItem) {
     return <div>Sites item not found</div>;
@@ -94,30 +99,24 @@ const SitesSingleView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                   <h3 className="text-sm">Optimala vindförhållanden</h3>
-                  <div className="flex flex-wrap items-start gap-4">
-                    <div className="flex min-w-0 flex-1 flex-row items-center gap-2">
-                      <div className="font-sans text-sm gap-1 flex flex-col">
-                        <p className="italic font-serif">Vindriktning</p>
-                        <p className="text-muted-foreground">
-                          {windDirectionCaption(
-                            overview.wind.directionRange.min,
-                            overview.wind.directionRange.max
-                          )}
-                        </p>
-                      </div>
-
-                      <WindCompassWedge
-                        minDeg={overview.wind.directionRange.min}
-                        maxDeg={overview.wind.directionRange.max}
-                        size="sm"
-                      />
-                    </div>
-                    <p className="font-sans text-sm text-foreground">
-                      {overview.wind.notes}
+                  <div className="flex flex-row items-center gap-3">
+                    <WindCompassWedge
+                      minDeg={overview.wind.directionRange.min}
+                      maxDeg={overview.wind.directionRange.max}
+                      size="sm"
+                    />
+                    <p className="font-sans text-sm text-foreground min-w-0">
+                      {windDirectionCaption(
+                        overview.wind.directionRange.min,
+                        overview.wind.directionRange.max
+                      )}
                     </p>
                   </div>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                    {overview.wind.notes}
+                  </p>
                 </div>
 
                 <div className="flex flex-col gap-2">

@@ -8,7 +8,7 @@ const VaderView: React.FC = () => {
   return (
     <div className="w-full">
       {/* Editorial header */}
-      <section className="px-4 sm:px-8 md:px-16 lg:px-[110px] pt-16 md:pt-24 pb-8">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p
           className="font-serif italic text-2xl md:text-[40px] leading-none"
           style={{ color: "var(--ink-2, #0f172b)" }}
@@ -76,7 +76,7 @@ const VaderView: React.FC = () => {
                   className="text-xs font-mono truncate"
                   style={{ color: "var(--slate-2, #90a1b9)" }}
                 >
-                  {new URL(link.url).hostname}
+                  {(() => { try { return new URL(link.url).hostname; } catch { return link.url; } })()}
                 </p>
               </a>
             ))}

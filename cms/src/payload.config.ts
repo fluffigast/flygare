@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import sharp from 'sharp'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -101,9 +102,10 @@ export default buildConfig({
   }),
   upload: {
     limits: {
-      fileSize: 5000000,
+      fileSize: 25_000_000,
     },
   },
+  sharp,
   secret: process.env.PAYLOAD_SECRET!,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

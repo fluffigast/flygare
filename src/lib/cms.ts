@@ -5,19 +5,34 @@ interface CollectionResponse<T> {
   totalDocs: number;
 }
 
+// One-time probe: if CMS_URL is set but the server isn't running we don't want
+// every page to log a TCP refusal to the browser console. After the first
+// failure, mark the CMS as offline for this session and short-circuit fetches.
+let cmsOffline = false;
+
 async function fetchCollection<T>(slug: string, params = ""): Promise<T[]> {
-  if (!CMS_URL) throw new Error("No CMS URL");
-  const res = await fetch(`${CMS_URL}/api/${slug}?limit=100${params}`);
-  if (!res.ok) throw new Error(`CMS ${slug}: ${res.status}`);
-  const json: CollectionResponse<T> = await res.json();
-  return json.docs;
+  if (!CMS_URL || cmsOffline) throw new Error("No CMS URL");
+  try {
+    const res = await fetch(`${CMS_URL}/api/${slug}?limit=100${params}`);
+    if (!res.ok) throw new Error(`CMS ${slug}: ${res.status}`);
+    const json: CollectionResponse<T> = await res.json();
+    return json.docs;
+  } catch (err) {
+    cmsOffline = true;
+    throw err;
+  }
 }
 
 async function fetchGlobal<T>(slug: string): Promise<T> {
-  if (!CMS_URL) throw new Error("No CMS URL");
-  const res = await fetch(`${CMS_URL}/api/globals/${slug}`);
-  if (!res.ok) throw new Error(`CMS global ${slug}: ${res.status}`);
-  return res.json() as Promise<T>;
+  if (!CMS_URL || cmsOffline) throw new Error("No CMS URL");
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/${slug}`);
+    if (!res.ok) throw new Error(`CMS global ${slug}: ${res.status}`);
+    return (await res.json()) as T;
+  } catch (err) {
+    cmsOffline = true;
+    throw err;
+  }
 }
 
 /**

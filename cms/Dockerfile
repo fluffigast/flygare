@@ -31,6 +31,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS="--max-old-space-size=384"
+ENV PORT=3001
+ENV HOSTNAME=0.0.0.0
 
 COPY --from=builder --chown=payload:payload /app/.next/standalone ./
 COPY --from=builder --chown=payload:payload /app/.next/static ./.next/static
@@ -43,6 +45,11 @@ COPY --from=builder --chown=payload:payload /app/tsconfig.json ./
 
 COPY --chown=payload:payload start.sh ./
 RUN chmod +x start.sh
+
+# Pre-create the media directory with the right ownership so mounted volumes
+# (Docker named volume in dev, Azure File mount in prod) get a writable
+# /app/media for uid 1001 — otherwise uploads fail with EACCES.
+RUN mkdir -p /app/media && chown -R payload:payload /app/media
 
 USER payload
 

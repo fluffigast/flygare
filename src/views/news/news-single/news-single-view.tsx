@@ -8,6 +8,18 @@ import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
 import { useNews } from "../../../hooks/useCMS";
 
+function richTextToString(value: any): string {
+  if (typeof value === "string") return value;
+  if (value?.root?.children) {
+    return value.root.children
+      .map((block: any) =>
+        block.children?.map((child: any) => child.text ?? "").join("") ?? ""
+      )
+      .join("\n\n");
+  }
+  return "";
+}
+
 const NewsSingleView: React.FC = () => {
   const { slug } = useParams();
   const { data: cmsNews } = useNews(localNews);
@@ -98,7 +110,7 @@ const NewsSingleView: React.FC = () => {
               {(newsItem as any).description ?? newsItem.excerpt}
             </p>
             <div className="flex flex-col gap-4">
-              {((newsItem as any).content ?? (newsItem as any).description ?? "")
+              {richTextToString((newsItem as any).content ?? (newsItem as any).description ?? "")
                 .split("\n")
                 .filter((p: string) => p.trim())
                 .map((p: string, i: number) => (

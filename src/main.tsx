@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./index.css";
 import { initClickToEdit } from "./utils/click-to-edit";
+import ScrollToTop from "./components/scroll-to-top.tsx";
 import HomeView from "./views/home/home-view.tsx";
 import NewsView from "./views/news/news-view.tsx";
 import NewsSingleView from "./views/news/news-single/news-single-view.tsx";
@@ -35,6 +36,7 @@ initClickToEdit();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route index element={<HomeView />} />
         <Route element={<MainLayout />}>

@@ -52,6 +52,16 @@ export const News: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
+      admin: {
+        description: 'Kort sammanfattning som visas i listor och nyhetskort.',
+      },
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      admin: {
+        description: 'Fullständig artikeltext (visas på nyhetens detaljsida).',
+      },
     },
     {
       name: 'featured',

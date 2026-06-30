@@ -32,10 +32,18 @@ async function fetchMeac() {
 
     // Check staleness — MEAC reports Swedish local time (CET/CEST)
     if (timeMatch) {
-      // Sweden is UTC+1 in winter, UTC+2 in summer (CEST Mar-Oct)
       const raw = timeMatch[1]; // e.g. "2026-05-31 22:40"
+      // CEST: last Sunday of March → last Sunday of October
+      const year = parseInt(raw.slice(0, 4));
       const month = parseInt(raw.slice(5, 7));
-      const offsetH = month >= 3 && month <= 10 ? 2 : 1;
+      const day = parseInt(raw.slice(8, 10));
+      const lastSunMar = 31 - new Date(year, 2, 31).getDay();
+      const lastSunOct = 31 - new Date(year, 9, 31).getDay();
+      const isCEST =
+        (month > 3 && month < 10) ||
+        (month === 3 && day >= lastSunMar) ||
+        (month === 10 && day < lastSunOct);
+      const offsetH = isCEST ? 2 : 1;
       const dataTime = new Date(raw.replace(" ", "T") + `:00+0${offsetH}:00`);
       if (Date.now() - dataTime.getTime() > 3600 * 1000) return null;
     }

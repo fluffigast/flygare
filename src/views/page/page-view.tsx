@@ -31,7 +31,7 @@ const PageView: React.FC = () => {
   if (groups?.length) {
     return (
       <div className="w-full">
-        <section className="px-4 sm:px-8 md:px-16 lg:px-[110px] pt-16 md:pt-24 pb-8">
+        <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
           <h1
             className="font-serif font-bold leading-[0.96] tracking-tight"
             style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
@@ -111,7 +111,7 @@ const PageView: React.FC = () => {
 
   return (
     <div className="w-full">
-      <section className="px-4 sm:px-8 md:px-16 lg:px-[110px] pt-16 md:pt-24 pb-8">
+      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight"
           style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
@@ -122,29 +122,46 @@ const PageView: React.FC = () => {
       </section>
 
       <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16" data-payload-field="body">
-        {paragraphs.map((text: string, i: number) => {
-          const isHeading = text.length < 60 && !text.includes(". ") && !text.includes(",");
-          if (isHeading) {
-            return (
-              <h3
-                key={i}
-                className="font-serif font-bold text-lg mt-10 mb-3"
-                style={{ color: "var(--ink-2, #0f172b)" }}
-              >
-                {text}
-              </h3>
+        {(() => {
+          const out: React.ReactNode[] = [];
+          let listBuf: string[] = [];
+          const flushList = () => {
+            if (listBuf.length === 0) return;
+            out.push(
+              <ul key={`ul-${out.length}`} className="flex flex-col gap-2 mb-4 list-disc list-inside" style={{ color: "var(--slate-3, #45556c)" }}>
+                {listBuf.map((item, j) => (
+                  <li key={j} className="text-base leading-relaxed">{item}</li>
+                ))}
+              </ul>
             );
-          }
-          return (
-            <p
-              key={i}
-              className="text-base leading-relaxed mb-4"
-              style={{ color: "var(--slate-3, #45556c)" }}
-            >
-              {text}
-            </p>
-          );
-        })}
+            listBuf = [];
+          };
+
+          paragraphs.forEach((text: string, i: number) => {
+            const trimmed = text.trim();
+            if (/^[-•]\s+/.test(trimmed)) {
+              listBuf.push(trimmed.replace(/^[-•]\s+/, ""));
+              return;
+            }
+            flushList();
+            const isHeading = trimmed.length < 60 && !trimmed.includes(". ") && !trimmed.includes(",");
+            if (isHeading) {
+              out.push(
+                <h3 key={i} className="font-serif font-bold text-lg mt-10 mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>
+                  {trimmed}
+                </h3>
+              );
+            } else {
+              out.push(
+                <p key={i} className="text-base leading-relaxed mb-4" style={{ color: "var(--slate-3, #45556c)" }}>
+                  {trimmed}
+                </p>
+              );
+            }
+          });
+          flushList();
+          return out;
+        })()}
       </div>
 
       {livePage.links?.length > 0 && (

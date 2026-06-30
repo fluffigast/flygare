@@ -111,7 +111,7 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* ═══ WELCOME ROW ═══ */}
-      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-0">
           <div
             className="w-full bg-cover bg-center"
@@ -135,7 +135,7 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* ═══ STATS BAR ═══ */}
-      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-16">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-16">
         <div
           className="grid grid-cols-3 gap-4 py-6"
           style={{ borderTop: "1px solid var(--border, #e2e8f0)", borderBottom: "1px solid var(--border, #e2e8f0)" }}
@@ -156,7 +156,7 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* ═══ WEATHER + LINKS ═══ */}
-      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
         <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
             <WindWidget />
@@ -189,7 +189,7 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* ═══ NEWS ═══ */}
-      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
         <div className="flex justify-end mb-2">
           <Link to="/nyheter" className="text-sm hover:underline" style={{ color: "var(--ink-2, #0f172b)", borderBottom: "1px solid", paddingBottom: 2 }}>
             Alla nyheter
@@ -199,7 +199,7 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* ═══ INFO CARDS ═══ */}
-      <section className="max-w-2xl mx-auto px-4 mt-12 md:mt-20">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
         <div className="flex justify-between items-end mb-6">
           <h2 className="font-serif font-bold text-[32px] leading-none tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
             Flyga i Åre

@@ -1,18 +1,38 @@
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=payload
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-payload}
+      - POSTGRES_DB=flygare
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payload -d flygare"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   cms:
     build:
       context: ./cms
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      - DATABASE_URL=file:./data/flygare.db
+      - DATABASE_URL=postgresql://payload:${POSTGRES_PASSWORD:-payload}@db:5432/flygare
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:?Set PAYLOAD_SECRET}
       - NEXT_PUBLIC_SERVER_URL=${CMS_URL:-http://localhost:3001}
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:5173}
       - NODE_ENV=production
     volumes:
-      - cms-data:/app/data
+      - cms-media:/app/media
     restart: unless-stopped
     read_only: true
     tmpfs:
@@ -28,4 +48,5 @@ services:
           cpus: "1.0"
 
 volumes:
-  cms-data:
+  pg-data:
+  cms-media:

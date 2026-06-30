@@ -3,12 +3,13 @@ import { useLivePreview } from "@payloadcms/live-preview-react";
 import { fetchCollection, fetchGlobal, fetchWithFallback, CMS_URL } from "../lib/cms";
 
 // Generic hook: tries CMS, falls back to local data
-function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
+function useCMSData<T>(fetcher: () => Promise<T>, fallback: T, deps: unknown[] = []) {
   const [data, setData] = useState<T>(fallback);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
     fetchWithFallback(fetcher, fallback).then((result) => {
       if (!cancelled) {
         setData(result);
@@ -16,7 +17,7 @@ function useCMSData<T>(fetcher: () => Promise<T>, fallback: T) {
       }
     });
     return () => { cancelled = true; };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { data, setData, loading };
 }
@@ -72,7 +73,15 @@ export const useContactInfo = (fallback: any) =>
   useCMSData(() => fetchGlobal("contact-info"), fallback);
 
 export const usePage = (slug: string, fallback: any) =>
-  useCMSData(() => fetchCollection("pages", `&where[slug][equals]=${slug}&limit=1`).then(docs => docs[0] ?? fallback), fallback);
+  useCMSData(
+    () =>
+      fetchCollection(
+        "pages",
+        `&${new URLSearchParams({ "where[slug][equals]": slug, limit: "1" }).toString()}`,
+      ).then((docs) => docs[0] ?? fallback),
+    fallback,
+    [slug],
+  );
 
 export const useActivities = (fallback: any[]) =>
   useCMSData(() => fetchCollection("activities", "&sort=-date"), fallback);
