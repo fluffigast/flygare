@@ -13,7 +13,10 @@ let cmsOffline = false;
 async function fetchCollection<T>(slug: string, params = ""): Promise<T[]> {
   if (!CMS_URL || cmsOffline) throw new Error("No CMS URL");
   try {
-    const res = await fetch(`${CMS_URL}/api/${slug}?limit=100${params}`);
+    // Only apply default limit if caller didn't set their own — Payload/pg
+    // rejects duplicate `limit` query params with 500.
+    const defaultLimit = /(^|&)limit=/.test(params) ? "" : "limit=100&";
+    const res = await fetch(`${CMS_URL}/api/${slug}?${defaultLimit}${params.replace(/^&/, "")}`);
     if (!res.ok) throw new Error(`CMS ${slug}: ${res.status}`);
     const json: CollectionResponse<T> = await res.json();
     return json.docs;
