@@ -57,13 +57,6 @@ export const News: CollectionConfig = {
       },
     },
     {
-      name: 'content',
-      type: 'richText',
-      admin: {
-        description: 'Fullständig artikeltext (visas på nyhetens detaljsida).',
-      },
-    },
-    {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
