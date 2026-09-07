@@ -31,10 +31,7 @@ export const News: CollectionConfig = {
       required: true,
       options: [
         { label: 'Aktiviteter', value: 'Aktiviteter' },
-        { label: 'Aktuellt', value: 'Aktuellt' },
         { label: 'Information', value: 'Information' },
-        { label: 'Klubben', value: 'Klubben' },
-        { label: 'Säkerhet', value: 'Säkerhet' },
         { label: 'Tävlingar', value: 'Tävlingar' },
         { label: 'Övrigt', value: 'Övrigt' },
       ],

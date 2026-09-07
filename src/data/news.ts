@@ -3,7 +3,7 @@ export const news = [
     id: "1",
     title: "Säsongsstart i Årefjällen",
     slug: "sasongsstart-i-arefjallen",
-    category: "Klubben",
+    category: "Information",
     excerpt:
       "Flygsäsongen i Åre närmar sig och förutsättningarna börjar falla på plats.",
     content:
@@ -51,7 +51,7 @@ export const news = [
     content:
       "Klubbbussen är nu genomgången och redo för säsongen. Den används främst vid gemensamma flygdagar och underlättar transport av piloter och utrustning till startplatser.\n\nInformation om bokning, användning och ansvar finns samlad under sektionen Klubbbussen. Följ rutinerna så att bussen kan fortsätta vara en resurs för alla.",
     publishedAt: "2026-03-15",
-    category: "Klubben",
+    category: "Information",
   },
   {
     id: "6",
@@ -61,7 +61,7 @@ export const news = [
     content:
       "Våra start- och landningsplatser delas ofta med andra friluftsutövare. Klubben vill därför påminna om vikten av att visa hänsyn, följa överenskommelser och hålla god ordning.\n\nGenom ett respektfullt uppträdande bidrar vi till ett gott samarbete och till att flygning kan fortsätta även i framtiden.",
     publishedAt: "2026-03-18",
-    category: "Säkerhet",
+    category: "Information",
   },
   {
     id: "201",
@@ -70,7 +70,7 @@ export const news = [
     excerpt: "Klubben bjuder in till gemensam städdag inför högsäsongen.",
     content:
       "Inför sommarens intensiva flygperiod samlas vi för att se över och städa landningszonen. Det handlar om att ta bort skräp, kontrollera ytor och säkerställa att området är tryggt att använda.\n\nAlla medlemmar är välkomna att delta. Tillsammans skapar vi goda förutsättningar för säsongen.",
-    category: "Klubben",
+    category: "Information",
     publishedAt: "2026-04-01",
   },
   {
@@ -102,7 +102,7 @@ export const news = [
     excerpt: "Stark vårtermik kräver god planering och marginal.",
     content:
       "Med stigande temperaturer ökar också risken för kraftig termik och turbulens. Flyg konservativt och anpassa dig efter dagens förutsättningar.\n\nAvbryt hellre i tid än att pressa förhållanden som känns osäkra.",
-    category: "Säkerhet",
+    category: "Information",
     publishedAt: "2026-04-09",
   },
   {
@@ -112,7 +112,7 @@ export const news = [
     excerpt: "Nu finns ett förenklat system för bokning av klubbens buss.",
     content:
       "För att underlätta planering har klubben infört ett nytt bokningssystem för klubbbussen. Medlemmar kan nu reservera bussen inför gemensamma flygdagar.\n\nFölj instruktionerna och lämna alltid bussen i gott skick efter användning.",
-    category: "Klubben",
+    category: "Information",
     publishedAt: "2026-04-12",
   },
   {
@@ -132,7 +132,7 @@ export const news = [
     excerpt: "Alla medlemmar bjuds in till säsongens första möte.",
     content:
       "Under mötet går vi igenom aktuella frågor, planerade aktiviteter och säkerhetsarbete inför säsongen.\n\nDet finns även möjlighet att ställa frågor och komma med förslag till styrelsen.",
-    category: "Klubben",
+    category: "Information",
     publishedAt: "2026-04-18",
   },
   {
@@ -183,7 +183,7 @@ export const news = [
       "Dialog förs för att stärka långsiktiga möjligheter till flygning.",
     content:
       "Klubben har inlett dialog med lokala aktörer för att säkerställa långsiktigt hållbara lösningar kring start och landning.\n\nEtt gott samarbete är avgörande för att flygningen i Åre ska kunna fortsätta utvecklas.",
-    category: "Klubben",
+    category: "Information",
     publishedAt: "2026-05-01",
   },
 ];

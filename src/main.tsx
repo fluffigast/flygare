@@ -57,10 +57,17 @@ createRoot(document.getElementById("root")!).render(
           {/* Aktiviteter */}
           <Route path="aktiviteter">
             <Route index element={<AktiviteterView />} />
+            <Route path="kalender" element={<PageView slug="kalender" />} />
+            <Route path="klubbresor" element={<PageView slug="klubbresor" />} />
+            <Route path="arsmoten" element={<PageView slug="arsmoten" />} />
+            <Route path="ovriga-aktiviteter" element={<PageView slug="ovriga-aktiviteter" />} />
             <Route path=":slug" element={<AktivitetSingleView />} />
           </Route>
-          {/* Tävlingar */}
-          <Route path="tavlingar" element={<TavlingarView />} />
+          {/* Tävling */}
+          <Route path="tavlingar">
+            <Route index element={<TavlingarView />} />
+            <Route path=":slug" element={<PageView />} />
+          </Route>
           {/* Om klubben */}
           <Route path="om">
             <Route index element={<OmView />} />

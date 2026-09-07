@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start --port 3001",
     "seed": "npx tsx src/seed/index.ts",
+    "migrate:news-categories": "npx tsx src/migrations/migrate-news-categories.ts",
     "generate:types": "payload generate:types"
   },
   "dependencies": {
