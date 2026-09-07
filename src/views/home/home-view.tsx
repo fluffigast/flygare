@@ -68,9 +68,11 @@ const HomeView: React.FC = () => {
       <Header />
 
       {/* ═══ HERO ═══ */}
+      {/* Height reduced per pptx feedback: "gör bilderna mindre så man
+          inte behöver scrolla så mycket för att se all info". */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ height: "clamp(360px, 42vw, 640px)", background: "#1a1e2a" }}
+        style={{ height: "clamp(240px, 30vw, 440px)", background: "#1a1e2a" }}
       >
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-[6s] ease-out"
@@ -110,23 +112,71 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
+      {/* ═══ PRIO ROW ═══
+          Pptx-listade startsida-block: Bli medlem, Flygregler,
+          Nyheter, Aktuellt väder — placeras direkt efter hero. */}
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-8 md:mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
+          <WindWidget />
+          <div className="flex flex-col gap-4 h-full">
+            <Link
+              to="/flyga-i-are/flygregler"
+              className="group flex flex-1 items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
+              style={{ border: "1px solid var(--border, #e2e8f0)" }}
+            >
+              <div className="flex-1">
+                <p className="font-serif italic text-xs mb-1" style={{ color: "var(--hero-accent, #3774a3)" }}>Viktigt</p>
+                <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Flygregler</p>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>Läs innan du flyger i Åre.</p>
+              </div>
+              <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
+            </Link>
+            <Link
+              to="/bli-medlem"
+              className="group flex flex-1 items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
+              style={{ border: "1px solid var(--border, #e2e8f0)" }}
+            >
+              <div className="flex-1">
+                <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Bli medlem</p>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>Startplatser, Draklanda, klubbussen.</p>
+              </div>
+              <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ NEWS ═══ */}
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-10 md:mt-14">
+        <div className="flex justify-between items-end mb-3">
+          <h2 className="font-serif font-bold text-xl md:text-[28px] leading-none tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
+            Senaste nytt
+          </h2>
+          <Link to="/nyheter" className="text-sm hover:underline" style={{ color: "var(--ink-2, #0f172b)", borderBottom: "1px solid", paddingBottom: 2 }}>
+            Alla nyheter
+          </Link>
+        </div>
+        <NewsSlider />
+      </section>
+
       {/* ═══ WELCOME ROW ═══ */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
+      {/* Bild-aspect breddare/lägre per pptx-feedback om mindre bilder. */}
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-0">
           <div
             className="w-full bg-cover bg-center"
             style={{
               backgroundImage: "url(/assets/news-fjall.jpg)",
-              aspectRatio: "840 / 360",
-              minHeight: 200,
+              aspectRatio: "1200 / 340",
+              minHeight: 160,
             }}
           />
-          <div className="flex flex-col justify-center py-6 sm:py-8 lg:py-10 lg:px-12">
-            <h2 className="font-serif font-bold text-xl sm:text-2xl md:text-[32px] leading-tight tracking-tight mb-4" data-payload-field="aboutTitle">
+          <div className="flex flex-col justify-center py-5 sm:py-6 lg:py-8 lg:px-12">
+            <h2 className="font-serif font-bold text-xl sm:text-2xl md:text-[28px] leading-tight tracking-tight mb-3" data-payload-field="aboutTitle">
               {liveSite.aboutTitle}
             </h2>
             {aboutText && aboutText.split("\n\n").map((p: string, i: number) => (
-              <p key={i} className="text-sm sm:text-base leading-relaxed mb-3" style={{ color: "var(--ink-2, #0f172b)" }} {...(i === 0 ? { "data-payload-field": "aboutText" } : {})}>
+              <p key={i} className="text-sm sm:text-base leading-relaxed mb-2" style={{ color: "var(--ink-2, #0f172b)" }} {...(i === 0 ? { "data-payload-field": "aboutText" } : {})}>
                 {p}
               </p>
             ))}
@@ -135,9 +185,9 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* ═══ STATS BAR ═══ */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-16">
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-10 md:mt-14">
         <div
-          className="grid grid-cols-3 gap-4 py-6"
+          className="grid grid-cols-3 gap-4 py-5"
           style={{ borderTop: "1px solid var(--border, #e2e8f0)", borderBottom: "1px solid var(--border, #e2e8f0)" }}
         >
           {[
@@ -146,7 +196,7 @@ const HomeView: React.FC = () => {
             { label: "Startplatser", value: liveSite.statsLaunchSites },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center gap-1">
-              <p className="font-serif font-bold text-lg sm:text-2xl md:text-[40px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }}>
+              <p className="font-serif font-bold text-lg sm:text-2xl md:text-[32px] leading-none" style={{ color: "var(--ink-2, #0f172b)" }}>
                 {stat.value}
               </p>
               <p className="text-[10px] sm:text-xs" style={{ color: "var(--slate, #62748e)" }}>{stat.label}</p>
@@ -155,53 +205,10 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══ WEATHER + LINKS ═══ */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
-        <div className="border-t pt-6" style={{ borderColor: "var(--border, #e2e8f0)" }}>
-          <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
-            <WindWidget />
-            <div className="flex flex-col gap-4 h-full">
-              <Link
-                to="/flyga-i-are/flygregler"
-                className="group flex flex-1 items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
-                style={{ border: "1px solid var(--border, #e2e8f0)" }}
-              >
-                <div className="flex-1">
-                  <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Flygregler</p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>Läs innan du flyger i Åre.</p>
-                </div>
-                <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
-              </Link>
-              <Link
-                to="/bli-medlem"
-                className="group flex flex-1 items-start justify-between p-5 transition-colors hover:bg-[#fafbfc]"
-                style={{ border: "1px solid var(--border, #e2e8f0)" }}
-              >
-                <div className="flex-1">
-                  <p className="font-serif font-bold text-sm" style={{ color: "var(--ink, #020618)" }}>Bli medlem</p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>Startplatser, Draklanda, klubbussen.</p>
-                </div>
-                <span className="text-sm ml-3 shrink-0 transition-transform group-hover:translate-x-1" style={{ color: "var(--slate-2, #90a1b9)" }}>&rarr;</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ NEWS ═══ */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
-        <div className="flex justify-end mb-2">
-          <Link to="/nyheter" className="text-sm hover:underline" style={{ color: "var(--ink-2, #0f172b)", borderBottom: "1px solid", paddingBottom: 2 }}>
-            Alla nyheter
-          </Link>
-        </div>
-        <NewsSlider />
-      </section>
-
       {/* ═══ INFO CARDS ═══ */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-20">
-        <div className="flex justify-between items-end mb-6">
-          <h2 className="font-serif font-bold text-[32px] leading-none tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-10 md:mt-14">
+        <div className="flex justify-between items-end mb-5">
+          <h2 className="font-serif font-bold text-[26px] leading-none tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
             Flyga i Åre
           </h2>
           <Link to="/flyga-i-are" className="text-sm hover:underline" style={{ color: "var(--ink-2, #0f172b)", borderBottom: "1px solid", paddingBottom: 2 }}>
@@ -213,13 +220,13 @@ const HomeView: React.FC = () => {
             <Link key={card.to} to={card.to} className="group flex flex-col transition-transform duration-200 hover:-translate-y-0.5">
               <div
                 className="w-full bg-cover bg-center transition-[filter] duration-200 group-hover:brightness-105"
-                style={{ backgroundImage: `url(${card.img})`, aspectRatio: "480 / 330", backgroundColor: "#e9eef3" }}
+                style={{ backgroundImage: `url(${card.img})`, aspectRatio: "480 / 260", backgroundColor: "#e9eef3" }}
               />
-              <div className="py-5 flex flex-col gap-3">
-                <h3 className="font-serif font-bold text-[26px] leading-none tracking-tight" style={{ color: "var(--ink, #020618)" }}>{card.title}</h3>
-                <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>{card.desc}</p>
-                <div className="w-7 h-7 grid place-items-center transition-transform duration-200 group-hover:translate-x-1.5" style={{ color: "var(--ink, #020618)" }}>
-                  <ArrowRightIcon size={22} strokeWidth={1.4} />
+              <div className="py-4 flex flex-col gap-2">
+                <h3 className="font-serif font-bold text-[22px] leading-tight tracking-tight" style={{ color: "var(--ink, #020618)" }}>{card.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>{card.desc}</p>
+                <div className="w-6 h-6 grid place-items-center transition-transform duration-200 group-hover:translate-x-1.5" style={{ color: "var(--ink, #020618)" }}>
+                  <ArrowRightIcon size={18} strokeWidth={1.4} />
                 </div>
               </div>
             </Link>

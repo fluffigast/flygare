@@ -3,6 +3,10 @@ import { Link, useLocation } from "react-router";
 import { navigation as localNav } from "../data/navigation";
 import { useSiteNavigation, useGlobalLivePreview } from "../hooks/useCMS";
 
+// Header per pptx-audit HTML-referens (Downloads/flyga-i-are.html):
+// 7 flata topplänkar (inklusive Hem), inga hover-dropdowns.
+// Undersidor nås via sektionens landningssida.
+// Mobil-menyn behåller barnlänkar för snabb åtkomst.
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -18,14 +22,12 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
   const closeMenu = () => setMenuOpen(false);
 
-  // Check if a nav section is active
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
@@ -35,57 +37,60 @@ const Header: React.FC = () => {
     <header
       className="sticky top-0 z-50 bg-white transition-[border-color] duration-150"
       style={{
-        height: 60,
-        borderBottom: `1px solid ${scrolled ? "#e2e8f0" : "transparent"}`,
+        borderBottom: `1px solid ${scrolled ? "var(--border, #e2e8f0)" : "transparent"}`,
       }}
     >
-      <div className="h-full max-w-[1480px] mx-auto px-4 md:px-8 flex items-center justify-between">
-        {/* Brand */}
+      <div className="max-w-[1480px] mx-auto px-4 md:px-10 py-4 md:py-5 flex items-center justify-between gap-6">
         <Link
           to="/"
-          className="font-serif font-bold text-sm tracking-tight"
+          className="font-serif font-bold text-sm md:text-base tracking-tight whitespace-nowrap"
           style={{ color: "var(--ink, #020618)", letterSpacing: "-0.005em" }}
           onClick={closeMenu}
         >
           Åre Skärm- och Drakflygklubb
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7">
-          {nav.sections
-            .filter((s: any) => s.label !== "Hem")
-            .slice(0, 5)
-            .map((section: any) => (
-              <Link
-                key={section.label}
-                to={section.path}
-                className="nav-link relative text-sm py-1"
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  color: "var(--ink, #020618)",
-                  fontWeight: isActive(section.path) ? 500 : 400,
-                }}
-                onClick={closeMenu}
-              >
-                {section.label}
-              </Link>
-            ))}
+        <nav className="hidden md:flex items-center gap-7 text-sm">
+          {nav.sections.map((section: any) => (
+            <Link
+              key={section.label}
+              to={section.path}
+              className="pb-1 transition-colors"
+              style={{
+                color: "var(--ink, #020618)",
+                fontFamily: "var(--font-sans)",
+                fontWeight: isActive(section.path) ? 600 : 400,
+                borderBottom: `2px solid ${isActive(section.path) ? "var(--ink, #020618)" : "transparent"}`,
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive(section.path)) {
+                  (e.currentTarget as HTMLElement).style.borderBottomColor = "var(--slate-2, #90a1b9)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive(section.path)) {
+                  (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent";
+                }
+              }}
+              onClick={closeMenu}
+            >
+              {section.label}
+            </Link>
+          ))}
         </nav>
 
-        {/* Pill button */}
         <Link
           to="/bli-medlem"
-          className="hidden md:inline-flex items-center font-serif text-sm text-white rounded-full transition-all hover:-translate-y-px"
+          className="hidden md:inline-flex items-center font-semibold text-sm text-white rounded-full whitespace-nowrap transition-all hover:-translate-y-px"
           style={{
-            background: "#000",
-            padding: "7px 22px",
+            background: "var(--ink, #020618)",
+            padding: "9px 22px",
           }}
           onClick={closeMenu}
         >
           Bli medlem
         </Link>
 
-        {/* Mobile hamburger */}
         <button
           className="md:hidden p-2"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -102,9 +107,8 @@ const Header: React.FC = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t" style={{ borderColor: "#e2e8f0" }}>
+        <div className="md:hidden bg-white border-t" style={{ borderColor: "var(--border, #e2e8f0)" }}>
           <nav className="max-w-[1480px] mx-auto px-4 py-4 flex flex-col gap-1">
             {nav.sections.map((section: any) => (
               <div key={section.label}>
@@ -149,8 +153,8 @@ const Header: React.FC = () => {
             ))}
             <Link
               to="/bli-medlem"
-              className="mt-3 inline-flex items-center justify-center font-serif text-sm text-white rounded-full"
-              style={{ background: "#000", padding: "9px 22px" }}
+              className="mt-3 inline-flex items-center justify-center font-semibold text-sm text-white rounded-full"
+              style={{ background: "var(--ink, #020618)", padding: "9px 22px" }}
               onClick={closeMenu}
             >
               Bli medlem

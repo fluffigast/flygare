@@ -12,7 +12,7 @@ const ITEMS_PER_PAGE = 6;
 const NewsView: React.FC = () => {
   const { data: cmsNews } = useNews(localNews);
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeCategory = searchParams.get("category") ?? "Alla";
+  const activeCategory = searchParams.get("category") ?? "Alla kategorier";
 
   const news = cmsNews.map((item: any) => ({
     id: item.id?.toString() ?? item.slug ?? "unknown",
@@ -24,13 +24,14 @@ const NewsView: React.FC = () => {
     imageUrl: item.image?.url ?? item.image?.sizes?.hero?.url ?? getPlaceholderImage(item.id?.toString() ?? item.slug),
   }));
 
-  const CATEGORIES = useMemo(() => {
-    const cats = [...new Set(news.map((n: any) => n.category))].sort();
-    return ["Alla", ...cats];
-  }, [news]);
+  // Categories fixed per site spec (pptx): Alla kategorier + 4 canonical.
+  const CATEGORIES = useMemo(
+    () => ["Alla kategorier", "Aktiviteter", "Information", "Tävlingar", "Övrigt"],
+    []
+  );
 
   const filtered = useMemo(() => {
-    if (activeCategory === "Alla") return news;
+    if (activeCategory === "Alla kategorier") return news;
     return news.filter(
       (n: any) => n.category.toLowerCase() === activeCategory.toLowerCase()
     );
@@ -46,7 +47,7 @@ const NewsView: React.FC = () => {
 
   const setCategory = (cat: string) => {
     const params = new URLSearchParams();
-    if (cat !== "Alla") params.set("category", cat);
+    if (cat !== "Alla kategorier") params.set("category", cat);
     setSearchParams(params);
   };
 
