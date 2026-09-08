@@ -1,4 +1,14 @@
 /**
+ * ⚠ BLOCKERAD 2026-09-08: kräver att Pages.category-enum utökas med de
+ * nya slug-kategorierna (skistar/acro/hangflyg/paramotor/speedrider/
+ * aktivitet/tavling). Första försöket att utöka enum + lägga till section-
+ * fält bröt prod-CMS med 500 på /api/pages. Reverterat i samma sittning.
+ *
+ * För att aktivera: hitta säker migrationsstrategi för Payload postgres
+ * push=true → migrations, då kan enum expanderas + section-fält adderas
+ * utan att bryta prod.
+ *
+ * ---
  * Skapar CMS-entries för alla pptx-audit-undersidor (Skistar, Acro, Speedrider,
  * Hängflyg, Paramotor, Kalender, Klubbresor, Årsmöten, Åre PPC, Topplandning,
  * Sverige Cup, Övriga tävlingar, Tävlingsstipendium) så admin kan redigera dem
@@ -192,9 +202,10 @@ async function main() {
         data: {
           title: entry.title,
           slug: entry.slug,
-          section: entry.section as any,
+          // section + lede fält var planerade men schema-ändringen bröt
+          // prod. Reverterad till minimal Pages-schema. Section-routing
+          // sköts nu av legacy category-map i payload.config.ts livePreview.
           category: entry.category as any,
-          lede: entry.lede,
           body: richText(entry.body),
           order: entry.order,
         } as any,
