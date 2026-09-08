@@ -1,0 +1,31 @@
+# Container Apps terminates TLS, så Caddy lyssnar bara på HTTP/8080 internt
+:8080 {
+    # Coraza WAF körs först, blockerar request innan static-file-handlern
+    coraza_waf {
+        load_owasp_crs
+        directives `
+            Include /etc/caddy/coraza.conf
+            Include /etc/caddy/crs/crs-setup.conf.example
+            Include /etc/caddy/crs/rules/*.conf
+        `
+    }
+
+    root * /srv
+    encode gzip zstd
+    try_files {path} /index.html
+    file_server
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options    "nosniff"
+        X-Frame-Options           "DENY"
+        Referrer-Policy           "strict-origin-when-cross-origin"
+        Permissions-Policy        "geolocation=(), microphone=(), camera=()"
+        -Server
+    }
+
+    log {
+        output stdout
+        format json
+    }
+}
