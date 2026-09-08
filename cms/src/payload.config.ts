@@ -40,17 +40,44 @@ export default buildConfig({
       url: ({ data, collectionConfig, globalConfig }) => {
         const base = process.env.FRONTEND_URL || 'http://localhost:5173'
         const slug = collectionConfig?.slug || globalConfig?.slug
+
+        // Mapping från legacy category till URL-section för Pages-collection.
+        // Nyare rader ska ha `section` satt direkt.
+        const legacyCategoryToSection: Record<string, string> = {
+          klubbprodukter: 'om',
+          stadgar: 'om',
+          tavling: 'tavlingar',
+          aktivitet: 'aktiviteter',
+          // Övriga (flygregler, sakerhet, xc, klubbuss, skistar, acro,
+          // speedrider, hangflyg, paramotor, startplatser, vader) mappas
+          // till flyga-i-are — samma standard som förut.
+        }
+
+        const pagesUrl = () => {
+          const s = data?.slug ?? ''
+          const section =
+            data?.section ??
+            legacyCategoryToSection[data?.category] ??
+            'flyga-i-are'
+          return `/${section}/${s}`
+        }
+
+        const activityUrl = () => {
+          const structuralSlugs = ['kalender', 'klubbresor', 'arsmoten', 'ovriga-aktiviteter']
+          const s = data?.slug ?? ''
+          if (structuralSlugs.includes(s)) return `/aktiviteter/${s}`
+          return s ? `/aktiviteter/${s}` : '/aktiviteter'
+        }
+
         const routes: Record<string, string> = {
           'news': data?.slug ? `/nyheter/${data.slug}` : '/nyheter',
           'board-members': '/om/styrelsen',
           'milestones': '/om',
           'launches': data?.slug ? `/flyga-i-are/startplatser/${data.slug}` : '/flyga-i-are/startplatser',
-          'competitions': '/tavlingar',
+          'competitions': data?.slug ? `/tavlingar/${data.slug}` : '/tavlingar',
           'weather-links': '/flyga-i-are/vader',
-          'pages': ['klubbprodukter', 'stadgar'].includes(data?.category)
-            ? `/om/${data?.slug ?? ''}`
-            : `/flyga-i-are/${data?.slug ?? ''}`,
-          'activities': '/aktiviteter',
+          'pages': pagesUrl(),
+          'activities': activityUrl(),
           'documents': '/ovrigt/dokument',
           'photos': '/ovrigt/foton',
           'links': '/',

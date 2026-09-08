@@ -44,6 +44,7 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
             <p
               className="max-w-2xl mt-8 font-serif italic text-base md:text-lg leading-relaxed"
               style={{ color: "var(--slate, #62748e)" }}
+              data-payload-field="lede"
             >
               {lede}
             </p>

@@ -9,6 +9,22 @@ import { useNews } from "../../hooks/useCMS";
 
 export interface NewsSliderProps {}
 
+/* FIX: itemsPerPage is now responsive — it was hardcoded to 3, so on mobile
+   (where items stack vertically) arrows/dots paged in threes while the user
+   scrolled a column. Also removed max-w-2xl: the block suddenly narrowed the
+   page to ~672px inside the 1480px container; the parent now controls width. */
+function useItemsPerPage() {
+  const [n, setN] = useState(3);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setN(mq.matches ? 3 : 1);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return n;
+}
+
 const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
   const { data: cmsNews } = useNews(localNews);
   const newsItems = cmsNews.slice(0, 12).map((item: any) => ({
@@ -18,11 +34,16 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
     publishedAt: item.publishedAt ?? item.date ?? item.createdAt,
     excerpt: item.description ?? item.excerpt ?? "",
   }));
-  const itemsPerPage = 3;
+  const itemsPerPage = useItemsPerPage();
   const totalPages = Math.max(1, Math.ceil(newsItems.length / itemsPerPage));
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState<"left" | "right">("right");
   const prevPageRef = useRef(currentPage);
+
+  // Clamp page when itemsPerPage changes (e.g. rotate / resize)
+  useEffect(() => {
+    setCurrentPage((p) => Math.min(p, totalPages - 1));
+  }, [totalPages]);
 
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -46,16 +67,14 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
   };
 
   return (
-    <section className="w-full @container max-w-2xl mx-auto px-4 py-8 flex flex-col gap-4">
-      <div className="flex items-end justify-between w-full">
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold font-serif">Nyheter</h2>
-        </div>
+    <section className="w-full @container flex flex-col gap-4">
+      {/* Rubriken sätts av parent (t.ex. "Senaste nytt" på home). */}
+      <div className="flex items-end justify-end w-full">
         <div className="flex gap-1">
           <button
             onClick={handlePrevious}
             disabled={currentPage === 0}
-            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted-foreground rounded transition-colors"
+            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-secondary rounded transition-colors"
             aria-label="Föregående"
           >
             <ChevronLeftIcon />
@@ -63,7 +82,7 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
           <button
             onClick={handleNext}
             disabled={currentPage === totalPages - 1}
-            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted-foreground rounded transition-colors"
+            className="p-1.5 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-secondary rounded transition-colors"
             aria-label="Nästa"
           >
             <ChevronRightIcon />
