@@ -20,6 +20,7 @@ import OmView from "./views/om/om-view.tsx";
 import StyrelsenView from "./views/om/styrelsen-view.tsx";
 import BliMedlemView from "./views/bli-medlem/bli-medlem-view.tsx";
 import TavlingarView from "./views/tavlingar/tavlingar-view.tsx";
+import TavlingSingleView from "./views/tavlingar/tavling-single-view.tsx";
 import VaderView from "./views/vader/vader-view.tsx";
 import NotFoundView from "./views/not-found-view.tsx";
 import FlyingGuideIndex from "./views/flyga-i-are/flyga-i-are-index.tsx";
@@ -67,7 +68,7 @@ createRoot(document.getElementById("root")!).render(
           {/* Tävling */}
           <Route path="tavlingar">
             <Route index element={<TavlingarView />} />
-            <Route path=":slug" element={<PageView />} />
+            <Route path=":slug" element={<TavlingSingleView />} />
           </Route>
           {/* Om klubben */}
           <Route path="om">
