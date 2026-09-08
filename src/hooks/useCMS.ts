@@ -86,6 +86,17 @@ export const usePage = (slug: string, fallback: any) =>
 export const useActivities = (fallback: any[]) =>
   useCMSData(() => fetchCollection("activities", "&sort=-date"), fallback);
 
+// Filtrera per Activities.type. Kalender-typ: sortera stigande (kommande först).
+export const useActivitiesByType = (type: string, fallback: any[]) => {
+  const sort = type === "kalender" ? "date" : "-date";
+  const params = new URLSearchParams({ "where[type][equals]": type, sort });
+  return useCMSData(
+    () => fetchCollection("activities", `&${params.toString()}`),
+    fallback,
+    [type],
+  );
+};
+
 export const useDocuments = (fallback: any[]) =>
   useCMSData(() => fetchCollection("documents", "&sort=-year"), fallback);
 
