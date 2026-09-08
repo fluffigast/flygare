@@ -27,6 +27,7 @@ import KlubbussView from "./views/flyga-i-are/klubbuss-view.tsx";
 import PageView from "./views/page/page-view.tsx";
 import AktiviteterView from "./views/aktiviteter/aktiviteter-view.tsx";
 import AktivitetSingleView from "./views/aktiviteter/aktivitet-single-view.tsx";
+import ActivitiesListView from "./views/aktiviteter/activities-list-view.tsx";
 import FotonView from "./views/ovrigt/foton-view.tsx";
 import DokumentView from "./views/ovrigt/dokument-view.tsx";
 
@@ -57,10 +58,10 @@ createRoot(document.getElementById("root")!).render(
           {/* Aktiviteter */}
           <Route path="aktiviteter">
             <Route index element={<AktiviteterView />} />
-            <Route path="kalender" element={<PageView slug="kalender" />} />
-            <Route path="klubbresor" element={<PageView slug="klubbresor" />} />
-            <Route path="arsmoten" element={<PageView slug="arsmoten" />} />
-            <Route path="ovriga-aktiviteter" element={<PageView slug="ovriga-aktiviteter" />} />
+            <Route path="kalender" element={<ActivitiesListView type="kalender" />} />
+            <Route path="klubbresor" element={<ActivitiesListView type="klubbresa" />} />
+            <Route path="arsmoten" element={<ActivitiesListView type="arsmote" groupByYear />} />
+            <Route path="ovriga-aktiviteter" element={<ActivitiesListView type="ovrigt" />} />
             <Route path=":slug" element={<AktivitetSingleView />} />
           </Route>
           {/* Tävling */}
