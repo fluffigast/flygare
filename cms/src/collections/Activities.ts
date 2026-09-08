@@ -28,11 +28,6 @@ export const Activities: CollectionConfig = {
       ],
     },
     { name: 'date', type: 'date', required: true },
-    {
-      name: 'location',
-      type: 'text',
-      admin: { description: 'Plats/mötesplats (valfri).' },
-    },
     { name: 'body', type: 'richText' },
     {
       name: 'attachments',
