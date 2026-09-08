@@ -41,23 +41,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      # Kör Payload migrations mot prod-DB innan nya imagen deployas.
-      # Om migrationen misslyckas — abort deploy (annars startar container
-      # med schema som DB inte har → 500 på API-endpoints).
-      - name: Run Payload migrations
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        working-directory: ./cms
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-        run: |
-          npm install --no-audit --no-fund
-          npm run migrate
-
       - uses: azure/docker-login@v2
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
@@ -65,6 +48,8 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      # Bygg imagen först. Den innehåller Alpine + linuxmusl-x64 sharp,
+      # så när vi kör migrate inuti (steg nedan) fungerar sharp korrekt.
       - name: Build Docker image
         env:
           IMAGE_TAG: ${{ github.sha }}
@@ -74,6 +59,24 @@ jobs:
             -t "$ACR_HOST/flygare-cms:$IMAGE_TAG" \
             -t "$ACR_HOST/flygare-cms:latest" \
             ./cms
+
+      # Kör Payload migrations mot prod-DB inuti den nybyggda imagen.
+      # Om något migreringssteg failar → abort deploy (inget push till ACR,
+      # inget container-uppdatering). Prod fortsätter köra föregående image.
+      - name: Run Payload migrations
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          ACR_HOST: ${{ vars.ACR_LOGIN_SERVER }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+        run: |
+          docker run --rm \
+            -e DATABASE_URL \
+            -e PAYLOAD_SECRET \
+            -e PAYLOAD_MIGRATING=true \
+            "$ACR_HOST/flygare-cms:$IMAGE_TAG" \
+            npm run migrate
 
       - name: Push to ACR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
