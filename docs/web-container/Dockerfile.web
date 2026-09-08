@@ -1,0 +1,30 @@
+# Multi-stage build: Vite frontend + Caddy with Coraza WAF
+# Built from repo root: docker build -f docs/web-container/Dockerfile.web -t flygare-web .
+
+# ---- Stage 1: build Vite frontend ----
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm build
+
+# ---- Stage 2: Caddy with Coraza module ----
+# Use the caddy:builder image to compile Coraza into Caddy
+FROM caddy:2.8-builder-alpine AS caddybuild
+RUN xcaddy build \
+    --with github.com/corazawaf/coraza-caddy/v2
+
+# ---- Stage 3: runtime ----
+FROM caddy:2.8-alpine
+COPY --from=caddybuild /usr/bin/caddy /usr/bin/caddy
+COPY docs/web-container/Caddyfile /etc/caddy/Caddyfile
+COPY docs/web-container/coraza.conf /etc/caddy/coraza.conf
+# OWASP CRS rules
+RUN apk add --no-cache curl && \
+    mkdir -p /etc/caddy/crs && \
+    curl -sL https://github.com/coreruleset/coreruleset/archive/refs/tags/v4.7.0.tar.gz \
+      | tar xz -C /etc/caddy/crs --strip-components=1
+COPY --from=build /app/dist /srv
+EXPOSE 8080
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
