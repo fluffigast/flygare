@@ -125,7 +125,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL!,
     },
-    push: true,
+    // push=true skippas ändå i production (NODE_ENV=production).
+    // I dev pushar Payload schema-diffar direkt till DB.
+    // I prod ansvarar migrations-filerna i src/migrations/ för schema-
+    // ändringar och körs via `payload migrate` (CI-steg före deploy).
+    push: process.env.NODE_ENV !== 'production',
   }),
   upload: {
     limits: {

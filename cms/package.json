@@ -8,7 +8,11 @@
     "build": "next build",
     "start": "next start --port 3001",
     "seed": "npx tsx src/seed/index.ts",
-    "migrate:news-categories": "npx tsx src/migrations/migrate-news-categories.ts",
+    "script:migrate-news-categories": "npx tsx src/scripts/migrate-news-categories.ts",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload migrate",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
     "generate:types": "payload generate:types"
   },
   "dependencies": {
@@ -25,6 +29,7 @@
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "cross-env": "^10.1.0",
     "tsx": "^4.19.4",
     "typescript": "~5.9.3"
   }
