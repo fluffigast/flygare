@@ -29,17 +29,34 @@ jobs:
 
       - name: Deploy to Azure SWA
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          SWA_TOKEN: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
         run: |
           npm install -g @azure/static-web-apps-cli
           swa deploy ./dist --api-location ./api --deployment-token "$SWA_TOKEN" --env production --api-language node --api-version 22
-        env:
-          SWA_TOKEN: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
 
   deploy-cms:
     name: Build & Deploy CMS
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Kör Payload migrations mot prod-DB innan nya imagen deployas.
+      # Om migrationen misslyckas — abort deploy (annars startar container
+      # med schema som DB inte har → 500 på API-endpoints).
+      - name: Run Payload migrations
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: ./cms
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+        run: |
+          npm install --no-audit --no-fund
+          npm run migrate
 
       - uses: azure/docker-login@v2
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -49,17 +66,23 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          ACR_HOST: ${{ vars.ACR_LOGIN_SERVER }}
         run: |
           docker build \
-            -t ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }} \
-            -t ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:latest \
+            -t "$ACR_HOST/flygare-cms:$IMAGE_TAG" \
+            -t "$ACR_HOST/flygare-cms:latest" \
             ./cms
 
       - name: Push to ACR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          ACR_HOST: ${{ vars.ACR_LOGIN_SERVER }}
         run: |
-          docker push ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:${{ github.sha }}
-          docker push ${{ vars.ACR_LOGIN_SERVER }}/flygare-cms:latest
+          docker push "$ACR_HOST/flygare-cms:$IMAGE_TAG"
+          docker push "$ACR_HOST/flygare-cms:latest"
 
       - name: Deploy to Azure Container App
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
