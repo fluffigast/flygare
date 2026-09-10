@@ -1,6 +1,7 @@
 import React from "react";
 import { competitions as localCompetitions } from "../../data/competitions";
 import { useCompetitions } from "../../hooks/useCMS";
+import CompassRoseWatermark from "../../components/decorations/compass-rose-watermark";
 
 /** Extract plain text from a Lexical richText object or return string as-is */
 function richTextToString(value: any): string {
@@ -19,8 +20,13 @@ const TavlingarView: React.FC = () => {
   const { data: competitions } = useCompetitions([...localCompetitions]);
 
   return (
-    <div className="w-full">
-      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
+    <div className="w-full relative">
+      {/* Stor sakta-roterande kompassros som subtil bakgrundsdekoration. */}
+      <CompassRoseWatermark
+        className="pointer-events-none absolute right-[-120px] top-8 w-[520px] h-[520px] -z-10 hidden md:block"
+        opacity={0.06}
+      />
+      <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Tävlingar</p>
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight mt-1"

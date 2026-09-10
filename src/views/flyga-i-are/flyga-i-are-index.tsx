@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
+import TopoLines from "../../components/decorations/topo-lines";
+import ParaglidingArc from "../../components/decorations/paragliding-arc";
 
 type TopicItem = { text: string; to?: string };
 type Topic = { title: string; items: TopicItem[] };
@@ -84,8 +86,18 @@ const TOPICS: Topic[] = [
 
 const FlyingGuideIndex: React.FC = () => {
   return (
-    <div className="w-full">
-      <section className="max-w-[1200px] mx-auto px-4 md:px-10 pt-12 md:pt-16 pb-6 md:pb-8">
+    <div className="w-full relative">
+      {/* Topografiska höjdkurvor bakom hela sidan — kart-blad-känsla. */}
+      <TopoLines
+        className="pointer-events-none absolute inset-0 w-full h-full -z-10"
+        opacity={0.05}
+      />
+      {/* Paragliding-båge diagonal över page-header. */}
+      <ParaglidingArc
+        className="pointer-events-none absolute inset-x-0 top-0 h-48 md:h-64 w-full -z-10"
+        opacity={0.08}
+      />
+      <section className="relative max-w-[1200px] mx-auto px-4 md:px-10 pt-12 md:pt-16 pb-6 md:pb-8">
         <p
           className="font-serif italic text-base md:text-lg"
           style={{ color: "var(--slate, #62748e)" }}

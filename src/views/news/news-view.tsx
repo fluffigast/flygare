@@ -6,6 +6,7 @@ import { sv } from "date-fns/locale";
 import { news as localNews } from "../../data/news";
 import { useNews } from "../../hooks/useCMS";
 import { getPlaceholderImage } from "../../utils/placeholder";
+import SectionCornerMark from "../../components/decorations/section-corner-mark";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -59,9 +60,13 @@ const NewsView: React.FC = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       {/* Editorial header */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-10 md:pb-12">
+      <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-10 md:pb-12">
+        <SectionCornerMark
+          className="pointer-events-none absolute right-8 md:right-14 top-8 w-24 h-14 -z-10 hidden md:block"
+          label="NYHETER"
+        />
         <p
           className="font-serif italic text-2xl md:text-[40px] leading-none"
           style={{ color: "var(--hero-accent, #3774a3)" }}
