@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { MoveUpIcon } from "lucide-react";
+import { WindDirectionCompass } from "../../components/wind-direction-compass";
 
 interface MeacData {
   wind_ms: number | null;
@@ -139,13 +139,17 @@ const WindWidget: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-4">
-                {/* Wind arrow */}
+                {/* Wind direction compass — live pointer */}
                 {meac.wind_dir != null && (
-                  <div className="flex flex-col items-center gap-0.5 shrink-0">
-                    <div className="w-8 h-8 text-foreground" style={{ transform: `rotate(${meac.wind_dir}deg)` }}>
-                      <MoveUpIcon className="w-8 h-8" />
-                    </div>
-                    <span className="text-xs text-muted-foreground">{dirLabel(meac.wind_dir)}</span>
+                  <div className="flex flex-col items-center gap-1 shrink-0">
+                    <WindDirectionCompass
+                      windDir={meac.wind_dir}
+                      size={72}
+                      showLabels
+                    />
+                    <span className="text-xs text-muted-foreground font-semibold tabular-nums">
+                      {dirLabel(meac.wind_dir)} · {Math.round(meac.wind_dir)}°
+                    </span>
                   </div>
                 )}
 
