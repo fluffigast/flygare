@@ -1,18 +1,22 @@
 import React from "react";
 import { Link } from "react-router";
 
+/* FIX: deduplicated links — previously "Riktlinjer"/"Nödinformation" both
+   pointed to /sakerhet and "Startplatser"/"Landningar" both pointed to
+   /startplatser (four labels, two destinations). Labels now match the
+   destination page titles. */
 const LINKS_1 = [
-  { label: "Regler", to: "/flyga-i-are/flygregler" },
-  { label: "Riktlinjer", to: "/flyga-i-are/sakerhet" },
-  { label: "Startplatser", to: "/flyga-i-are/startplatser" },
-  { label: "Landningar", to: "/flyga-i-are/startplatser" },
-  { label: "Luftrum", to: "/flyga-i-are/xc" },
-  { label: "Nödinformation", to: "/flyga-i-are/sakerhet" },
+  { label: "Flygregler", to: "/flyga-i-are/flygregler" },
+  { label: "Starter & landningar", to: "/flyga-i-are/startplatser" },
+  { label: "Väder", to: "/flyga-i-are/vader" },
+  { label: "Säkerhet / Nödsituation", to: "/flyga-i-are/sakerhet" },
+  { label: "Cross country flygning", to: "/flyga-i-are/xc" },
 ];
 
 const LINKS_2 = [
   { label: "Bli medlem", to: "/bli-medlem" },
   { label: "Dokument", to: "/ovrigt/dokument" },
+  { label: "Foton", to: "/ovrigt/foton" },
   { label: "Kontakt", to: "/kontakt" },
 ];
 

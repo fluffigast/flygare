@@ -1,0 +1,11 @@
+{
+  "name": "flygare-verify",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify-browser.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

@@ -168,6 +168,18 @@
 .nav-link:hover::after {
   transform: scaleX(1);
 }
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+.nav-link:focus-visible {
+  outline: none;
+}
+
+/* Visible focus ring for card links */
+.info-card-lift:focus-visible {
+  outline: 2px solid var(--ink, #020618);
+  outline-offset: 4px;
+}
 
 .scrollbar-hide {
   -ms-overflow-style: none;
