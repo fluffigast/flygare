@@ -7,6 +7,7 @@ import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
 import MountainSilhouette from "../../components/decorations/mountain-silhouette";
 import ParaglidingArc from "../../components/decorations/paragliding-arc";
+import PageBackdrop from "../../components/decorations/page-backdrop";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const INFO_CARDS = [
@@ -66,7 +67,8 @@ const HomeView: React.FC = () => {
   const aboutText = richTextToString(liveSite.aboutText);
 
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="relative w-full overflow-x-hidden">
+      <PageBackdrop />
       <Header />
 
       {/* ═══ HERO ═══ */}

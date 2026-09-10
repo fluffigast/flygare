@@ -15,12 +15,23 @@ const NewsView: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get("category") ?? "Alla kategorier";
 
+  // Trunkera kort-excerpt vid mening-gräns så kort får jämn höjd.
+  // Full text finns kvar på singel-sidan (/nyheter/[slug]).
+  const truncate = (s: string, max = 140) => {
+    if (!s || s.length <= max) return s;
+    const cut = s.slice(0, max);
+    const lastPunct = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+    if (lastPunct > max * 0.5) return cut.slice(0, lastPunct + 1);
+    const lastSpace = cut.lastIndexOf(" ");
+    return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + "…";
+  };
+
   const news = cmsNews.map((item: any) => ({
     id: item.id?.toString() ?? item.slug ?? "unknown",
     title: item.title,
     slug: item.slug ?? item.id?.toString(),
     category: item.category ?? "Information",
-    excerpt: item.description ?? item.excerpt ?? "",
+    excerpt: truncate(item.description ?? item.excerpt ?? ""),
     publishedAt: item.publishedAt ?? item.date ?? item.createdAt,
     imageUrl: item.image?.url ?? item.image?.sizes?.hero?.url ?? getPlaceholderImage(item.id?.toString() ?? item.slug),
   }));
