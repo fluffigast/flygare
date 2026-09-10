@@ -3,6 +3,8 @@ import { Link } from "react-router";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useActivitiesByType } from "../../hooks/useCMS";
+import ParaglidingArc from "../../components/decorations/paragliding-arc";
+import SectionCornerMark from "../../components/decorations/section-corner-mark";
 
 type ActivityType = "kalender" | "klubbresa" | "arsmote" | "ovrigt";
 
@@ -76,8 +78,16 @@ const ActivitiesListView: React.FC<{ type: ActivityType; groupByYear?: boolean }
   );
 
   return (
-    <div className="w-full">
-      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
+    <div className="w-full relative">
+      <ParaglidingArc
+        className="pointer-events-none absolute inset-x-0 top-0 h-48 w-full -z-10"
+        opacity={0.05}
+      />
+      <SectionCornerMark
+        className="pointer-events-none absolute right-8 md:right-14 top-10 w-24 h-14 -z-10 hidden md:block"
+        label={h.title.toUpperCase()}
+      />
+      <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p
           className="font-serif italic text-lg"
           style={{ color: "var(--slate, #62748e)" }}
