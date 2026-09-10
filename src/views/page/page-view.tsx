@@ -3,7 +3,6 @@ import { useParams } from "react-router";
 import { usePage, useGlobalLivePreview } from "../../hooks/useCMS";
 import { pages } from "../../data/pages";
 import { articles } from "../../data/articles";
-import TopoLines from "../../components/decorations/topo-lines";
 
 const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
   const params = useParams();
@@ -33,11 +32,7 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
   if (groups?.length) {
     return (
       <div className="w-full relative">
-        <TopoLines
-          className="pointer-events-none absolute inset-x-0 top-0 h-[500px] w-full -z-10"
-          opacity={0.04}
-        />
-        <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
+  <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
           <h1
             className="font-serif font-bold leading-[0.96] tracking-tight"
             style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
@@ -118,10 +113,6 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
 
   return (
     <div className="w-full relative">
-      <TopoLines
-        className="pointer-events-none absolute inset-x-0 top-0 h-[500px] w-full -z-10"
-        opacity={0.04}
-      />
       <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight"

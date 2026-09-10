@@ -5,7 +5,6 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
-import MountainSilhouette from "../../components/decorations/mountain-silhouette";
 import ParaglidingArc from "../../components/decorations/paragliding-arc";
 import PageBackdrop from "../../components/decorations/page-backdrop";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
@@ -119,9 +118,8 @@ const HomeView: React.FC = () => {
       {/* ═══ PRIO ROW ═══
           Pptx-listade startsida-block: Bli medlem, Flygregler,
           Nyheter, Aktuellt väder — placeras direkt efter hero.
-          Subtil bergssilhuett bakom raden ger djup utan att störa. */}
+          (Berg-silhuetten kommer från global PageBackdrop.) */}
       <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 mt-8 md:mt-12">
-        <MountainSilhouette className="pointer-events-none absolute -top-6 left-0 right-0 w-full h-40 md:h-56 -z-10" />
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
           <WindWidget />
           <div className="flex flex-col gap-4 h-full">
