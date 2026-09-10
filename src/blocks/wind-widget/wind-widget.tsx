@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { WindDirectionCompass } from "../../components/wind-direction-compass";
+import WindStreamlines from "../../components/decorations/wind-streamlines";
 
 interface MeacData {
   wind_ms: number | null;
@@ -23,7 +24,6 @@ interface SkistarReading {
 interface WindResponse {
   meac?: MeacData | null;
   skistar?: { readings: SkistarReading[]; updated: string | null } | null;
-  // flat format fallback
   wind_ms?: number;
   wind_dir?: number;
   temp_c?: number;
@@ -37,6 +37,44 @@ function dirLabel(deg: number): string {
   const dirs = ["N", "NO", "O", "SO", "S", "SV", "V", "NV"];
   return dirs[Math.round(deg / 45) % 8];
 }
+
+// Beaufort-skalan → svenskt namn + färg-ton (max 12).
+function beaufort(ms: number): { level: number; name: string; tone: string } {
+  const scale: Array<[number, string, string]> = [
+    [0.3, "Stilla", "#94a3b8"],
+    [1.6, "Nästan stilla", "#94a3b8"],
+    [3.4, "Lätt bris", "#38bdf8"],
+    [5.5, "Måttlig bris", "#0ea5e9"],
+    [8.0, "Frisk bris", "#0284c7"],
+    [10.8, "Styv bris", "#0369a1"],
+    [13.9, "Hård vind", "#075985"],
+    [17.2, "Styv kuling", "#f59e0b"],
+    [20.8, "Hård kuling", "#ea580c"],
+    [24.5, "Halv storm", "#dc2626"],
+    [28.5, "Storm", "#991b1b"],
+    [32.7, "Svår storm", "#7f1d1d"],
+  ];
+  for (let i = 0; i < scale.length; i++) {
+    if (ms <= scale[i][0]) return { level: i, name: scale[i][1], tone: scale[i][2] };
+  }
+  return { level: 12, name: "Orkan", tone: "#450a0a" };
+}
+
+// Enkel Beaufort-visualisering — 12 cellsegments där aktuell nivå färgläggs.
+const BeaufortBar: React.FC<{ level: number; tone: string }> = ({ level, tone }) => (
+  <div className="flex gap-0.5 h-2 items-stretch">
+    {Array.from({ length: 12 }).map((_, i) => (
+      <div
+        key={i}
+        className="flex-1 rounded-[1px] transition-all"
+        style={{
+          background: i < level ? tone : "var(--border, #e2e8f0)",
+          opacity: i < level ? 0.55 + (i / 12) * 0.45 : 1,
+        }}
+      />
+    ))}
+  </div>
+);
 
 const WindWidget: React.FC = () => {
   const [data, setData] = useState<WindResponse | null>(null);
@@ -100,6 +138,8 @@ const WindWidget: React.FC = () => {
     );
   }
 
+  const bf = meac?.wind_ms != null ? beaufort(meac.wind_ms) : null;
+
   return (
     <section className="flex flex-col gap-3">
       <div className="flex justify-between items-end">
@@ -110,7 +150,7 @@ const WindWidget: React.FC = () => {
       </div>
 
       {!data && (
-        <p className="text-muted-foreground text-sm py-4">Hämtar vinddata...</p>
+        <p className="text-muted-foreground text-sm py-4">Hämtar vinddata…</p>
       )}
 
       {data && !meac && !top && !valley && (
@@ -125,10 +165,28 @@ const WindWidget: React.FC = () => {
       {data && (meac || top || valley) && (
         <div className="flex flex-col gap-3">
 
-          {/* MEAC sensor — the primary source */}
+          {/* MEAC — huvudpanel med bakgrunds-streamlines */}
           {meac && (
-            <div className="border border-border rounded-lg p-4">
-              <div className="flex justify-between items-start mb-3">
+            <div
+              className="relative overflow-hidden rounded-lg p-5"
+              style={{
+                border: "1px solid var(--border, #e2e8f0)",
+                background:
+                  "linear-gradient(135deg, #ffffff 0%, #fafbfc 50%, #f5f8fb 100%)",
+              }}
+            >
+              {/* Vind-strömfältet i bakgrunden, riktat efter live vindriktning */}
+              {meac.wind_dir != null && meac.wind_ms != null && (
+                <WindStreamlines
+                  className="pointer-events-none absolute inset-0 w-full h-full"
+                  windDir={meac.wind_dir}
+                  speedMs={meac.wind_ms}
+                  lines={8}
+                  opacity={0.22}
+                />
+              )}
+
+              <div className="relative flex justify-between items-start mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                   <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -138,89 +196,92 @@ const WindWidget: React.FC = () => {
                 <span className="text-xs text-muted-foreground font-mono">{meac.time ?? ""}</span>
               </div>
 
-              <div className="flex items-center gap-4">
-                {/* Wind direction compass — live pointer */}
+              <div className="relative flex items-center gap-5">
+                {/* Kompass — större */}
                 {meac.wind_dir != null && (
-                  <div className="flex flex-col items-center gap-1 shrink-0">
+                  <div className="flex flex-col items-center gap-1.5 shrink-0">
                     <WindDirectionCompass
                       windDir={meac.wind_dir}
-                      size={72}
+                      size={96}
                       showLabels
                     />
-                    <span className="text-xs text-muted-foreground font-semibold tabular-nums">
+                    <span className="text-xs font-semibold tabular-nums" style={{ color: "var(--ink-2, #0f172b)" }}>
                       {dirLabel(meac.wind_dir)} · {Math.round(meac.wind_dir)}°
                     </span>
                   </div>
                 )}
 
-                {/* Speed */}
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-serif text-4xl font-bold tabular-nums">
-                    {meac.wind_ms?.toFixed(1) ?? "—"}
-                  </span>
-                  <span className="text-muted-foreground text-sm">m/s</span>
+                {/* Speed + Beaufort */}
+                <div className="flex flex-col gap-2 flex-1 min-w-0">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-serif text-5xl font-bold tabular-nums leading-none">
+                      {meac.wind_ms?.toFixed(1) ?? "—"}
+                    </span>
+                    <span className="text-muted-foreground text-sm">m/s</span>
+                  </div>
+                  {bf && (
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-baseline">
+                        <span className="text-xs font-semibold" style={{ color: bf.tone }}>
+                          {bf.name}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                          Bft {bf.level}
+                        </span>
+                      </div>
+                      <BeaufortBar level={bf.level} tone={bf.tone} />
+                    </div>
+                  )}
                 </div>
+              </div>
 
-                {/* Stats */}
-                <div className="flex gap-4 ml-auto text-sm">
-                  <div>
-                    <p className="text-muted-foreground text-xs">Max</p>
-                    <p className="font-semibold tabular-nums">{meac.wind_max ?? "—"}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-xs">Medel</p>
-                    <p className="font-semibold tabular-nums">{meac.wind_avg ?? "—"}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-xs">Temp</p>
-                    <p className="font-semibold tabular-nums">{meac.temp_c != null ? `${meac.temp_c}°` : "—"}</p>
-                  </div>
+              {/* Stats-rad under */}
+              <div className="relative mt-4 pt-3 flex justify-between text-sm" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
+                <div className="flex flex-col items-center flex-1">
+                  <p className="text-muted-foreground text-[10px] uppercase tracking-wider">Max</p>
+                  <p className="font-semibold tabular-nums">{meac.wind_max ?? "—"}<span className="text-xs text-muted-foreground ml-0.5">m/s</span></p>
+                </div>
+                <div className="flex flex-col items-center flex-1" style={{ borderLeft: "1px solid var(--border, #e2e8f0)" }}>
+                  <p className="text-muted-foreground text-[10px] uppercase tracking-wider">Medel</p>
+                  <p className="font-semibold tabular-nums">{meac.wind_avg ?? "—"}<span className="text-xs text-muted-foreground ml-0.5">m/s</span></p>
+                </div>
+                <div className="flex flex-col items-center flex-1" style={{ borderLeft: "1px solid var(--border, #e2e8f0)" }}>
+                  <p className="text-muted-foreground text-[10px] uppercase tracking-wider">Min</p>
+                  <p className="font-semibold tabular-nums">{meac.wind_min ?? "—"}<span className="text-xs text-muted-foreground ml-0.5">m/s</span></p>
+                </div>
+                <div className="flex flex-col items-center flex-1" style={{ borderLeft: "1px solid var(--border, #e2e8f0)" }}>
+                  <p className="text-muted-foreground text-[10px] uppercase tracking-wider">Temp</p>
+                  <p className="font-semibold tabular-nums">{meac.temp_c != null ? `${meac.temp_c}°` : "—"}</p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Skistar stations — top & valley */}
+          {/* Skistar stationer */}
           {(top || valley) && (
             <div className="grid grid-cols-2 gap-3">
-              {top && (
-                <div className="border border-border rounded-lg p-3">
+              {[
+                { label: "Skistar Toppen", data: top },
+                { label: "Skistar Dalen", data: valley },
+              ].filter((s) => s.data).map((s) => (
+                <div key={s.label} className="border border-border rounded-lg p-3">
                   <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    Skistar Toppen
+                    {s.label}
                   </p>
                   <div className="flex items-baseline gap-1.5">
                     <span className="font-serif text-2xl font-bold tabular-nums">
-                      {top.wind_ms ?? "—"}
+                      {s.data!.wind_ms ?? "—"}
                     </span>
                     <span className="text-muted-foreground text-xs">m/s</span>
-                    {top.gust_ms != null && (
-                      <span className="text-muted-foreground text-xs">(by {top.gust_ms})</span>
+                    {s.data!.gust_ms != null && (
+                      <span className="text-muted-foreground text-xs">(by {s.data!.gust_ms})</span>
                     )}
                   </div>
-                  {top.temp_c != null && (
-                    <p className="text-muted-foreground text-sm mt-1">{top.temp_c}°C</p>
+                  {s.data!.temp_c != null && (
+                    <p className="text-muted-foreground text-sm mt-1">{s.data!.temp_c}°C</p>
                   )}
                 </div>
-              )}
-              {valley && (
-                <div className="border border-border rounded-lg p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    Skistar Dalen
-                  </p>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="font-serif text-2xl font-bold tabular-nums">
-                      {valley.wind_ms ?? "—"}
-                    </span>
-                    <span className="text-muted-foreground text-xs">m/s</span>
-                    {valley.gust_ms != null && (
-                      <span className="text-muted-foreground text-xs">(by {valley.gust_ms})</span>
-                    )}
-                  </div>
-                  {valley.temp_c != null && (
-                    <p className="text-muted-foreground text-sm mt-1">{valley.temp_c}°C</p>
-                  )}
-                </div>
-              )}
+              ))}
             </div>
           )}
 
