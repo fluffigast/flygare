@@ -9,7 +9,7 @@
     "X-XSS-Protection": "0",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(self)",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://placehold.co https://*.openfreemap.org https://*.opentopomap.org; font-src 'self'; connect-src 'self' https://opendata-download-metfcst.smhi.se https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://*.openfreemap.org https://*.opentopomap.org; frame-src 'self' https://meac.se https://*.windguru.cz; frame-ancestors 'self' https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io"
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://placehold.co https://*.openfreemap.org https://*.opentopomap.org; font-src 'self' data:; connect-src 'self' https://opendata-download-metfcst.smhi.se https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://*.openfreemap.org https://*.opentopomap.org; frame-src 'self' https://meac.se https://*.windguru.cz; frame-ancestors 'self' https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io"
   },
   "mimeTypes": {
     ".webp": "image/webp",
