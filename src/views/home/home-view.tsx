@@ -7,6 +7,7 @@ import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
 import ParaglidingArc from "../../components/decorations/paragliding-arc";
 import PageBackdrop from "../../components/decorations/page-backdrop";
+import PageHorizon from "../../components/decorations/page-horizon";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const INFO_CARDS = [
@@ -243,6 +244,7 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
+      <PageHorizon />
       <Footer />
     </div>
   );
