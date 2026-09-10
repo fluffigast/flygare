@@ -168,7 +168,49 @@ async function run() {
     summary.push(routeReport)
   }
 
+  // ── Länk-crawl: samla alla unika <a href> från laddade sidor och
+  //    HEAD-check dem. Filtrera bort mailto:, tel:, ankare, extern-hosts.
+  console.log('\n── Länk-crawl start ─────────────────────────────')
+  const linkPage = await browser.newPage()
+  await linkPage.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 })
+
+  const feHost = new URL(FE).host
+  const seenLinks = new Set()
+  const linkResults = []
+
+  for (const route of ROUTES) {
+    try {
+      await linkPage.goto(route.url, { waitUntil: 'networkidle2', timeout: 20_000 })
+      const hrefs = await linkPage.evaluate(() => {
+        const nodes = document.querySelectorAll('a[href]')
+        const out = []
+        nodes.forEach((n) => { const h = n.getAttribute('href'); if (h) out.push(h) })
+        return out
+      })
+      for (const raw of hrefs) {
+        let abs
+        try { abs = new URL(raw, route.url).toString() } catch { continue }
+        if (abs.startsWith('mailto:') || abs.startsWith('tel:') || abs.startsWith('javascript:')) continue
+        const u = new URL(abs)
+        if (u.hash && u.pathname === new URL(route.url).pathname) continue
+        if (u.host !== feHost) continue
+        const key = u.origin + u.pathname + u.search
+        if (seenLinks.has(key)) continue
+        seenLinks.add(key)
+        try {
+          const resp = await fetch(key, { method: 'HEAD', redirect: 'follow' })
+          linkResults.push({ url: key, status: resp.status, foundOn: route.name })
+        } catch (err) {
+          linkResults.push({ url: key, status: 0, foundOn: route.name, error: err.message })
+        }
+      }
+    } catch { /* huvud-audit har redan rapporterat om routen kraschat */ }
+  }
+  await linkPage.close()
   await browser.close()
+
+  const brokenLinks = linkResults.filter((l) => !l.status || l.status >= 400)
+  console.log(`Länk-crawl: ${linkResults.length} unika länkar, ${brokenLinks.length} broken.`)
 
   let report = `# Verify report\n\ngenerated: ${new Date().toISOString()}\nfrontend: ${FE}\n\n`
   let bad = 0
@@ -199,7 +241,17 @@ async function run() {
     }
     report += '\n'
   }
-  report += `\n# Summary\n\nroutes: ${summary.length} · viewports: ${summary.length * VIEWPORTS.length} · failing: ${bad}\n`
+  // Länkar-sektion
+  report += `\n# Interna länkar\n\nunika: ${linkResults.length} · broken: ${brokenLinks.length}\n\n`
+  if (brokenLinks.length) {
+    for (const l of brokenLinks) {
+      report += `- ${l.status || 'ERR'} ${l.url}  (found on: ${l.foundOn})${l.error ? ' :: ' + l.error : ''}\n`
+    }
+  } else {
+    report += `Alla interna länkar returnerar 2xx/3xx.\n`
+  }
+
+  report += `\n# Summary\n\nroutes: ${summary.length} · viewports: ${summary.length * VIEWPORTS.length} · failing: ${bad} · broken-links: ${brokenLinks.length}\n`
   await writeFile(join(OUT, 'report.txt'), report)
   console.log(report)
   process.exit(bad > 0 ? 1 : 0)
