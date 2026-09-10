@@ -1,7 +1,6 @@
 import React from "react";
 import { contactInfo as localContact } from "../../data/contact";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
-import CompassRoseWatermark from "../../components/decorations/compass-rose-watermark";
 import SectionCornerMark from "../../components/decorations/section-corner-mark";
 
 const KontaktView: React.FC = () => {
@@ -18,12 +17,8 @@ const KontaktView: React.FC = () => {
 
   return (
     <div className="w-full relative">
-      <CompassRoseWatermark
-        className="pointer-events-none absolute right-[-100px] top-16 w-[420px] h-[420px] -z-10 hidden lg:block"
-        opacity={0.05}
-      />
       <SectionCornerMark
-        className="pointer-events-none absolute right-8 top-14 w-24 h-14 -z-10 lg:hidden"
+        className="pointer-events-none absolute right-8 top-14 w-24 h-14 -z-10"
         label="KONTAKT"
       />
       <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">

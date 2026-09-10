@@ -1,7 +1,6 @@
 import React from "react";
 import { boardMembers as localBoard, milestones as localMilestones, clubHistory as localHistory } from "../../data/about";
 import { useBoardMembers, useMilestones, useClubInfo, useGlobalLivePreview } from "../../hooks/useCMS";
-import MountainSilhouette from "../../components/decorations/mountain-silhouette";
 
 /** Extract plain text from Lexical richText or return string as-is */
 function richTextToString(value: any): string {
@@ -25,9 +24,6 @@ const OmView: React.FC = () => {
 
   return (
     <div className="w-full relative">
-      <MountainSilhouette
-        className="pointer-events-none absolute left-0 right-0 top-0 w-full h-72 -z-10"
-      />
       <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Om oss</p>
         <h1
