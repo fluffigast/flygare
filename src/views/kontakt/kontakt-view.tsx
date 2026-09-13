@@ -1,7 +1,6 @@
 import React from "react";
 import { contactInfo as localContact } from "../../data/contact";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
-import ContactScene from "../../components/hero-illustrations/contact-scene";
 import SEO from "../../components/seo";
 
 const KontaktView: React.FC = () => {
@@ -17,16 +16,13 @@ const KontaktView: React.FC = () => {
   };
 
   return (
-    <div className="w-full relative">
+    <div className="w-full">
       <SEO
         title="Kontakt"
         path="/kontakt"
         description="Kontakta Åre Skärm- och Drakflygklubb — mailadress, sociala medier, besöksadress, organisationsnummer och flygradiofrekvens."
       />
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pt-8 md:pt-12 opacity-85">
-        <ContactScene className="w-full h-40 md:h-56 mx-auto" />
-      </div>
-      <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-4 md:pt-6 pb-8">
+      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Kontakt</p>
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight mt-1"

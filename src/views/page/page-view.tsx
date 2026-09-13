@@ -4,7 +4,6 @@ import { usePage, useGlobalLivePreview } from "../../hooks/useCMS";
 import { pages } from "../../data/pages";
 import { articles } from "../../data/articles";
 import SEO from "../../components/seo";
-import TshirtScene from "../../components/hero-illustrations/tshirt-scene";
 
 const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
   const params = useParams();
@@ -118,21 +117,14 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
         block.children?.map((child: any) => child.text ?? "").join("") ?? ""
       ).filter((t: string) => t.trim()) ?? []);
 
-  const isKlubbprodukter = slug === 'klubbprodukter';
-
   return (
-    <div className="w-full relative">
+    <div className="w-full">
       <SEO
         title={title}
         path={slug ? `/${slug}` : undefined}
         description={lede ?? (typeof body === "string" ? body.slice(0, 150) : undefined)}
       />
-      {isKlubbprodukter && (
-        <div className="max-w-[400px] mx-auto pt-8 opacity-90">
-          <TshirtScene className="w-full h-auto" />
-        </div>
-      )}
-      <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
+      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight"
           style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}

@@ -5,9 +5,6 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
-import PageBackdrop from "../../components/decorations/page-backdrop";
-import PageHorizon from "../../components/decorations/page-horizon";
-import HomeScene from "../../components/hero-illustrations/home-scene";
 import SEO from "../../components/seo";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
@@ -68,12 +65,11 @@ const HomeView: React.FC = () => {
   const aboutText = richTextToString(liveSite.aboutText);
 
   return (
-    <div className="relative w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden">
       <SEO
         path="/"
         description="Skärm- och drakflyg från Åreskutan sedan 1976. 9 startplatser, aktivt klubbliv, tävlingar, distansflygning. Skandinaviens mest spektakulära flygplats."
       />
-      <PageBackdrop />
       <Header />
 
       {/* ═══ HERO ═══ */}
@@ -169,13 +165,6 @@ const HomeView: React.FC = () => {
         <NewsSlider />
       </section>
 
-      {/* ═══ SCENE BANNER ═══
-          Visible kontextuell illustration som separerar prio/nyhets-blocken
-          från välkomst-sektionen. Ger sidan en visuell rytm. */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-10 md:mt-14 opacity-70">
-        <HomeScene className="w-full h-40 md:h-56" />
-      </section>
-
       {/* ═══ WELCOME ROW ═══ */}
       <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 mt-6 md:mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-0">
@@ -250,7 +239,6 @@ const HomeView: React.FC = () => {
         </div>
       </section>
 
-      <PageHorizon />
       <Footer />
     </div>
   );

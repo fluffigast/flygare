@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { WindDirectionCompass } from "../../components/wind-direction-compass";
-import WindStreamlines from "../../components/decorations/wind-streamlines";
 
 interface MeacData {
   wind_ms: number | null;
@@ -175,17 +174,6 @@ const WindWidget: React.FC = () => {
                   "linear-gradient(135deg, #ffffff 0%, #fafbfc 50%, #f5f8fb 100%)",
               }}
             >
-              {/* Vind-strömfältet i bakgrunden, riktat efter live vindriktning */}
-              {meac.wind_dir != null && meac.wind_ms != null && (
-                <WindStreamlines
-                  className="pointer-events-none absolute inset-0 w-full h-full"
-                  windDir={meac.wind_dir}
-                  speedMs={meac.wind_ms}
-                  lines={8}
-                  opacity={0.22}
-                />
-              )}
-
               <div className="relative flex justify-between items-start mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
