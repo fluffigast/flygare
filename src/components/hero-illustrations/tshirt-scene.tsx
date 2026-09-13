@@ -1,105 +1,45 @@
 import React from "react";
 
 /**
- * TshirtScene — placeholder-illustration för Klubbprodukter.
- *
- * En stiliserad tröja med klubbens logga (skärm-symbol) framtill.
- * Används tills riktigt foto av medlem-med-tröja finns.
+ * TshirtScene — subtil line-art: tröja med klubb-logga (skärm-symbol).
  */
 export const TshirtScene: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     className={className}
-    viewBox="0 0 300 340"
+    viewBox="0 0 240 260"
     preserveAspectRatio="xMidYMid meet"
     aria-hidden
   >
-    <defs>
-      <linearGradient id="ts-cloth" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#3774a3" />
-        <stop offset="100%" stopColor="#1e40af" />
-      </linearGradient>
-      <linearGradient id="ts-shadow" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#000000" stopOpacity="0.15" />
-        <stop offset="50%" stopColor="#000000" stopOpacity="0" />
-        <stop offset="100%" stopColor="#000000" stopOpacity="0.15" />
-      </linearGradient>
-    </defs>
-
-    {/* Tshirt body */}
-    <path
-      d="M 90 60
-         L 55 70 L 30 100 L 55 145 L 80 130
-         L 80 300 L 220 300 L 220 130 L 245 145 L 270 100 L 245 70 L 210 60
-         L 190 65 Q 185 80, 150 82 Q 115 80, 110 65 Z"
-      fill="url(#ts-cloth)"
-      stroke="#0f172b"
-      strokeWidth="1.5"
-      strokeLinejoin="round"
-    />
-
-    {/* Halskrage */}
-    <path
-      d="M 110 65 Q 115 80, 150 82 Q 185 80, 190 65 Q 175 55, 150 55 Q 125 55, 110 65 Z"
-      fill="none"
-      stroke="#0f172b"
-      strokeWidth="1.5"
-    />
-
-    {/* Skugga på sidor */}
-    <rect x="30" y="60" width="240" height="240" fill="url(#ts-shadow)" opacity="0.4" />
-
-    {/* Klubb-logo: stiliserad skärmflygare centralt */}
-    <g transform="translate(150, 190)">
-      {/* Canopy */}
+    <g stroke="var(--ink-2, #0f172b)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      {/* Tshirt-silhuett */}
       <path
-        d="M -40 0 Q -40 -22, 0 -26 Q 40 -22, 40 0"
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="3"
-        strokeLinecap="round"
+        d="M 80 50
+           L 55 60 L 35 85 L 55 120 L 75 108
+           L 75 240 L 165 240 L 165 108 L 185 120 L 205 85 L 185 60 L 160 50
+           L 145 55 Q 140 68, 120 70 Q 100 68, 95 55 Z"
+        strokeWidth="1.4"
       />
-      {/* Cell-divider */}
-      <path
-        d="M -35 -4 Q -18 -22, 0 -24 Q 18 -22, 35 -4"
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="1"
-        opacity="0.7"
-      />
-      {/* Suspension lines */}
-      <line x1="-30" y1="-2" x2="-6" y2="28" stroke="#ffffff" strokeWidth="1.2" />
-      <line x1="-15" y1="-15" x2="-2" y2="28" stroke="#ffffff" strokeWidth="1.2" />
-      <line x1="15" y1="-15" x2="2" y2="28" stroke="#ffffff" strokeWidth="1.2" />
-      <line x1="30" y1="-2" x2="6" y2="28" stroke="#ffffff" strokeWidth="1.2" />
-      {/* Pilot */}
-      <circle cx="0" cy="32" r="4.5" fill="#ffffff" />
+      {/* Halskrage */}
+      <path d="M 95 55 Q 100 68, 120 70 Q 140 68, 145 55" strokeWidth="1.4" />
+
+      {/* Skärm-logga central */}
+      <g transform="translate(120, 155)" strokeWidth="1.4">
+        <path d="M -28 0 Q -28 -16, 0 -18 Q 28 -16, 28 0" />
+        <line x1="-22" y1="-2" x2="-4" y2="20" strokeWidth="0.8" />
+        <line x1="-11" y1="-11" x2="-1" y2="20" strokeWidth="0.8" />
+        <line x1="11" y1="-11" x2="1" y2="20" strokeWidth="0.8" />
+        <line x1="22" y1="-2" x2="4" y2="20" strokeWidth="0.8" />
+        <circle cx="0" cy="23" r="3" fill="var(--ink-2, #0f172b)" />
+      </g>
+
+      {/* Text under logga */}
+      <text x="120" y="205" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="serif" fill="var(--ink-2, #0f172b)" stroke="none" letterSpacing="2">
+        ÅSDFK
+      </text>
+      <text x="120" y="216" textAnchor="middle" fontSize="6" fontFamily="sans-serif" fill="var(--ink-2, #0f172b)" stroke="none" opacity="0.65" letterSpacing="1.2">
+        SEDAN 1976
+      </text>
     </g>
-
-    {/* Klubb-text under logo */}
-    <text
-      x="150"
-      y="245"
-      textAnchor="middle"
-      fontSize="12"
-      fontWeight="700"
-      fontFamily="serif"
-      fill="#ffffff"
-      letterSpacing="2"
-    >
-      ÅSDFK
-    </text>
-    <text
-      x="150"
-      y="260"
-      textAnchor="middle"
-      fontSize="7"
-      fontFamily="sans-serif"
-      fill="#ffffff"
-      opacity="0.75"
-      letterSpacing="1.5"
-    >
-      SEDAN 1976
-    </text>
   </svg>
 );
 

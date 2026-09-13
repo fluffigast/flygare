@@ -10,7 +10,7 @@ export const CompassRoseWatermark: React.FC<{
   className?: string;
   opacity?: number;
   animate?: boolean;
-}> = ({ className, opacity = 0.07, animate = true }) => (
+}> = ({ className, opacity = 0.07, animate = false }) => (
   <svg
     className={className}
     viewBox="0 0 400 400"

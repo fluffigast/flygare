@@ -1,84 +1,46 @@
 import React from "react";
 
 /**
- * NewspaperScene — visible hero för Nyheter. Vikt tidning + typografi.
+ * NewspaperScene — subtil line-art: vikt tidnings-sida med några
+ * text-linjer och bild-block. Inga gradient/skuggor.
  */
 export const NewspaperScene: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     className={className}
-    viewBox="0 0 600 320"
+    viewBox="0 0 240 180"
     preserveAspectRatio="xMidYMid meet"
     aria-hidden
   >
-    <defs>
-      <linearGradient id="np-paper" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#fefbf3" />
-        <stop offset="100%" stopColor="#f3ead4" />
-      </linearGradient>
-      <filter id="np-shadow" x="-10%" y="-10%" width="120%" height="120%">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
-        <feOffset dx="4" dy="6" result="shadow" />
-        <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
-
-    {/* Tidning bak — slight rotation */}
-    <g transform="rotate(-8 300 160)" filter="url(#np-shadow)">
-      <rect x="60" y="30" width="480" height="270" fill="url(#np-paper)" stroke="#8b7355" strokeWidth="0.5" />
+    <g stroke="var(--ink-2, #0f172b)" strokeLinecap="square">
+      {/* Papper */}
+      <rect x="20" y="15" width="200" height="150" fill="none" strokeWidth="1" />
       {/* Masthead */}
-      <text x="80" y="65" fontFamily="serif" fontWeight="900" fontSize="24" fill="#0f172b" letterSpacing="1">
+      <line x1="35" y1="35" x2="205" y2="35" strokeWidth="1.5" />
+      <text x="120" y="30" textAnchor="middle" fontSize="9" fontWeight="900" fontFamily="serif" fill="var(--ink-2, #0f172b)" letterSpacing="1.5">
         ÅRE FLYGBLAD
       </text>
-      <line x1="80" y1="72" x2="520" y2="72" stroke="#0f172b" strokeWidth="1.5" />
-      <text x="80" y="86" fontFamily="serif" fontSize="9" fill="#8b7355">
-        Klubbens nyheter · Senaste från Åreskutan
-      </text>
-
-      {/* Column 1 */}
-      <g fill="#0f172b" opacity="0.7">
-        <rect x="80" y="105" width="140" height="12" />
-        <rect x="80" y="122" width="120" height="6" fill="#5a6a80" opacity="0.5" />
-        <g fill="#5a6a80" opacity="0.35">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <rect key={i} x="80" y={140 + i * 10} width={130 - (i % 3) * 6} height="2" />
-          ))}
-        </g>
+      {/* Text-linjer */}
+      <g strokeWidth="0.5" opacity="0.5">
+        <line x1="35" y1="50" x2="115" y2="50" />
+        <line x1="35" y1="56" x2="110" y2="56" />
+        <line x1="35" y1="62" x2="118" y2="62" />
+        <line x1="35" y1="68" x2="100" y2="68" />
       </g>
-
-      {/* Column 2 */}
-      <g fill="#0f172b" opacity="0.7">
-        <rect x="230" y="105" width="140" height="12" />
-        <rect x="230" y="122" width="110" height="6" fill="#5a6a80" opacity="0.5" />
-        {/* Bild-block */}
-        <rect x="230" y="140" width="140" height="70" fill="#3774a3" opacity="0.4" />
-        <g fill="#5a6a80" opacity="0.35">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <rect key={i} x="230" y={220 + i * 10} width={135 - (i % 3) * 8} height="2" />
-          ))}
-        </g>
+      {/* Bild-block */}
+      <rect x="130" y="45" width="75" height="45" fill="none" strokeWidth="0.7" opacity="0.65" />
+      <line x1="130" y1="45" x2="205" y2="90" strokeWidth="0.4" opacity="0.4" />
+      <line x1="205" y1="45" x2="130" y2="90" strokeWidth="0.4" opacity="0.4" />
+      {/* Text-linjer nedanför */}
+      <g strokeWidth="0.5" opacity="0.5">
+        <line x1="35" y1="100" x2="205" y2="100" />
+        <line x1="35" y1="106" x2="200" y2="106" />
+        <line x1="35" y1="112" x2="205" y2="112" />
+        <line x1="35" y1="118" x2="180" y2="118" />
+        <line x1="35" y1="130" x2="205" y2="130" />
+        <line x1="35" y1="136" x2="195" y2="136" />
+        <line x1="35" y1="142" x2="205" y2="142" />
+        <line x1="35" y1="148" x2="170" y2="148" />
       </g>
-
-      {/* Column 3 */}
-      <g fill="#0f172b" opacity="0.7">
-        <rect x="380" y="105" width="140" height="12" />
-        <rect x="380" y="122" width="130" height="6" fill="#5a6a80" opacity="0.5" />
-        <g fill="#5a6a80" opacity="0.35">
-          {Array.from({ length: 15 }).map((_, i) => (
-            <rect key={i} x="380" y={140 + i * 10} width={135 - (i % 4) * 5} height="2" />
-          ))}
-        </g>
-      </g>
-    </g>
-
-    {/* Bläck-pen ovan */}
-    <g transform="translate(490, 60) rotate(30)">
-      <rect x="0" y="0" width="60" height="6" fill="#0f172b" rx="1" />
-      <polygon points="60,0 74,3 60,6" fill="#3774a3" />
-      <rect x="0" y="0" width="8" height="6" fill="#dc2626" />
     </g>
   </svg>
 );
