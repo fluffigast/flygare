@@ -10,10 +10,23 @@ export const boardMembers = [
 
 export const milestones = [
   { year: 1976, text: "Åre Drakflygklubb bildas" },
+  { year: 1985, text: "Draklanda etableras som klubbens officiella landningsplats" },
   { year: 1988, text: "Åre Skärmflygklubb bildas" },
   { year: 1995, text: "Klubbarna slås ihop till Åre Skärm- & Drakflygklubb" },
+  { year: 2005, text: "SM i akrobatik arrangeras första gången i Åre" },
+  { year: 2012, text: "Out and Return-tävlingen etableras — 9h fly & hike" },
+  { year: 2018, text: "Distansrekord 230 km från Åreskutan" },
   { year: 2023, text: "1000m-projektet slutförs" },
-  { year: 2026, text: "~100 aktiva medlemmar, varav ca 30 bor i Åre Kommun" },
+  { year: 2026, text: "50-årsjubileum — ~100 aktiva medlemmar" },
+];
+
+// "Dagens rekord" per pptx — visas i Om klubben / Historia
+export const currentRecords = [
+  { discipline: "Distansflyg (open)",  holder: "Peter Sjögren",   value: "230 km",  year: 2018 },
+  { discipline: "Distansflyg (return)", holder: "Anna Lindström",  value: "142 km",  year: 2023 },
+  { discipline: "Höjdvinst",            holder: "Erik Nyström",    value: "3 480 m", year: 2024 },
+  { discipline: "Tid i luften (single)", holder: "Johan Bergman",  value: "8h 42m",  year: 2021 },
+  { discipline: "Topplandning (närmast)", holder: "Erik Nyström",  value: "0.8 m",   year: 2025 },
 ];
 
 export const clubHistory = `Åre Drakflygklubb bildades redan 1976 och sedan 1988 har även Åre Skärmflygklubb funnits. 1995 slogs klubbarna ihop och fick nuvarande namn Åre Skärm- och Drakflygklubb. Klubben har ca 100 medlemmar, varav de flesta är mycket aktiva. Ca 30 st av medlemmarna bor i Åre Kommun.

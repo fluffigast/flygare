@@ -1,6 +1,8 @@
 import React from "react";
-import { boardMembers as localBoard, milestones as localMilestones, clubHistory as localHistory } from "../../data/about";
+import { boardMembers as localBoard, milestones as localMilestones, clubHistory as localHistory, currentRecords } from "../../data/about";
 import { useBoardMembers, useMilestones, useClubInfo, useGlobalLivePreview } from "../../hooks/useCMS";
+import InitialsAvatar from "../../components/initials-avatar";
+import SEO from "../../components/seo";
 
 /** Extract plain text from Lexical richText or return string as-is */
 function richTextToString(value: any): string {
@@ -24,6 +26,11 @@ const OmView: React.FC = () => {
 
   return (
     <div className="w-full relative">
+      <SEO
+        title="Om klubben"
+        path="/om"
+        description="Åre Skärm- och Drakflygklubb — historia sedan 1976, styrelse, rekord genom tiderna och klubbprodukter."
+      />
       <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Om oss</p>
         <h1
@@ -43,11 +50,18 @@ const OmView: React.FC = () => {
           <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
             Styrelse
           </h2>
-          <div className="grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-6 md:gap-8 md:grid-cols-3">
             {boardMembers.map((member: any) => (
-              <div key={member.name} className="flex flex-col gap-1">
-                <p className="text-sm font-semibold" style={{ color: "var(--ink, #020618)" }}>{member.name}</p>
-                <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>{member.role}</p>
+              <div key={member.name} className="flex flex-col items-center text-center gap-3">
+                <InitialsAvatar
+                  name={member.name}
+                  imageUrl={member.image?.url ?? member.image?.sizes?.thumbnail?.url}
+                  size={72}
+                />
+                <div>
+                  <p className="text-sm font-semibold" style={{ color: "var(--ink, #020618)" }}>{member.name}</p>
+                  <p className="text-xs" style={{ color: "var(--slate, #62748e)" }}>{member.role}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -67,17 +81,35 @@ const OmView: React.FC = () => {
           </div>
         </section>
 
-        {/* Records */}
-        {clubInfo.records?.length > 0 && (
+        {/* Dagens rekord — pptx: "Historia & nutid → Rekord genom tiderna,
+             Dagens rekord". Fallback till lokala currentRecords om CMS
+             inte har records. */}
+        {(clubInfo.records?.length > 0 || currentRecords.length > 0) && (
           <section className="mt-16" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
             <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
-              Rekord & fakta
+              Dagens rekord
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {clubInfo.records.map((r: any) => (
-                <div key={r.title} className="flex flex-col gap-1">
-                  <p className="font-serif font-bold text-2xl" style={{ color: "var(--ink-2, #0f172b)" }}>{r.value}</p>
-                  <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>{r.title}{r.year ? ` (${r.year})` : ""}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {(clubInfo.records?.length ? clubInfo.records : currentRecords).map((r: any, i: number) => (
+                <div key={i} className="flex items-baseline justify-between gap-4 p-4" style={{ border: "1px solid var(--border, #e2e8f0)" }}>
+                  <div>
+                    <p className="text-xs uppercase tracking-wider" style={{ color: "var(--slate, #62748e)" }}>
+                      {r.discipline ?? r.title}
+                    </p>
+                    <p className="font-serif font-bold text-2xl mt-1" style={{ color: "var(--ink-2, #0f172b)" }}>
+                      {r.value}
+                    </p>
+                    {r.holder && (
+                      <p className="text-xs mt-0.5" style={{ color: "var(--slate-3, #45556c)" }}>
+                        {r.holder}
+                      </p>
+                    )}
+                  </div>
+                  {r.year && (
+                    <p className="font-serif italic text-sm tabular-nums" style={{ color: "var(--hero-accent, #3774a3)" }}>
+                      {r.year}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
