@@ -1,80 +1,54 @@
 import React from "react";
 
 /**
- * CalendarScene — hero för Aktiviteter/Kalender.
- * Stack av kalenderblad + pilotdatum-markeringar.
+ * CalendarScene — subtil line-art: en kalender med ringad datum.
  */
-export const CalendarScene: React.FC<{ className?: string; monthLabel?: string }> = ({
-  className,
-  monthLabel = "JUL",
-}) => (
+export const CalendarScene: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     className={className}
-    viewBox="0 0 400 320"
+    viewBox="0 0 200 200"
     preserveAspectRatio="xMidYMid meet"
     aria-hidden
   >
-    <defs>
-      <linearGradient id="cs-paper" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#ffffff" />
-        <stop offset="100%" stopColor="#f5f7fa" />
-      </linearGradient>
-      <filter id="cs-shadow" x="-10%" y="-10%" width="120%" height="120%">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-        <feOffset dx="2" dy="4" />
-        <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
-        <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
+    <g stroke="var(--ink-2, #0f172b)" fill="none" strokeLinecap="round">
+      {/* Ring-fästen upptill */}
+      <line x1="60" y1="20" x2="60" y2="35" strokeWidth="1.4" />
+      <line x1="140" y1="20" x2="140" y2="35" strokeWidth="1.4" />
 
-    {/* Bakre kalenderblad */}
-    <g transform="rotate(-6 200 160)" filter="url(#cs-shadow)">
-      <rect x="60" y="50" width="240" height="220" fill="url(#cs-paper)" stroke="#94a3b8" strokeWidth="0.5" rx="4" />
-      <rect x="60" y="50" width="240" height="42" fill="#3774a3" rx="4" />
-      <text x="180" y="78" textAnchor="middle" fontFamily="serif" fontWeight="900" fontSize="18" fill="#ffffff" letterSpacing="2">
-        {monthLabel}
+      {/* Kalender-blad */}
+      <rect x="30" y="30" width="140" height="140" strokeWidth="1.2" />
+      {/* Header-band */}
+      <line x1="30" y1="55" x2="170" y2="55" strokeWidth="1" />
+      <text x="100" y="49" textAnchor="middle" fontSize="10" fontWeight="700" fontFamily="serif" fill="var(--ink-2, #0f172b)" letterSpacing="2">
+        JUL
       </text>
-      {/* Grid dashed */}
-      <g stroke="#cbd5e1" strokeWidth="0.5" opacity="0.7">
+
+      {/* Grid */}
+      <g strokeWidth="0.4" opacity="0.5">
         {Array.from({ length: 4 }).map((_, i) => (
-          <line key={`h${i}`} x1="70" y1={110 + i * 40} x2="290" y2={110 + i * 40} />
+          <line key={`h${i}`} x1="30" y1={80 + i * 22} x2="170" y2={80 + i * 22} />
         ))}
         {Array.from({ length: 6 }).map((_, i) => (
-          <line key={`v${i}`} x1={70 + i * 40} y1="105" x2={70 + i * 40} y2="260" />
+          <line key={`v${i}`} x1={30 + i * 23} y1="55" x2={30 + i * 23} y2="170" />
         ))}
       </g>
-      {/* Datum-siffror (fade grid) */}
-      <g fill="#64748b" fontSize="10" fontFamily="sans-serif" opacity="0.7">
-        {Array.from({ length: 28 }).map((_, i) => {
-          const row = Math.floor(i / 7);
-          const col = i % 7;
-          const x = 80 + col * 33;
-          const y = 122 + row * 40;
+
+      {/* Datumsiffror (fade) */}
+      <g fill="var(--ink-2, #0f172b)" opacity="0.5" fontSize="8" fontFamily="sans-serif" stroke="none">
+        {Array.from({ length: 24 }).map((_, i) => {
+          const row = Math.floor(i / 6);
+          const col = i % 6;
+          const x = 37 + col * 23;
+          const y = 74 + row * 22;
           return <text key={i} x={x} y={y}>{i + 1}</text>;
         })}
       </g>
-      {/* Markerade event-datum */}
-      <circle cx="140" cy="158" r="12" fill="#3774a3" opacity="0.85" />
-      <text x="140" y="162" textAnchor="middle" fontSize="10" fontWeight="700" fill="#ffffff">18</text>
-      <circle cx="173" cy="158" r="12" fill="#dc2626" opacity="0.85" />
-      <text x="173" y="162" textAnchor="middle" fontSize="10" fontWeight="700" fill="#ffffff">19</text>
-      <circle cx="240" cy="198" r="9" fill="#0f172b" opacity="0.6" />
-      <text x="240" y="201" textAnchor="middle" fontSize="9" fontWeight="700" fill="#ffffff">26</text>
-    </g>
 
-    {/* Pin */}
-    <g transform="translate(320, 30)">
-      <circle cx="0" cy="0" r="12" fill="#dc2626" />
-      <circle cx="0" cy="0" r="4" fill="#ffffff" />
-      <line x1="0" y1="12" x2="0" y2="40" stroke="#7f1d1d" strokeWidth="1.2" />
-    </g>
-
-    {/* Skärm-symbol i hörnet */}
-    <g transform="translate(50, 40) rotate(-15)">
-      <path d="M -16 0 Q -16 -9, 0 -11 Q 16 -9, 16 0" fill="none" stroke="#3774a3" strokeWidth="1.4" />
-      <line x1="-13" y1="-1" x2="-2" y2="10" stroke="#3774a3" strokeWidth="0.6" />
-      <line x1="13" y1="-1" x2="2" y2="10" stroke="#3774a3" strokeWidth="0.6" />
-      <circle cx="0" cy="12" r="2" fill="#3774a3" />
+      {/* Ring kring event-datum */}
+      <circle cx="105" cy="93" r="10" strokeWidth="1.4" />
+      <text x="105" y="96" textAnchor="middle" fontSize="9" fontWeight="700" fill="var(--ink-2, #0f172b)" fontFamily="sans-serif" stroke="none">
+        18
+      </text>
     </g>
   </svg>
 );
