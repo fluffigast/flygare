@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "verify": "node verify-browser.js"
+    "verify": "node verify-browser.js",
+    "crawl-wp": "node crawl-wordpress.js"
   },
   "dependencies": {
     "puppeteer-core": "^24.0.0"
