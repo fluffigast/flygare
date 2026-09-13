@@ -5,9 +5,10 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
-import ParaglidingArc from "../../components/decorations/paragliding-arc";
 import PageBackdrop from "../../components/decorations/page-backdrop";
 import PageHorizon from "../../components/decorations/page-horizon";
+import HomeScene from "../../components/hero-illustrations/home-scene";
+import SEO from "../../components/seo";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
 
 const INFO_CARDS = [
@@ -68,6 +69,10 @@ const HomeView: React.FC = () => {
 
   return (
     <div className="relative w-full overflow-x-hidden">
+      <SEO
+        path="/"
+        description="Skärm- och drakflyg från Åreskutan sedan 1976. 9 startplatser, aktivt klubbliv, tävlingar, distansflygning. Skandinaviens mest spektakulära flygplats."
+      />
       <PageBackdrop />
       <Header />
 
@@ -164,14 +169,15 @@ const HomeView: React.FC = () => {
         <NewsSlider />
       </section>
 
+      {/* ═══ SCENE BANNER ═══
+          Visible kontextuell illustration som separerar prio/nyhets-blocken
+          från välkomst-sektionen. Ger sidan en visuell rytm. */}
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-10 md:mt-14 opacity-70">
+        <HomeScene className="w-full h-40 md:h-56" />
+      </section>
+
       {/* ═══ WELCOME ROW ═══ */}
-      {/* Bild-aspect breddare/lägre per pptx-feedback om mindre bilder.
-          Paragliding-båge över sektionen som subtil watermark. */}
-      <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 mt-12 md:mt-16">
-        <ParaglidingArc
-          className="pointer-events-none absolute inset-x-0 top-0 h-32 md:h-40 w-full -z-10"
-          opacity={0.05}
-        />
+      <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 mt-6 md:mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-0">
           <div
             className="w-full bg-cover bg-center"

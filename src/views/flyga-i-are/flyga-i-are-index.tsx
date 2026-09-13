@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
-import ParaglidingArc from "../../components/decorations/paragliding-arc";
+import AirNavScene from "../../components/hero-illustrations/airnav-scene";
+import SEO from "../../components/seo";
 
 type TopicItem = { text: string; to?: string };
 type Topic = { title: string; items: TopicItem[] };
@@ -86,12 +87,15 @@ const TOPICS: Topic[] = [
 const FlyingGuideIndex: React.FC = () => {
   return (
     <div className="w-full relative">
-      {/* Paragliding-båge diagonal över page-header
-          (topo-lines kommer från global PageBackdrop). */}
-      <ParaglidingArc
-        className="pointer-events-none absolute inset-x-0 top-0 h-48 md:h-64 w-full -z-10"
-        opacity={0.08}
+      <SEO
+        title="Flyga i Åre"
+        path="/flyga-i-are"
+        description="Allt du behöver veta innan du flyger i Åreområdet: säkerhet, cross country, flygregler, Skistar-avtalet, väder, startplatser och räddningsbåt."
       />
+      {/* Kartblad-illustration som introducerar navigation-sektion */}
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-6 md:pt-8 opacity-80">
+        <AirNavScene className="w-full h-32 md:h-48" />
+      </div>
       <section className="relative max-w-[1200px] mx-auto px-4 md:px-10 pt-12 md:pt-16 pb-6 md:pb-8">
         <p
           className="font-serif italic text-base md:text-lg"

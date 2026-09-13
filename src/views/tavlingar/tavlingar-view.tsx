@@ -1,6 +1,8 @@
 import React from "react";
 import { competitions as localCompetitions } from "../../data/competitions";
 import { useCompetitions } from "../../hooks/useCMS";
+import PodiumScene from "../../components/hero-illustrations/podium-scene";
+import SEO from "../../components/seo";
 
 /** Extract plain text from a Lexical richText object or return string as-is */
 function richTextToString(value: any): string {
@@ -20,7 +22,15 @@ const TavlingarView: React.FC = () => {
 
   return (
     <div className="w-full">
-      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
+      <SEO
+        title="Tävling"
+        path="/tavlingar"
+        description="Klubbens tävlingar: Åre PPC, Topplandning, Sverige Cup, tävlingsstipendium. Anmälan, resultat och vinnare per år."
+      />
+      <div className="max-w-[900px] mx-auto px-4 md:px-14 pt-8 md:pt-12 opacity-80">
+        <PodiumScene className="w-full h-40 md:h-56 mx-auto" />
+      </div>
+      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-6 md:pt-8 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Tävlingar</p>
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight mt-1"

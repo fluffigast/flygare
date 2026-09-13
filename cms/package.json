@@ -9,6 +9,8 @@
     "start": "next start --port 3001",
     "seed": "npx tsx src/seed/index.ts",
     "script:migrate-news-categories": "npx tsx src/scripts/migrate-news-categories.ts",
+    "seed:pptx-pages": "npx tsx src/scripts/seed-pptx-pages.ts",
+    "seed:photos-documents": "npx tsx src/scripts/seed-photos-documents.ts",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
