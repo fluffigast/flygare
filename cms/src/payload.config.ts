@@ -26,6 +26,7 @@ import { Photos } from './collections/Photos'
 import { Links } from './collections/Links'
 import { SiteNavigation } from './globals/SiteNavigation'
 import { ClubInfo } from './globals/ClubInfo'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -125,11 +126,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL!,
     },
-    // push=true skippas ändå i production (NODE_ENV=production).
-    // I dev pushar Payload schema-diffar direkt till DB.
-    // I prod ansvarar migrations-filerna i src/migrations/ för schema-
-    // ändringar och körs via `payload migrate` (CI-steg före deploy).
     push: process.env.NODE_ENV !== 'production',
+    // Registrerar migrations så payload migrate hittar dem, och så
+    // prodMigrations kan köra dem automatiskt om vi vill (nu körs de
+    // manuellt via CI-steget "Run Payload migrations").
+    prodMigrations: migrations,
   }),
   upload: {
     limits: {

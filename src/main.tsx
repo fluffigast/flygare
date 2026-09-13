@@ -6,6 +6,7 @@ import "@fontsource-variable/jetbrains-mono/index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import { initClickToEdit } from "./utils/click-to-edit";
 import ScrollToTop from "./components/scroll-to-top.tsx";
@@ -37,6 +38,7 @@ initClickToEdit();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <HelmetProvider>
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
@@ -94,5 +96,6 @@ createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </BrowserRouter>
+    </HelmetProvider>
   </StrictMode>
 );

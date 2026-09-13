@@ -3,8 +3,8 @@ import { Link } from "react-router";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useActivitiesByType } from "../../hooks/useCMS";
-import ParaglidingArc from "../../components/decorations/paragliding-arc";
-import SectionCornerMark from "../../components/decorations/section-corner-mark";
+import CalendarScene from "../../components/hero-illustrations/calendar-scene";
+import SEO from "../../components/seo";
 
 type ActivityType = "kalender" | "klubbresa" | "arsmote" | "ovrigt";
 
@@ -79,14 +79,14 @@ const ActivitiesListView: React.FC<{ type: ActivityType; groupByYear?: boolean }
 
   return (
     <div className="w-full relative">
-      <ParaglidingArc
-        className="pointer-events-none absolute inset-x-0 top-0 h-48 w-full -z-10"
-        opacity={0.05}
+      <SEO
+        title={h.title}
+        path={`/aktiviteter/${type === "klubbresa" ? "klubbresor" : type === "arsmote" ? "arsmoten" : type === "ovrigt" ? "ovriga-aktiviteter" : "kalender"}`}
+        description={`${h.title} — ${h.eyebrow}.`}
       />
-      <SectionCornerMark
-        className="pointer-events-none absolute right-8 md:right-14 top-10 w-24 h-14 -z-10 hidden md:block"
-        label={h.title.toUpperCase()}
-      />
+      <div className="pointer-events-none absolute right-4 md:right-14 top-8 w-32 md:w-48 opacity-75 hidden md:block">
+        <CalendarScene className="w-full h-auto" />
+      </div>
       <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p
           className="font-serif italic text-lg"

@@ -18,6 +18,19 @@ export const Competitions: CollectionConfig = {
       required: true,
     },
     {
+      name: 'slug',
+      type: 'text',
+      unique: true,
+      admin: {
+        description: 'URL-slug (ex: are-ppc → /tavlingar/are-ppc). Om tom visas tävlingen bara i översikten.',
+      },
+    },
+    {
+      name: 'signupUrl',
+      type: 'text',
+      admin: { description: 'Länk till anmälan (valfri).' },
+    },
+    {
       name: 'status',
       type: 'select',
       required: true,

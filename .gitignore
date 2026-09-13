@@ -36,3 +36,7 @@ tests/screenshots/live-crawl/
 # Verify-script screenshots
 scripts/artifacts
 scripts/node_modules
+
+# Local test/screenshot artifacts
+.playwright-mcp/
+*-current.png
