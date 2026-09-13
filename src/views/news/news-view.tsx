@@ -6,7 +6,6 @@ import { sv } from "date-fns/locale";
 import { news as localNews } from "../../data/news";
 import { useNews } from "../../hooks/useCMS";
 import { getPlaceholderImage } from "../../utils/placeholder";
-import NewspaperScene from "../../components/hero-illustrations/newspaper-scene";
 import SEO from "../../components/seo";
 
 const ITEMS_PER_PAGE = 6;
@@ -78,11 +77,7 @@ const NewsView: React.FC = () => {
         path="/nyheter"
         description="Nyheter från Åre Skärm- och Drakflygklubb — aktiviteter, tävlingar, information och klubbliv."
       />
-      {/* Editorial header med tidnings-illustration i hörnet */}
-      <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-10 md:pb-12">
-        <div className="pointer-events-none absolute right-4 md:right-14 top-8 w-40 md:w-56 opacity-70 hidden md:block">
-          <NewspaperScene className="w-full h-auto" />
-        </div>
+      <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-10 md:pb-12">
         <p
           className="font-serif italic text-2xl md:text-[40px] leading-none"
           style={{ color: "var(--hero-accent, #3774a3)" }}

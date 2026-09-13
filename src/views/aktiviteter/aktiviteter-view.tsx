@@ -3,23 +3,19 @@ import { Link } from "react-router";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useActivities } from "../../hooks/useCMS";
-import CalendarScene from "../../components/hero-illustrations/calendar-scene";
 import SEO from "../../components/seo";
 
 const AktiviteterView: React.FC = () => {
   const { data: activities, loading } = useActivities([]);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full">
       <SEO
         title="Aktiviteter"
         path="/aktiviteter"
         description="Klubbens aktiviteter: kalender, klubbresor, årsmöten och övriga sammankomster."
       />
-      <div className="pointer-events-none absolute right-4 md:right-14 top-8 w-32 md:w-48 opacity-75 hidden md:block">
-        <CalendarScene className="w-full h-auto" />
-      </div>
-      <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
+      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Aktiviteter</p>
         <h1
           className="font-serif font-bold leading-[0.96] tracking-tight mt-1"

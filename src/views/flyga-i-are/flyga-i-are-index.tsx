@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router";
-import AirNavScene from "../../components/hero-illustrations/airnav-scene";
 import SEO from "../../components/seo";
 
 type TopicItem = { text: string; to?: string };
@@ -92,10 +91,6 @@ const FlyingGuideIndex: React.FC = () => {
         path="/flyga-i-are"
         description="Allt du behöver veta innan du flyger i Åreområdet: säkerhet, cross country, flygregler, Skistar-avtalet, väder, startplatser och räddningsbåt."
       />
-      {/* Kartblad-illustration som introducerar navigation-sektion */}
-      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-6 md:pt-8 opacity-80">
-        <AirNavScene className="w-full h-32 md:h-48" />
-      </div>
       <section className="relative max-w-[1200px] mx-auto px-4 md:px-10 pt-12 md:pt-16 pb-6 md:pb-8">
         <p
           className="font-serif italic text-base md:text-lg"
