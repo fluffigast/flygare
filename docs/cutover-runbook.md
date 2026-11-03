@@ -53,8 +53,9 @@ Container Apps Environment cae-flygare (static IP 20.54.25.205, delad mellan app
 ## Variabler
 
 ```bash
-export SUB=2cb112b2-024a-4ebd-a136-c95ade1d8def
-export RG=rg-joltjoker
+# Hämta från Azure: az account show --query id, az containerapp list --query '[].resourceGroup'
+export SUB=<subscription-id>
+export RG=<resource-group>
 export ENV_NAME=cae-flygare
 export ENV_IP=20.54.25.205
 export ACR=flygareacr
@@ -264,5 +265,5 @@ När allt är stabilt: sätt TTL = 3600 i Loopia.
 
 - Front Door Standard + central WAF (ersätter Coraza-inuti-container)
 - DMARC TXT (`v=DMARC1; p=none; rua=mailto:postmaster@flygare.nu`)
-- Städa dubbletter: `flygare-pg` vs `flygare-website-server`, `flygareacr` vs `joltjokerflygareacr`
+- Städa dubbletter i Azure: oanvända DB-servrar och ACR-repositories
 - Riv ACS-domänen `flygare-email/flygare.nu` (oanvänd) eller aktivera den separat för transaktionsmail

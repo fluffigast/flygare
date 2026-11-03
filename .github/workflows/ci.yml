@@ -63,6 +63,9 @@ jobs:
       # Kör Payload migrations mot prod-DB inuti den nybyggda imagen.
       # Om något migreringssteg failar → abort deploy (inget push till ACR,
       # inget container-uppdatering). Prod fortsätter köra föregående image.
+      # Pipe "y" så Payload accepterar dev-mode-prompten (batch=-1 i
+      # payload_migrations). Säkert eftersom våra tracked migrations redan
+      # finns i DB (batch 1 & 2) — loopen hittar dem och hoppar över.
       - name: Run Payload migrations
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         timeout-minutes: 5
@@ -72,7 +75,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
         run: |
-          docker run --rm \
+          yes y | docker run --rm -i \
             -e DATABASE_URL \
             -e PAYLOAD_SECRET \
             -e PAYLOAD_MIGRATING=true \
