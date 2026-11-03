@@ -16,6 +16,18 @@
   --slate-2: #6b7d95;
   --slate-3: #45556c;
 
+  /* Accent-par: använd --accent för fill med vit text, --accent-strong för text-länkar */
+  --accent: #3774a3;
+  --accent-strong: #2a5c82;
+
+  /* Semantic signals — safety-banner/rules är amber (tvingande), inte blå (info) */
+  --signal-safety: #b45309;
+  --signal-danger: #dc2626;
+  --signal-ok: #16a34a;
+
+  --shadow-card: 0 1px 3px rgb(2 6 23 / 0.06), 0 8px 24px rgb(2 6 23 / 0.07);
+  --shadow-pop: 0 12px 40px rgb(2 6 23 / 0.14);
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);

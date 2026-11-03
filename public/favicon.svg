@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Åre Skärm- och Drakflygklubb">
+  <rect width="64" height="64" rx="12" fill="#020618"/>
+  <!-- Skärmflyg-silhuett: båge + linor + pilot -->
+  <path d="M8 24 C 16 14, 28 14, 32 18 C 36 14, 48 14, 56 24 L 50 26 C 44 20, 36 20, 32 24 C 28 20, 20 20, 14 26 Z" fill="#fff"/>
+  <path d="M14 26 L 32 42 M 50 26 L 32 42 M 22 24 L 32 42 M 42 24 L 32 42" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="32" cy="44" r="2" fill="#fff"/>
+  <!-- Bergssilhuett under -->
+  <path d="M4 54 L 16 42 L 24 48 L 32 40 L 40 46 L 52 38 L 60 54 Z" fill="#3774a3" opacity="0.5"/>
+</svg>
