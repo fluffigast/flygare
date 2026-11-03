@@ -26,7 +26,6 @@ import { Photos } from './collections/Photos'
 import { Links } from './collections/Links'
 import { SiteNavigation } from './globals/SiteNavigation'
 import { ClubInfo } from './globals/ClubInfo'
-import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -127,10 +126,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL!,
     },
     push: process.env.NODE_ENV !== 'production',
-    // Registrerar migrations så payload migrate hittar dem, och så
-    // prodMigrations kan köra dem automatiskt om vi vill (nu körs de
-    // manuellt via CI-steget "Run Payload migrations").
-    prodMigrations: migrations,
+    // Migrations körs i CI-steget "Run Payload migrations" före deploy,
+    // inte vid container-start. Vid start skulle prodMigrations trigga
+    // dev-mode-prompten (batch=-1 i payload_migrations) och hänga.
   }),
   upload: {
     limits: {
