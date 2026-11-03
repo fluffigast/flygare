@@ -27,6 +27,7 @@ import NotFoundView from "./views/not-found-view.tsx";
 import FlyingGuideIndex from "./views/flyga-i-are/flyga-i-are-index.tsx";
 import KlubbussView from "./views/flyga-i-are/klubbuss-view.tsx";
 import PageView from "./views/page/page-view.tsx";
+import SectionLayout from "./layouts/section-layout.tsx";
 import AktiviteterView from "./views/aktiviteter/aktiviteter-view.tsx";
 import AktivitetSingleView from "./views/aktiviteter/aktivitet-single-view.tsx";
 import ActivitiesListView from "./views/aktiviteter/activities-list-view.tsx";
@@ -46,7 +47,7 @@ createRoot(document.getElementById("root")!).render(
         <Route index element={<HomeView />} />
         <Route element={<MainLayout />}>
           {/* Flyga i Åre */}
-          <Route path="flyga-i-are">
+          <Route path="flyga-i-are" element={<SectionLayout sectionPath="/flyga-i-are" />}>
             <Route index element={<FlyingGuideIndex />} />
             <Route path="startplatser" element={<SitesView />} />
             <Route path="startplatser/:slug" element={<SitesSingleView />} />

@@ -6,6 +6,7 @@ import InitialsAvatar from "../../components/initials-avatar";
 import SEO from "../../components/seo";
 import SubnavGrid from "../../components/subnav-grid";
 import PageHero from "../../components/page-hero";
+import CountUp from "../../components/count-up";
 
 /** Extract plain text from Lexical richText or return string as-is */
 function richTextToString(value: any): string {
@@ -75,14 +76,41 @@ const OmView: React.FC = () => {
           <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
             Historia
           </h2>
-          <div className="flex flex-col gap-6">
+          <ol
+            className="relative flex flex-col gap-10 pl-6 md:pl-8"
+            style={{
+              borderLeft: "2px solid var(--border, #e2e8f0)",
+            }}
+          >
             {milestones.map((milestone: any, i: number) => (
-              <div key={milestone.id ?? `${milestone.year}-${i}`} className="flex gap-6 items-baseline">
-                <p className="font-serif text-2xl shrink-0 w-16" style={{ color: "var(--ink-2, #0f172b)" }}>{milestone.year}</p>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>{milestone.text}</p>
-              </div>
+              <li
+                key={milestone.id ?? `${milestone.year}-${i}`}
+                className="relative flex flex-col gap-2"
+              >
+                <span
+                  className="absolute rounded-full"
+                  style={{
+                    width: 12,
+                    height: 12,
+                    background: "var(--accent, #3774a3)",
+                    left: "calc(-1.5rem - 7px)",
+                    top: "0.4rem",
+                    boxShadow: "0 0 0 4px #fff",
+                  }}
+                  aria-hidden="true"
+                />
+                <p
+                  className="font-serif font-bold text-2xl md:text-3xl tabular-nums leading-none"
+                  style={{ color: "var(--ink-2, #0f172b)" }}
+                >
+                  {milestone.year}
+                </p>
+                <p className="text-base leading-relaxed max-w-prose" style={{ color: "var(--slate-3, #45556c)" }}>
+                  {milestone.text}
+                </p>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
 
         {/* Dagens rekord — pptx: "Historia & nutid → Rekord genom tiderna,
@@ -100,8 +128,8 @@ const OmView: React.FC = () => {
                     <p className="text-xs uppercase tracking-wider" style={{ color: "var(--slate, #62748e)" }}>
                       {r.discipline ?? r.title}
                     </p>
-                    <p className="font-serif font-bold text-2xl mt-1" style={{ color: "var(--ink-2, #0f172b)" }}>
-                      {r.value}
+                    <p className="font-serif font-bold text-2xl md:text-3xl mt-1 tabular-nums" style={{ color: "var(--ink-2, #0f172b)" }}>
+                      <CountUp value={r.value} />
                     </p>
                     {r.holder && (
                       <p className="text-xs mt-0.5" style={{ color: "var(--slate-3, #45556c)" }}>
