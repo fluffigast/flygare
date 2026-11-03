@@ -8,7 +8,7 @@ export const navigation = {
         { label: 'Säkerhet / Nödsituation', path: '/flyga-i-are/sakerhet' },
         { label: 'Cross country flygning', path: '/flyga-i-are/xc' },
         { label: 'Flygregler', path: '/flyga-i-are/flygregler' },
-        { label: 'Samarbetsavtalet Skistar', path: '/flyga-i-are/skistar' },
+        { label: 'Samarbetsavtalet Skistar', path: '/flyga-i-are/skistar', hidden: true },
         { label: 'Acro flygning', path: '/flyga-i-are/acro' },
         { label: 'Väder', path: '/flyga-i-are/vader' },
         { label: 'Speedrider', path: '/flyga-i-are/speedrider' },

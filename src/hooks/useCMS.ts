@@ -52,6 +52,9 @@ export const useBoardMembers = (fallback: any[]) =>
 export const useLaunches = (fallback: any[]) =>
   useCMSData(() => fetchCollection("launches", "&sort=sortOrder"), fallback);
 
+export const useOtherSites = (fallback: any[]) =>
+  useCMSData(() => fetchCollection("other-sites"), fallback);
+
 export const useMilestones = (fallback: any[]) =>
   useCMSData(() => fetchCollection("milestones", "&sort=year"), fallback);
 

@@ -14,5 +14,14 @@
   "mimeTypes": {
     ".webp": "image/webp",
     ".avif": "image/avif"
-  }
+  },
+  "routes": [
+    { "route": "/flygguiden", "redirect": "/flyga-i-are", "statusCode": 301 },
+    { "route": "/flygguiden/*", "redirect": "/flyga-i-are", "statusCode": 301 },
+    { "route": "/weather", "redirect": "/flyga-i-are/vader", "statusCode": 301 },
+    { "route": "/weather/*", "redirect": "/flyga-i-are/vader", "statusCode": 301 },
+    { "route": "/wp-content/uploads/*", "redirect": "/ovrigt/dokument", "statusCode": 301 },
+    { "route": "/portfolio-items/*", "redirect": "/flyga-i-are/startplatser", "statusCode": 301 },
+    { "route": "/are-sdfk/*", "redirect": "/om", "statusCode": 301 }
+  ]
 }

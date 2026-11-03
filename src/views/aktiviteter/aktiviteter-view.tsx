@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useActivities } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
+import SubnavGrid from "../../components/subnav-grid";
 
 const AktiviteterView: React.FC = () => {
   const { data: activities, loading } = useActivities([]);
@@ -25,7 +26,9 @@ const AktiviteterView: React.FC = () => {
         </h1>
       </section>
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+      <SubnavGrid sectionPath="/aktiviteter" />
+
+      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16 pt-4">
         {loading && <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>Laddar...</p>}
         {!loading && activities.length === 0 && (
           <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>Inga aktiviteter planerade just nu.</p>

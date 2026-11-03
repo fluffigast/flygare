@@ -1,9 +1,10 @@
 import React from "react";
 import { boardMembers as localBoard, milestones as localMilestones, clubHistory as localHistory, currentRecords } from "../../data/about";
-import { useBoardMembers, useMilestones, useClubInfo, useGlobalLivePreview } from "../../hooks/useCMS";
+import { useBoardMembers, useMilestones, useClubInfo, useDocuments, useGlobalLivePreview } from "../../hooks/useCMS";
 import { cmsMediaUrl } from "../../lib/cms";
 import InitialsAvatar from "../../components/initials-avatar";
 import SEO from "../../components/seo";
+import SubnavGrid from "../../components/subnav-grid";
 
 /** Extract plain text from Lexical richText or return string as-is */
 function richTextToString(value: any): string {
@@ -23,6 +24,10 @@ const OmView: React.FC = () => {
   const { data: milestones } = useMilestones(localMilestones);
   const { data: cmsClubInfo } = useClubInfo({ history: localHistory });
   const clubInfo = useGlobalLivePreview(cmsClubInfo);
+  const { data: documents } = useDocuments([]);
+  const stadgarDoc = documents.find(
+    (d: any) => d.category === "stadgar" && d.file?.url,
+  );
   const historyText = richTextToString(clubInfo.history) || localHistory;
 
   return (
@@ -42,7 +47,9 @@ const OmView: React.FC = () => {
         </h1>
       </section>
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14">
+      <SubnavGrid sectionPath="/om" />
+
+      <div className="max-w-[900px] mx-auto px-4 md:px-14 pt-4">
         <p className="text-base leading-relaxed mb-16" style={{ color: "var(--slate, #62748e)" }}>
           {historyText}
         </p>
@@ -148,9 +155,20 @@ const OmView: React.FC = () => {
             <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-8" style={{ color: "var(--ink-2, #0f172b)" }}>
               Stadgar
             </h2>
-            <p className="text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
+            <p className="text-base leading-relaxed mb-4" style={{ color: "var(--slate, #62748e)" }}>
               {richTextToString(clubInfo.stadgar)}
             </p>
+            {stadgarDoc?.file?.url && (
+              <a
+                href={cmsMediaUrl(stadgarDoc.file.url)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-sm underline hover:opacity-70 transition-opacity"
+                style={{ color: "var(--ink, #020618)" }}
+              >
+                Ladda ner stadgarna (PDF)
+              </a>
+            )}
           </section>
         )}
       </div>

@@ -39,7 +39,7 @@ const NewsView: React.FC = () => {
 
   // Categories fixed per site spec (pptx): Alla kategorier + 4 canonical.
   const CATEGORIES = useMemo(
-    () => ["Alla kategorier", "Aktiviteter", "Information", "Tävlingar", "Övrigt"],
+    () => ["Alla kategorier", "Aktiviteter", "Information", "Säkerhet", "Tävlingar", "Övrigt"],
     []
   );
 

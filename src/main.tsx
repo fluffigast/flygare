@@ -5,7 +5,7 @@ import "@fontsource-variable/source-serif-4/wght-italic.css";
 import "@fontsource-variable/jetbrains-mono/index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import { initClickToEdit } from "./utils/click-to-edit";
@@ -32,6 +32,7 @@ import AktivitetSingleView from "./views/aktiviteter/aktivitet-single-view.tsx";
 import ActivitiesListView from "./views/aktiviteter/activities-list-view.tsx";
 import FotonView from "./views/ovrigt/foton-view.tsx";
 import DokumentView from "./views/ovrigt/dokument-view.tsx";
+import OvrigtView from "./views/ovrigt/ovrigt-view.tsx";
 
 // Enable click-to-edit when inside CMS live preview iframe
 initClickToEdit();
@@ -82,7 +83,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="bli-medlem" element={<BliMedlemView />} />
           {/* Övrigt */}
           <Route path="ovrigt">
-            <Route index element={<Navigate to="foton" replace />} />
+            <Route index element={<OvrigtView />} />
             <Route path="foton" element={<FotonView />} />
             <Route path="dokument" element={<DokumentView />} />
           </Route>
