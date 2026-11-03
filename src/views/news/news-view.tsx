@@ -8,6 +8,7 @@ import { useNews } from "../../hooks/useCMS";
 import { cmsMediaUrl } from "../../lib/cms";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import SEO from "../../components/seo";
+import PageHero from "../../components/page-hero";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -78,26 +79,9 @@ const NewsView: React.FC = () => {
         path="/nyheter"
         description="Nyheter från Åre Skärm- och Drakflygklubb — aktiviteter, tävlingar, information och klubbliv."
       />
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-10 md:pb-12">
-        <p
-          className="font-serif italic text-2xl md:text-[40px] leading-none"
-          style={{ color: "var(--hero-accent, #3774a3)" }}
-        >
-          Aktuellt
-        </p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{
-            fontSize: "clamp(48px, 6vw, 96px)",
-            color: "var(--ink-2, #0f172b)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Senaste nytt
-        </h1>
-      </section>
+      <PageHero eyebrow="Aktuellt" title="Senaste nytt" />
 
-      <div className="max-w-[1480px] mx-auto px-4 md:px-14">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10">
         {/* Filter bar */}
         <div
           className="flex flex-wrap gap-4 md:gap-7 justify-center py-5 mb-10 md:mb-12"

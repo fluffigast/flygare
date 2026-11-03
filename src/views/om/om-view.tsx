@@ -5,6 +5,7 @@ import { cmsMediaUrl } from "../../lib/cms";
 import InitialsAvatar from "../../components/initials-avatar";
 import SEO from "../../components/seo";
 import SubnavGrid from "../../components/subnav-grid";
+import PageHero from "../../components/page-hero";
 
 /** Extract plain text from Lexical richText or return string as-is */
 function richTextToString(value: any): string {
@@ -37,19 +38,14 @@ const OmView: React.FC = () => {
         path="/om"
         description="Åre Skärm- och Drakflygklubb — historia sedan 1976, styrelse, rekord genom tiderna och klubbprodukter."
       />
-      <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
-        <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Om oss</p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
-        >
-          Åre Skärm- och Drakflygklubb
-        </h1>
-      </section>
+      <PageHero
+        eyebrow="Om oss"
+        title="Åre Skärm- och Drakflygklubb"
+      />
 
       <SubnavGrid sectionPath="/om" />
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pt-4">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-6">
         <p className="text-base leading-relaxed mb-16" style={{ color: "var(--slate, #62748e)" }}>
           {historyText}
         </p>

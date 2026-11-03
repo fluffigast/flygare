@@ -5,6 +5,7 @@ import Separator from "../../components/separator";
 import { sites as localSites, sitesIntro } from "../../data/sites";
 import { useLaunches, useOtherSites } from "../../hooks/useCMS";
 import { mapLaunchToSite } from "../../lib/map-launch";
+import SEO from "../../components/seo";
 
 type OtherSiteDoc = {
   name: string;
@@ -40,6 +41,11 @@ const SitesView: React.FC = () => {
 
   return (
     <div className="w-full">
+      <SEO
+        title="Startplatser"
+        path="/flyga-i-are/startplatser"
+        description="Startplatser i Åre — Åreskutan, Mörvikshummeln, Tegefjäll och närliggande områden. Karta, koordinater, väderstreck och risker."
+      />
       <section className="w-full h-[clamp(340px,52vh,560px)]">
         <SitesMap sites={sites} className="relative bg-muted w-full h-full overflow-hidden border border-border" />
       </section>
