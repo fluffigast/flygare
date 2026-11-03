@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import { contactInfo as localContact } from "../../data/contact";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
@@ -6,13 +7,19 @@ import SEO from "../../components/seo";
 const KontaktView: React.FC = () => {
   const { data: cmsContact } = useContactInfo(localContact);
   const liveContact = useGlobalLivePreview(cmsContact);
+  const live = liveContact as typeof liveContact & {
+    besoksadress?: string | null;
+    organisationsnummer?: string | null;
+  };
   const contactInfo = {
     ...localContact,
-    email: liveContact.email ?? localContact.email,
-    facebook: liveContact.facebook?.url ? liveContact.facebook : localContact.facebook,
-    youtube: liveContact.youtube?.url ? liveContact.youtube : localContact.youtube,
-    radioFrequencies: liveContact.radioFrequencies?.length ? liveContact.radioFrequencies : localContact.radioFrequencies,
-    emergencyContacts: liveContact.emergencyContacts?.length ? liveContact.emergencyContacts : localContact.emergencyContacts,
+    email: live.email ?? localContact.email,
+    besoksadress: live.besoksadress || localContact.besoksadress,
+    organisationsnummer: live.organisationsnummer || localContact.organisationsnummer,
+    facebook: live.facebook?.url ? live.facebook : localContact.facebook,
+    youtube: live.youtube?.url ? live.youtube : localContact.youtube,
+    radioFrequencies: live.radioFrequencies?.length ? live.radioFrequencies : localContact.radioFrequencies,
+    emergencyContacts: live.emergencyContacts?.length ? live.emergencyContacts : localContact.emergencyContacts,
   };
 
   return (
@@ -33,17 +40,36 @@ const KontaktView: React.FC = () => {
       </section>
 
       <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
-        <p className="text-base mb-12" style={{ color: "var(--slate, #62748e)" }}>
-          E-post:{" "}
-          <a
-            href={`mailto:${contactInfo.email}`}
-            className="underline hover:opacity-70 transition-opacity"
-            style={{ color: "var(--ink, #020618)" }}
-            data-payload-field="email"
-          >
-            {contactInfo.email}
-          </a>
-        </p>
+        <div className="flex flex-col gap-3 mb-12" style={{ color: "var(--slate, #62748e)" }}>
+          <p className="text-base">
+            E-post:{" "}
+            <a
+              href={`mailto:${contactInfo.email}`}
+              className="underline hover:opacity-70 transition-opacity"
+              style={{ color: "var(--ink, #020618)" }}
+              data-payload-field="email"
+            >
+              {contactInfo.email}
+            </a>
+          </p>
+          {contactInfo.besoksadress && (
+            <p className="text-base whitespace-pre-line" data-payload-field="besoksadress">
+              <span style={{ color: "var(--slate, #62748e)" }}>Besöksadress: </span>
+              <span style={{ color: "var(--ink, #020618)" }}>{contactInfo.besoksadress}</span>
+            </p>
+          )}
+          {contactInfo.organisationsnummer && (
+            <p className="text-base" data-payload-field="organisationsnummer">
+              <span style={{ color: "var(--slate, #62748e)" }}>Organisationsnummer: </span>
+              <span style={{ color: "var(--ink, #020618)" }}>{contactInfo.organisationsnummer}</span>
+            </p>
+          )}
+          <p className="text-base">
+            <Link to="/om/stadgar" className="underline hover:opacity-70 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
+              Klubbens stadgar
+            </Link>
+          </p>
+        </div>
 
         {/* Social media */}
         <section className="mb-12" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>

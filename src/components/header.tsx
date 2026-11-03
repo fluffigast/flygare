@@ -122,7 +122,7 @@ const Header: React.FC = () => {
                 </Link>
                 {section.children?.length > 0 && (
                   <div className="pl-4 flex flex-col">
-                    {section.children.map((child: any) =>
+                    {section.children.filter((c: any) => !c.hidden).map((child: any) =>
                       child.external ? (
                         <a
                           key={child.label}

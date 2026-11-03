@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { ArrowRightIcon } from "lucide-react";
 import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
+import SafetyBanner from "../../blocks/safety-banner/safety-banner";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
 import Footer from "../../components/footer";
 import SEO from "../../components/seo";
@@ -116,6 +117,8 @@ const HomeView: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <SafetyBanner />
 
       {/* ═══ PRIO ROW ═══
           Pptx-listade startsida-block: Bli medlem, Flygregler,

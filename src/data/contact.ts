@@ -1,5 +1,9 @@
 export const contactInfo = {
   email: "info@flygare.nu",
+  // Fylls i via CMS (contact-info global). Tomma fallbacks renderar inget på /kontakt.
+  besoksadress: "",
+  organisationsnummer: "",
+  stadgarUrl: "/om/stadgar",
   facebook: {
     label: "Facebook",
     url: "https://www.facebook.com/groups/48461420739/",

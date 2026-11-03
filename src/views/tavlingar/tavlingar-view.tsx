@@ -2,6 +2,7 @@ import React from "react";
 import { competitions as localCompetitions } from "../../data/competitions";
 import { useCompetitions } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
+import SubnavGrid from "../../components/subnav-grid";
 
 /** Extract plain text from a Lexical richText object or return string as-is */
 function richTextToString(value: any): string {
@@ -39,7 +40,9 @@ const TavlingarView: React.FC = () => {
         </p>
       </section>
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+      <SubnavGrid sectionPath="/tavlingar" />
+
+      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16 pt-4">
         {competitions.map((comp: any, i: number) => (
           <section
             key={comp.name}
