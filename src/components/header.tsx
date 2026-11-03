@@ -109,20 +109,30 @@ const Header: React.FC = () => {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden bg-white border-t" style={{ borderColor: "var(--border, #e2e8f0)" }}>
-          <nav className="max-w-[1480px] mx-auto px-4 py-4 flex flex-col gap-1">
+        <div
+          className="md:hidden fixed inset-x-0 bottom-0 bg-white flex flex-col"
+          style={{
+            top: "var(--header-height, 64px)",
+            borderTop: "1px solid var(--border, #e2e8f0)",
+            overflowY: "auto",
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Huvudmeny"
+        >
+          <nav className="flex-1 overflow-y-auto px-4 py-4 flex flex-col">
             {nav.sections.map((section: any) => (
-              <div key={section.label}>
+              <div key={section.label} className="border-b" style={{ borderColor: "var(--border, #e2e8f0)" }}>
                 <Link
                   to={section.path}
-                  className="block py-2 text-sm font-semibold"
+                  className="flex items-center min-h-[48px] py-3 text-base font-serif font-bold"
                   style={{ color: "var(--ink, #020618)" }}
                   onClick={closeMenu}
                 >
                   {section.label}
                 </Link>
                 {section.children?.length > 0 && (
-                  <div className="pl-4 flex flex-col">
+                  <div className="pb-2 flex flex-col">
                     {section.children.filter((c: any) => !c.hidden).map((child: any) =>
                       child.external ? (
                         <a
@@ -130,8 +140,8 @@ const Header: React.FC = () => {
                           href={child.path}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block py-1.5 text-sm"
-                          style={{ color: "var(--slate, #62748e)" }}
+                          className="flex items-center min-h-[44px] pl-4 py-2 text-sm"
+                          style={{ color: "var(--slate-3, #45556c)" }}
                           onClick={closeMenu}
                         >
                           {child.label} ↗
@@ -140,8 +150,8 @@ const Header: React.FC = () => {
                         <Link
                           key={child.label}
                           to={child.path}
-                          className="block py-1.5 text-sm"
-                          style={{ color: "var(--slate, #62748e)" }}
+                          className="flex items-center min-h-[44px] pl-4 py-2 text-sm"
+                          style={{ color: "var(--slate-3, #45556c)" }}
                           onClick={closeMenu}
                         >
                           {child.label}
@@ -152,15 +162,27 @@ const Header: React.FC = () => {
                 )}
               </div>
             ))}
+          </nav>
+          <div
+            className="shrink-0 px-4 py-4"
+            style={{
+              borderTop: "1px solid var(--border, #e2e8f0)",
+              background: "#fff",
+              paddingBottom: "max(1rem, env(safe-area-inset-bottom))",
+            }}
+          >
             <Link
               to="/bli-medlem"
-              className="mt-3 inline-flex items-center justify-center font-semibold text-sm text-white rounded-full"
-              style={{ background: "var(--ink, #020618)", padding: "9px 22px" }}
+              className="flex items-center justify-center min-h-[52px] font-semibold text-base text-white rounded-full w-full"
+              style={{
+                background: "var(--accent, #3774a3)",
+                boxShadow: "var(--shadow-card, 0 1px 3px rgba(2,6,23,0.06), 0 8px 24px rgba(2,6,23,0.07))",
+              }}
               onClick={closeMenu}
             >
-              Bli medlem
+              Bli medlem →
             </Link>
-          </nav>
+          </div>
         </div>
       )}
     </header>

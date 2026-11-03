@@ -255,3 +255,33 @@
 .info-card-lift:hover .info-card-arrow {
   transform: translateX(6px);
 }
+
+/* Reveal-animation för sektioner — fade + translateY på scroll-into-view.
+   Via IntersectionObserver eller renderas direkt. Staggrad via :nth-child. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    animation: fade-up 0.5s cubic-bezier(0.2, 0.65, 0.3, 1) both;
+  }
+  [data-reveal="2"] { animation-delay: 0.07s; }
+  [data-reveal="3"] { animation-delay: 0.14s; }
+  [data-reveal="4"] { animation-delay: 0.21s; }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Header-höjd som CSS-variabel så sub-nav + mobil-meny kan ligga under */
+:root {
+  --header-height: 64px;
+}
+@media (min-width: 768px) {
+  :root { --header-height: 72px; }
+}
+
+/* Dölj scrollbar på sub-nav */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

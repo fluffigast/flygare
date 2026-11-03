@@ -1,7 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SitesGrid from "../../blocks/sites-grid/sites-grid";
-import SitesMap from "../../blocks/sites-map/sites-map";
 import Separator from "../../components/separator";
+
+// Code-split MapLibre — 150 kB+ laddas bara när /startplatser besöks.
+const SitesMap = React.lazy(() => import("../../blocks/sites-map/sites-map"));
 import { sites as localSites, sitesIntro } from "../../data/sites";
 import { useLaunches, useOtherSites } from "../../hooks/useCMS";
 import { mapLaunchToSite } from "../../lib/map-launch";
@@ -47,7 +49,9 @@ const SitesView: React.FC = () => {
         description="Startplatser i Åre — Åreskutan, Mörvikshummeln, Tegefjäll och närliggande områden. Karta, koordinater, väderstreck och risker."
       />
       <section className="w-full h-[clamp(340px,52vh,560px)]">
-        <SitesMap sites={sites} className="relative bg-muted w-full h-full overflow-hidden border border-border" />
+        <Suspense fallback={<div className="w-full h-full animate-pulse" style={{ background: "#fafbfc", border: "1px solid var(--border, #e2e8f0)" }} aria-hidden="true" />}>
+          <SitesMap sites={sites} className="relative bg-muted w-full h-full overflow-hidden border border-border" />
+        </Suspense>
       </section>
 
       <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-10 md:pt-12 pb-16 flex flex-col gap-10">
