@@ -1,73 +1,71 @@
-# React + TypeScript + Vite
+# flygare.nu
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Webbplats för Åre Skärmflygklubb. Vite + React 19 + Tailwind 4 på Azure Static Web Apps, med Payload CMS (Postgres) på Azure Container Apps.
 
-Currently, two official plugins are available:
+- **Styr-filer**: [`AGENTS.md`](./AGENTS.md) (stack, arkitektur, workflow), [`CLAUDE.md`](./CLAUDE.md) (regler för AI-sessioner).
+- **Driftsplan**: [`docs/cutover-runbook.md`](./docs/cutover-runbook.md).
+- **Alla uppgifter**: Utvecklingslista (se go-live-PDF — en branch, en PR per steg).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Kom igång
 
-## React Compiler
+Krav: Node 22, pnpm 9, Docker (för Postgres lokalt).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# 1. Klona och installera
+git clone https://github.com/fluffigast/flygare.git
+cd flygare
+pnpm install
+cd cms && npm install && cd ..
 
-## Expanding the ESLint configuration
+# 2. Starta Postgres lokalt
+docker run -d --name flygare-pg -p 5432:5432 \
+  -e POSTGRES_PASSWORD=flygare -e POSTGRES_DB=flygare \
+  postgres:16
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# 3. Kopiera env-filer
+cp .env.example .env.local
+cp cms/.env.example cms/.env
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# 4. Kör CMS (port 3001) — seeden skapar admin@flygare.nu / change-me
+cd cms && npm run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 5. I ett nytt fönster: kör frontend (port 5173)
+pnpm dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Admin: http://localhost:3001/admin · frontend: http://localhost:5173
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Verifiera innan PR
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm exec tsc --noEmit   # tyst
+pnpm build               # grön
+pnpm test --run          # unit tests gröna (e2e kräver puppeteer — känd skuld, strunta i)
 ```
+
+## Branch- och PR-flöde
+
+- En branch per steg i Utvecklingslistan. Branch-namn från listan (`feat/safety-banner`, `fix/desktop-navigation`, …).
+- PR mot `main`. Pusha aldrig direkt till `main` — det deployar.
+- Svenska i commit-meddelande, PR-titel och PR-beskrivning. Ingen AI-attribution.
+- Ändringar i `cms/` (schema, collections, globals) kräver migration — stäm av med Alexander före merge.
+
+## Vanliga script
+
+| | |
+|---|---|
+| `pnpm dev` | frontend på 5173 |
+| `pnpm build` | prod-bygge |
+| `pnpm test --run` | unit tests |
+| `cd cms && npm run dev` | CMS på 3001 |
+| `cd cms && npm run generate:types` | regenerera `payload-types.ts` efter schemaändring |
+| `cd cms && npm run migrate:create` | ny migration |
+
+## Arkitektur i korthet
+
+- **Frontend**: Vite + React 19 + Tailwind 4, deploy till SWA via GitHub Actions.
+- **CMS**: Payload 3 (Next.js app) på Container Apps, Postgres som DB. Seed körs vid containerstart.
+- **SWA Functions**: `api/wind` (MEAC + SMHI + Skistar, cached), `api/smhi` (forecast-proxy).
+- **Media**: lokal disk `/app/media` på Container App — Azure File-mount krävs i prod.
+
+Mer: `AGENTS.md`.

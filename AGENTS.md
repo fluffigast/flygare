@@ -54,9 +54,9 @@ Vite + React 19 + Tailwind 4 + pnpm. Node 22.
 ### Media
 
 - `media` collection (`cms/src/collections/Media.ts`) stores files on local disk: `/app/media`, or `MEDIA_DIR` if set. No cloud storage adapter.
-- Only images are accepted (`mimeTypes: ['image/*']`), with sharp sizes `thumbnail` (400×300) and `hero` (1600×900). PDFs are rejected, so `documents.file` cannot hold PDFs today.
+- Accepted mime types: `image/*` and `application/pdf`. Sharp sizes `thumbnail` (400×300) and `hero` (1600×900) only apply to images.
 - Persistence in prod requires an Azure File mount on `/app/media`. No such mount is defined in this repo or CI — verify on the Container App.
-- `serverURL` is not set, so media URLs are relative (`/api/media/file/<name>`). The frontend uses `image.url` as is, which resolves against the SWA domain, and CSP `img-src` does not allow the CMS host.
+- `serverURL` is not set, so Payload returns relative URLs (`/api/media/file/<name>`). Use `cmsMediaUrl(image.url)` from `src/lib/cms.ts` to prefix with the CMS base. CSP `img-src` in `public/staticwebapp.config.json` allows the CMS host.
 
 ### Launch sites
 
@@ -69,6 +69,19 @@ Vite + React 19 + Tailwind 4 + pnpm. Node 22.
 - CMS: Docker build → migrations → push to ACR → `az containerapp update` (image + env vars). Seed runs on container start.
 - Secrets in GitHub: `SWA_DEPLOYMENT_TOKEN`, `DATABASE_URL`, `PAYLOAD_SECRET`, `PAYLOAD_ADMIN_PASSWORD`, `ACR_USERNAME`, `ACR_PASSWORD`, `AZURE_CREDENTIALS`.
 - Vars in GitHub: `VITE_CMS_URL`, `ACR_LOGIN_SERVER`, `CONTAINER_APP_NAME`, `RESOURCE_GROUP`.
+
+## Workflow
+
+- One branch, one PR per step in `Utvecklingslista` (see go-live PDF / project docs). Branch name = the one in the list (`fix/cms-media`, `feat/safety-banner`, etc.).
+- PR mot `main`. Aldrig direkt push till `main` — `main` deployar både SWA och Container App.
+- Varje PR: tsc clean, `pnpm build` grön, `pnpm test` grön (e2e-testet som kräver puppeteer är känd skuld, får vara röd tills den fixas eller tas bort).
+- Svenska i commit-meddelanden, PR-titel och PR-beskrivning. Ingen AI-attribution och inga promo-länkar i commits.
+- Surgical edits. Rör bara filer som berör uppgiften. Inga drive-by-refactors, inga "städningar" utanför scope.
+- Ändringar i `cms/` (schema, collections, globals) → migration krävs. Lämna över till Alexander innan merge, kör inte migrationer själv.
+- `payload-types.ts` är genererad; vid schemaändring kör `npm run generate:types` i `cms/`. Flytta inte manuellt.
+- Rör inte `api/wind`, `api/smhi`, `.github/workflows/*`, `cms/start.sh`, `cms/Dockerfile` utan avstämning med Alexander.
+- Secrets ligger i GitHub Actions. Lägg aldrig riktiga värden i repo eller `.env`-filer som checkas in.
+- Live-URL:er finns bakom env (`VITE_PAYLOAD_URL`, `FRONTEND_URL`). Hårdkoda inte `cms.flygare.nu` eller SWA-hosten i källkoden utan att prata först.
 
 ## Stable version
 
