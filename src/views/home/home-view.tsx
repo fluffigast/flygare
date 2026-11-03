@@ -74,43 +74,49 @@ const HomeView: React.FC = () => {
       <Header />
 
       {/* ═══ HERO ═══ */}
-      {/* Height reduced per pptx feedback: "gör bilderna mindre så man
-          inte behöver scrolla så mycket för att se all info". */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ height: "clamp(240px, 30vw, 440px)", background: "#1a1e2a" }}
+        style={{ height: "clamp(420px, 72vh, 720px)", background: "#1a1e2a" }}
       >
         <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-[6s] ease-out"
+          className="absolute inset-0 bg-cover bg-center transition-transform ease-out"
           style={{
             backgroundImage: "url(/assets/hero-paragliding.jpg)",
-            transform: heroIn ? "scale(1)" : "scale(1.03)",
+            transform: heroIn ? "scale(1)" : "scale(1.04)",
+            transitionDuration: "8000ms",
           }}
         />
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 30%, transparent 50%, rgba(0,0,0,.45) 100%)",
+            background:
+              "linear-gradient(to top, rgba(2,6,24,.86) 0%, rgba(2,6,24,.42) 42%, rgba(2,6,24,.10) 100%)",
           }}
         />
-        <div className="absolute left-0 right-0 bottom-0 p-4 sm:p-6 md:p-10 lg:px-14">
+        <div className="absolute left-0 right-0 bottom-0 p-5 sm:p-8 md:p-14 lg:px-20 max-w-[1480px] mx-auto">
           <p
-            className="font-serif italic text-white/70 mb-0.5"
-            style={{ fontSize: "clamp(10px, 1vw, 14px)" }}
+            className="font-sans uppercase tracking-[0.18em] text-white/75 mb-3 md:mb-4"
+            style={{ fontSize: "clamp(11px, 0.9vw, 13px)", fontWeight: 600 }}
             data-payload-field="heroTagline"
           >
             {liveSite.heroTagline}
           </p>
           <h1
-            className="font-serif font-bold text-white/90 leading-tight"
-            style={{ fontSize: "clamp(14px, 1.6vw, 24px)", letterSpacing: "-0.01em" }}
+            className="font-serif font-bold text-white max-w-4xl"
+            style={{
+              fontSize: "clamp(44px, 5.5vw, 76px)",
+              lineHeight: 1.04,
+              letterSpacing: "-0.02em",
+              paddingBottom: "0.08em",
+              textWrap: "balance" as React.CSSProperties["textWrap"],
+            }}
             data-payload-field="heroDescription"
           >
             {liveSite.heroDescription}
           </h1>
-          <div className="flex justify-between mt-3 text-white/50 text-[10px] sm:text-xs tracking-wide">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white/40" />
+          <div className="flex justify-between items-center mt-5 md:mt-7 text-white/70 text-xs sm:text-sm tracking-wide">
+            <span className="inline-flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
               Åreskutan, Jämtland
             </span>
             <span className="hidden sm:block">Säsong 2026</span>
