@@ -9,7 +9,7 @@
     "X-XSS-Protection": "0",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(self)",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://placehold.co https://*.openfreemap.org https://*.opentopomap.org; font-src 'self' data:; connect-src 'self' https://opendata-download-metfcst.smhi.se https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://*.openfreemap.org https://*.opentopomap.org; frame-src 'self' https://meac.se https://*.windguru.cz; frame-ancestors 'self' https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io"
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://placehold.co https://*.openfreemap.org https://*.opentopomap.org; font-src 'self' data:; connect-src 'self' https://opendata-download-metfcst.smhi.se https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io https://*.openfreemap.org https://*.opentopomap.org https://api.holfuy.com; frame-src 'self' https://meac.se https://*.windguru.cz; frame-ancestors 'self' https://flygare-cms.greensea-05d6e47b.northeurope.azurecontainerapps.io"
   },
   "mimeTypes": {
     ".webp": "image/webp",
@@ -22,6 +22,20 @@
     { "route": "/weather/*", "redirect": "/flyga-i-are/vader", "statusCode": 301 },
     { "route": "/wp-content/uploads/*", "redirect": "/ovrigt/dokument", "statusCode": 301 },
     { "route": "/portfolio-items/*", "redirect": "/flyga-i-are/startplatser", "statusCode": 301 },
-    { "route": "/are-sdfk/*", "redirect": "/om", "statusCode": 301 }
+    { "route": "/are-sdfk", "redirect": "/om", "statusCode": 301 },
+    { "route": "/are-sdfk/*", "redirect": "/om", "statusCode": 301 },
+    { "route": "/are-sdfk/bli-medlem", "redirect": "/bli-medlem", "statusCode": 301 },
+    { "route": "/are-sdfk/bli-medlem/", "redirect": "/bli-medlem", "statusCode": 301 },
+    { "route": "/1795-2", "redirect": "/flyga-i-are/flygregler", "statusCode": 301 },
+    { "route": "/1795-2/", "redirect": "/flyga-i-are/flygregler", "statusCode": 301 },
+    { "route": "/1889-2", "redirect": "/nyheter/vi-fyller-50", "statusCode": 301 },
+    { "route": "/1889-2/", "redirect": "/nyheter/vi-fyller-50", "statusCode": 301 },
+    { "route": "/valkommen-till-ppc-are-2026", "redirect": "/nyheter/valkommen-till-ppc-are-2026", "statusCode": 301 },
+    { "route": "/valkommen-till-ppc-are-2026/", "redirect": "/nyheter/valkommen-till-ppc-are-2026", "statusCode": 301 },
+    { "route": "/klubbuss-kampanj", "redirect": "/nyheter/klubbuss-kampanj", "statusCode": 301 },
+    { "route": "/klubbuss-kampanj/", "redirect": "/nyheter/klubbuss-kampanj", "statusCode": 301 },
+    { "route": "/lyft-med-helikopter-under-v-35", "redirect": "/nyheter/lyft-med-helikopter-v35", "statusCode": 301 },
+    { "route": "/ny-webbshop", "redirect": "/nyheter/ny-webbshop", "statusCode": 301 },
+    { "route": "/ansok-om-tavlings-stipendium", "redirect": "/nyheter/ansok-tavlingsstipendium", "statusCode": 301 }
   ]
 }

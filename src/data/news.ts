@@ -1,5 +1,35 @@
 export const news = [
   {
+    id: "wp-helikopter",
+    title: "Lyft med helikopter under v.35",
+    slug: "lyft-med-helikopter-v35",
+    category: "Aktiviteter",
+    excerpt: "Klubben organiserar helikopter-lyft till startplatser på Åreskutan under vecka 35.",
+    content:
+      "Under vecka 35 arrangerar klubben helikopterlyft till startplatserna på Åreskutan. Lämpligt för piloter som vill komma upp snabbt eller när liften inte går.\n\nKontakta klubben för bokning och tider. Antal platser är begränsat.",
+    publishedAt: "2026-08-17",
+  },
+  {
+    id: "wp-webbshop",
+    title: "Ny webbshop för klubbprodukter",
+    slug: "ny-webbshop",
+    category: "Information",
+    excerpt: "Klubbkläder med Åre Skärm- och Drakflygklubbs logga finns nu att beställa i ny webbshop hos Spreadshirt.",
+    content:
+      "Vi har öppnat en ny webbshop för klubbprodukter via Spreadshirt. Sortimentet inkluderar t-shirts, hoodies och andra plagg med klubbens logotyp.\n\nBeställ via asdfkstore.myspreadshop.se.",
+    publishedAt: "2026-01-23",
+  },
+  {
+    id: "wp-stipendium",
+    title: "Ansök om tävlingsstipendium",
+    slug: "ansok-tavlingsstipendium",
+    category: "Tävlingar",
+    excerpt: "Klubben delar ut tävlingsstipendium till medlemmar som vill delta i externa tävlingar.",
+    content:
+      "Klubben ger stipendium till medlemmar som deltar i tävlingar utanför klubbens egna arrangemang. Ansökan sker löpande.\n\nSe Tävlingsstipendium under Tävling för kriterier och ansökan.",
+    publishedAt: "2026-01-20",
+  },
+  {
     id: "1",
     title: "Säsongsstart i Årefjällen",
     slug: "sasongsstart-i-arefjallen",

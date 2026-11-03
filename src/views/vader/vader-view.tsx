@@ -1,5 +1,6 @@
 import React from "react";
 import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
+import HolfuyWidget from "../../blocks/wind-widget/holfuy-widget";
 import { weatherLinks as localWeatherLinks } from "../../data/weather-links";
 import { useWeatherLinks } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
@@ -21,6 +22,18 @@ const VaderView: React.FC = () => {
       />
 
       <section className="max-w-[1200px] mx-auto px-4 md:px-10 mt-8 md:mt-12">
+        <div
+          className="pt-6"
+          style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}
+        >
+          <h2 className="font-serif font-bold text-xl md:text-2xl tracking-tight mb-5" style={{ color: "var(--ink-2, #0f172b)" }}>
+            Vind nu — Holfuy live
+          </h2>
+          <HolfuyWidget />
+        </div>
+      </section>
+
+      <section className="max-w-[1200px] mx-auto px-4 md:px-10 mt-12 md:mt-16">
         <div
           className="pt-6"
           style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}

@@ -127,6 +127,24 @@ const BliMedlemView: React.FC = () => {
                 {membershipInfo.licenseNote}
               </p>
             )}
+            {Array.isArray((membershipInfo as any).licenseRenewal) && (membershipInfo as any).licenseRenewal.length > 0 && (
+              <ul className="mt-5 flex flex-col gap-2">
+                {(membershipInfo as any).licenseRenewal.map((rule: string, i: number) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 items-baseline text-sm leading-relaxed"
+                    style={{ color: "var(--slate-3, #45556c)" }}
+                  >
+                    <span
+                      className="shrink-0 w-2 h-2 rounded-full mt-1.5"
+                      style={{ background: "var(--accent, #3774a3)" }}
+                      aria-hidden="true"
+                    />
+                    {rule}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </section>
       </div>
