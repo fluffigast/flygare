@@ -5,7 +5,7 @@ Vite + React 19 + Tailwind 4 + pnpm. Node 22.
 ## Architecture
 
 - Frontend: Azure Static Web Apps (free tier). Repo: `fluffigast/flygare`.
-- CMS: Payload CMS on Azure Container App (`flygare-cms`, resource group `rg-joltjoker`).
+- CMS: Payload CMS on Azure Container App `flygare-cms`. Resource group and subscription set via GitHub Actions vars (`RESOURCE_GROUP`, `ACR_LOGIN_SERVER`).
 - CMS DB: Postgres via `postgresAdapter` (`cms/src/payload.config.ts`), connection from `DATABASE_URL`. Persistent — survives container restarts and redeploys.
 - SWA managed functions in `api/`:
   - `/api/smhi` — SMHI forecast proxy (CORS workaround), used by `src/utils/smhi-api.ts`.
