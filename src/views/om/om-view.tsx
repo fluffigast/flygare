@@ -1,6 +1,7 @@
 import React from "react";
 import { boardMembers as localBoard, milestones as localMilestones, clubHistory as localHistory, currentRecords } from "../../data/about";
 import { useBoardMembers, useMilestones, useClubInfo, useGlobalLivePreview } from "../../hooks/useCMS";
+import { cmsMediaUrl } from "../../lib/cms";
 import InitialsAvatar from "../../components/initials-avatar";
 import SEO from "../../components/seo";
 
@@ -55,7 +56,7 @@ const OmView: React.FC = () => {
               <div key={member.name} className="flex flex-col items-center text-center gap-3">
                 <InitialsAvatar
                   name={member.name}
-                  imageUrl={member.image?.url ?? member.image?.sizes?.thumbnail?.url}
+                  imageUrl={cmsMediaUrl(member.image?.url ?? member.image?.sizes?.thumbnail?.url)}
                   size={72}
                 />
                 <div>

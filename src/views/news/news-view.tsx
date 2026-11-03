@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { news as localNews } from "../../data/news";
 import { useNews } from "../../hooks/useCMS";
+import { cmsMediaUrl } from "../../lib/cms";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import SEO from "../../components/seo";
 
@@ -33,7 +34,7 @@ const NewsView: React.FC = () => {
     category: item.category ?? "Information",
     excerpt: truncate(item.description ?? item.excerpt ?? ""),
     publishedAt: item.publishedAt ?? item.date ?? item.createdAt,
-    imageUrl: item.image?.url ?? item.image?.sizes?.hero?.url ?? getPlaceholderImage(item.id?.toString() ?? item.slug),
+    imageUrl: cmsMediaUrl(item.image?.url ?? item.image?.sizes?.hero?.url) ?? getPlaceholderImage(item.id?.toString() ?? item.slug),
   }));
 
   // Categories fixed per site spec (pptx): Alla kategorier + 4 canonical.
