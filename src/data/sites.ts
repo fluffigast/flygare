@@ -441,8 +441,11 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
     updatedAt: "2026-01-10",
     overview: {
       position: {
-        wgs84: { lat: 63.398, lon: 13.065 },
-        sweref99: { lat: 7037200, lon: 691500 },
+        // Draklanda — södra stranden av Åresjön, väster om Åre torg.
+        // Tidigare koord (63.398, 13.065) landade pinnen i sjön.
+        // TODO: verifieras av styrelsen (issue #10).
+        wgs84: { lat: 63.3948, lon: 13.0735 },
+        sweref99: { lat: 7036990, lon: 691810 },
       },
       altitude: {
         takeoffMetersAboveSea: 380,
@@ -471,8 +474,11 @@ const sitesRaw: Omit<TakeoffSite, "content">[] = [
       ...baseEmergency,
       locationInstruction: 'Ange "Draklanda, landningsplats, Åre."',
       position: {
-        wgs84: { lat: 63.398, lon: 13.065 },
-        sweref99: { lat: 7037200, lon: 691500 },
+        // Draklanda — södra stranden av Åresjön, väster om Åre torg.
+        // Tidigare koord (63.398, 13.065) landade pinnen i sjön.
+        // TODO: verifieras av styrelsen (issue #10).
+        wgs84: { lat: 63.3948, lon: 13.0735 },
+        sweref99: { lat: 7036990, lon: 691810 },
       },
     },
   },
