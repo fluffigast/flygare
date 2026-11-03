@@ -81,10 +81,11 @@ const Header: React.FC = () => {
 
         <Link
           to="/bli-medlem"
-          className="hidden md:inline-flex items-center font-semibold text-sm text-white rounded-full whitespace-nowrap transition-all hover:-translate-y-px"
+          className="hidden md:inline-flex items-center font-semibold text-sm text-white rounded-full whitespace-nowrap transition-all hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent,#3774a3)] focus-visible:ring-offset-2"
           style={{
-            background: "var(--ink, #020618)",
+            background: "var(--accent, #3774a3)",
             padding: "9px 22px",
+            boxShadow: "var(--shadow-card, 0 1px 3px rgba(2,6,23,0.06), 0 8px 24px rgba(2,6,23,0.07))",
           }}
           onClick={closeMenu}
         >

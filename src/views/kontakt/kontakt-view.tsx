@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import { contactInfo as localContact } from "../../data/contact";
 import PageHero from "../../components/page-hero";
+import DataTable from "../../components/data-table";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
 
@@ -84,14 +85,16 @@ const KontaktView: React.FC = () => {
           <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-6" style={{ color: "var(--ink-2, #0f172b)" }}>
             Radiofrekvenser
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {contactInfo.radioFrequencies.map((freq: any) => (
-              <div key={freq.label} className="flex flex-col gap-1">
-                <p className="font-serif italic text-sm" style={{ color: "var(--ink-2, #0f172b)" }}>{freq.label}</p>
-                <p className="text-sm font-mono" style={{ color: "var(--slate, #62748e)" }}>{freq.value}</p>
-              </div>
-            ))}
-          </div>
+          <DataTable
+            columns={[
+              { key: "label", label: "Användning" },
+              { key: "value", label: "Frekvens", align: "right", mono: true },
+            ]}
+            rows={contactInfo.radioFrequencies.map((freq: any) => ({
+              label: freq.label,
+              value: freq.value,
+            }))}
+          />
         </section>
 
         {/* Emergency contacts */}
@@ -99,13 +102,30 @@ const KontaktView: React.FC = () => {
           <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-6" style={{ color: "var(--ink-2, #0f172b)" }}>
             Nödkontakter
           </h2>
-          <div className="flex flex-col gap-5">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4"
+            style={{
+              padding: "4px",
+            }}
+          >
             {contactInfo.emergencyContacts.map((contact: any) => (
-              <div key={contact.label} className="flex flex-col gap-1">
+              <div
+                key={contact.label}
+                className="flex flex-col gap-2 p-4 md:p-5"
+                style={{
+                  background: "rgba(220, 38, 38, 0.04)",
+                  borderLeft: "3px solid var(--signal-danger, #dc2626)",
+                  borderRadius: "var(--radius, 10px)",
+                }}
+              >
                 <p className="text-sm font-semibold" style={{ color: "var(--ink, #020618)" }}>{contact.label}</p>
-                <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>{contact.description}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>{contact.description}</p>
                 {"phone" in contact && contact.phone && (
-                  <a href={`tel:${contact.phone}`} className="text-sm font-mono underline hover:opacity-70 transition-opacity" style={{ color: "var(--ink, #020618)" }}>
+                  <a
+                    href={`tel:${contact.phone}`}
+                    className="text-base font-mono tabular-nums font-semibold underline hover:opacity-70 transition-opacity mt-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-danger,#dc2626)] focus-visible:ring-offset-2 rounded-sm"
+                    style={{ color: "var(--signal-danger, #dc2626)" }}
+                  >
                     {contact.phone}
                   </a>
                 )}
