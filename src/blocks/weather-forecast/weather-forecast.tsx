@@ -120,23 +120,51 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
         </h2>
       </div>
 
-      {/* Loading State */}
+      {/* Loading skeleton */}
       {loading && (
-        <p className="text-sm text-muted-foreground">Laddar väderdata...</p>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-5">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="flex-1 animate-pulse flex flex-col gap-3 p-5 md:p-6"
+              style={{
+                background: "#fafbfc",
+                border: "1px solid var(--border, #e2e8f0)",
+                borderRadius: "var(--radius, 10px)",
+                minHeight: 220,
+              }}
+              aria-hidden="true"
+            >
+              <div className="h-5 w-24 rounded" style={{ background: "var(--border, #e2e8f0)" }} />
+              <div className="h-8 w-32 rounded mt-2" style={{ background: "var(--border, #e2e8f0)" }} />
+              <div className="h-4 w-40 rounded" style={{ background: "var(--border, #e2e8f0)" }} />
+              <div className="mt-auto grid grid-cols-2 gap-4 pt-4" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
+                <div className="h-4 w-full rounded" style={{ background: "var(--border, #e2e8f0)" }} />
+                <div className="h-4 w-full rounded" style={{ background: "var(--border, #e2e8f0)" }} />
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
-      {/* Error State */}
-      {error && (
-        <p className="text-sm text-red-500">
-          Kunde inte ladda väderdata: {error}
+      {/* Error State — visa fallback-data med disclaimer i stället för tom ruta */}
+      {error && !loading && (
+        <p
+          className="text-xs"
+          style={{ color: "var(--slate, #62748e)" }}
+          role="status"
+        >
+          Kunde inte ladda live-data — visar senaste kända prognos.
         </p>
       )}
 
       {/* Forecast Items */}
       {!loading && (
-        <div className="flex flex-col md:flex-row gap-4 md:gap-8 justify-between">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-5">
           {displayItems.map((item, index) => (
-            <WeatherForecastItem key={index} {...item} />
+            <div key={index} className="flex-1">
+              <WeatherForecastItem {...item} />
+            </div>
           ))}
         </div>
       )}

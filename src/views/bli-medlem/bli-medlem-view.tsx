@@ -3,6 +3,7 @@ import { membershipInfo as localMembership } from "../../data/membership";
 import { useMembershipInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
 import PageHero from "../../components/page-hero";
+import DataTable from "../../components/data-table";
 
 const BliMedlemView: React.FC = () => {
   const { data: cmsMembership } = useMembershipInfo(localMembership);
@@ -36,7 +37,8 @@ const BliMedlemView: React.FC = () => {
           className="mt-8 md:mt-12 p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-16"
           style={{
             background: "var(--ink, #020618)",
-            borderRadius: 0,
+            borderRadius: "var(--radius, 10px)",
+            boxShadow: "var(--shadow-card, 0 1px 3px rgba(2,6,23,0.06), 0 8px 24px rgba(2,6,23,0.07))",
           }}
         >
           <div className="flex flex-col gap-2 text-center md:text-left">
@@ -56,11 +58,11 @@ const BliMedlemView: React.FC = () => {
               href={membershipInfo.shopUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-serif transition-all hover:-translate-y-px"
-              style={{ background: "#fff", color: "var(--ink, #020618)" }}
+              className="inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-semibold transition-all hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ink,#020618)]"
+              style={{ background: "var(--accent, #3774a3)", color: "#fff" }}
               data-payload-field="shopUrl"
             >
-              Köp medlemskap
+              Köp medlemskap &rarr;
             </a>
             <p className="text-white/50 text-xs">
               Betalning sker via Svensk Flygnings webbshop
@@ -107,39 +109,16 @@ const BliMedlemView: React.FC = () => {
             >
               Licenskrav
             </h2>
-            <div className="flex flex-col">
-              <div
-                className="grid grid-cols-2 gap-4 py-3"
-                style={{ borderBottom: "1px solid var(--border, #e2e8f0)" }}
-              >
-                <p
-                  className="text-sm font-semibold"
-                  style={{ color: "var(--ink, #020618)" }}
-                >
-                  Nivå
-                </p>
-                <p
-                  className="text-sm font-semibold"
-                  style={{ color: "var(--ink, #020618)" }}
-                >
-                  Krav
-                </p>
-              </div>
-              {membershipInfo.licenseRequirements.map((req: any) => (
-                <div
-                  key={req.level}
-                  className="grid grid-cols-2 gap-4 py-4"
-                  style={{ borderBottom: "1px solid var(--border, #e2e8f0)" }}
-                >
-                  <p className="text-sm" style={{ color: "var(--ink, #020618)" }}>
-                    {req.level}
-                  </p>
-                  <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>
-                    {req.requirements}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <DataTable
+              columns={[
+                { key: "level", label: "Nivå" },
+                { key: "requirements", label: "Krav" },
+              ]}
+              rows={membershipInfo.licenseRequirements.map((req: any) => ({
+                level: req.level,
+                requirements: req.requirements,
+              }))}
+            />
             {membershipInfo.licenseNote && (
               <p
                 className="mt-4 text-sm leading-relaxed"
