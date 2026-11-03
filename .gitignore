@@ -40,3 +40,7 @@ scripts/node_modules
 # Local test/screenshot artifacts
 .playwright-mcp/
 *-current.png
+audit-*.png
+
+# TypeScript incremental build cache
+*.tsbuildinfo
