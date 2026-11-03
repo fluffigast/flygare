@@ -6,6 +6,7 @@ import { news as localNews } from "../../data/news";
 import { getPlaceholderImage } from "../../utils/placeholder";
 import NewsSliderItem from "./news-slider-item";
 import { useNews } from "../../hooks/useCMS";
+import { cmsMediaUrl } from "../../lib/cms";
 
 export interface NewsSliderProps {}
 
@@ -100,7 +101,7 @@ const NewsSlider: React.FC<NewsSliderProps> = ({}) => {
             >
               <NewsSliderItem
                 {...item}
-                imageUrl={item.image?.url ?? item.image?.sizes?.thumbnail?.url ?? getPlaceholderImage(item.id)}
+                imageUrl={cmsMediaUrl(item.image?.url ?? item.image?.sizes?.thumbnail?.url) ?? getPlaceholderImage(item.id)}
               />
             </div>
           ))}

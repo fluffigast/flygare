@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useDocuments } from "../../hooks/useCMS";
+import { cmsMediaUrl } from "../../lib/cms";
 
 // Dokumentarkiv per pptx. Grupperas per kategori (Årsmöte / Stadgar / Övrigt),
 // sedan sorterat på år (nyast först) inom varje grupp.
@@ -76,7 +77,7 @@ const DokumentView: React.FC = () => {
               {group.docs.map((doc: any) => (
                 <a
                   key={doc.id ?? doc.title}
-                  href={doc.file?.url ?? "#"}
+                  href={cmsMediaUrl(doc.file?.url) ?? "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex justify-between items-center p-4 md:p-5 transition-colors hover:bg-[#fafbfc]"

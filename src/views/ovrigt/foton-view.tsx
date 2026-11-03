@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { usePhotos } from "../../hooks/useCMS";
+import { cmsMediaUrl } from "../../lib/cms";
 
 // Bildarkiv sorterat på årtal per pptx. Album grupperas per year → visas
 // nedåt kronologiskt (nyast först). Om ett album saknar year hamnar det
@@ -66,7 +67,7 @@ const FotonView: React.FC = () => {
                 )}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                   {album.images?.map((img: any, i: number) => {
-                    const src = img.image?.url ?? img.url;
+                    const src = cmsMediaUrl(img.image?.url ?? img.url);
                     if (!src) return null;
                     return (
                       <img
