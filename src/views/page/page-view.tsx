@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { usePage, useGlobalLivePreview } from "../../hooks/useCMS";
 import { pages } from "../../data/pages";
 import { articles } from "../../data/articles";
@@ -7,7 +7,9 @@ import SEO from "../../components/seo";
 
 const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
   const params = useParams();
+  const location = useLocation();
   const slug = slugProp ?? params.slug;
+  const canonicalPath = location.pathname;
   const pageFallback = pages.find((p) => p.slug === slug);
   const articleFallback = articles.find((a) => a.slug === slug);
   const fallback = pageFallback
@@ -35,7 +37,7 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
       <div className="w-full relative">
         <SEO
           title={title}
-          path={slug ? `/${slug}` : undefined}
+          path={canonicalPath}
           description={lede ?? title}
         />
         <section className="relative max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
@@ -150,6 +152,24 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
             listBuf = [];
           };
 
+          const linkify = (text: string): React.ReactNode[] => {
+            const re = /(https?:\/\/[^\s)]+)/g;
+            const nodes: React.ReactNode[] = [];
+            let last = 0;
+            let match: RegExpExecArray | null;
+            while ((match = re.exec(text)) !== null) {
+              if (match.index > last) nodes.push(text.slice(last, match.index));
+              nodes.push(
+                <a key={match.index} href={match[0]} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70" style={{ color: "var(--ink, #020618)" }}>
+                  {match[0]}
+                </a>,
+              );
+              last = match.index + match[0].length;
+            }
+            if (last < text.length) nodes.push(text.slice(last));
+            return nodes;
+          };
+
           paragraphs.forEach((text: string, i: number) => {
             const trimmed = text.trim();
             if (/^[-•]\s+/.test(trimmed)) {
@@ -157,7 +177,8 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
               return;
             }
             flushList();
-            const isHeading = trimmed.length < 60 && !trimmed.includes(". ") && !trimmed.includes(",");
+            const hasUrl = /https?:\/\//.test(trimmed);
+            const isHeading = !hasUrl && trimmed.length < 60 && !trimmed.includes(". ") && !trimmed.includes(",");
             if (isHeading) {
               out.push(
                 <h3 key={i} className="font-serif font-bold text-lg mt-10 mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>
@@ -167,7 +188,7 @@ const PageView: React.FC<{ slug?: string }> = ({ slug: slugProp }) => {
             } else {
               out.push(
                 <p key={i} className="text-base leading-relaxed mb-4" style={{ color: "var(--slate-3, #45556c)" }}>
-                  {trimmed}
+                  {linkify(trimmed)}
                 </p>
               );
             }

@@ -8,6 +8,7 @@ import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
 import { useNews } from "../../../hooks/useCMS";
 import { cmsMediaUrl } from "../../../lib/cms";
+import SEO from "../../../components/seo";
 
 function richTextToString(value: any): string {
   if (typeof value === "string") return value;
@@ -48,9 +49,22 @@ const NewsSingleView: React.FC = () => {
   }
 
   const imageUrl = cmsMediaUrl((newsItem as any).image?.url ?? (newsItem as any).image?.sizes?.hero?.url) ?? getPlaceholderImage(slug ?? "fallback");
+  const description = (newsItem as any).description ?? newsItem.excerpt ?? "";
+  const rawContent = richTextToString((newsItem as any).content ?? "");
+  // Rendera inte innehåll som bara duplicerar lede.
+  const bodyParagraphs = rawContent && rawContent.trim() !== description.trim()
+    ? rawContent.split("\n").filter((p: string) => p.trim())
+    : [];
 
   return (
     <div className="w-full">
+      <SEO
+        title={newsItem.title}
+        path={`/nyheter/${slug ?? ""}`}
+        description={description.slice(0, 155)}
+        image={imageUrl.startsWith("http") ? imageUrl : undefined}
+        type="article"
+      />
       {/* Image header */}
       <div
         className="w-full relative"
@@ -108,13 +122,11 @@ const NewsSingleView: React.FC = () => {
               className="font-serif italic text-lg md:text-2xl leading-snug mb-8"
               style={{ color: "var(--ink-2, #0f172b)" }}
             >
-              {(newsItem as any).description ?? newsItem.excerpt}
+              {description}
             </p>
-            <div className="flex flex-col gap-4">
-              {richTextToString((newsItem as any).content ?? (newsItem as any).description ?? "")
-                .split("\n")
-                .filter((p: string) => p.trim())
-                .map((p: string, i: number) => (
+            {bodyParagraphs.length > 0 && (
+              <div className="flex flex-col gap-4">
+                {bodyParagraphs.map((p: string, i: number) => (
                   <p
                     key={i}
                     className="text-base leading-relaxed"
@@ -123,7 +135,8 @@ const NewsSingleView: React.FC = () => {
                     {p}
                   </p>
                 ))}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Aside */}

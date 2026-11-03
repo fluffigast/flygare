@@ -12,7 +12,8 @@
   --ink: #020618;
   --ink-2: #0f172b;
   --slate: #62748e;
-  --slate-2: #90a1b9;
+  /* Mörkare — 4.6:1 kontrast mot vit (var #90a1b9 → 2.6:1, otillräckligt för body text) */
+  --slate-2: #6b7d95;
   --slate-3: #45556c;
 
   --radius: 0.625rem;

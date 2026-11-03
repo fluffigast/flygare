@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "react-router";
 
 import HeroBanner from "../../../blocks/hero-banner/hero-banner";
+import SEO from "../../../components/seo";
 import { WindCompassWedge } from "../../../components/wind-compass-wedge";
 import { sites as localSites, type Site } from "../../../data/sites";
 import { formatSweref99, formatWgs84 } from "../../../utils/coordinates";
@@ -33,11 +34,21 @@ const SitesSingleView: React.FC = () => {
   const { overview, description, risks, emergency } = sitesItem;
   return (
     <>
+      <SEO
+        title={sitesItem.title}
+        path={`/flyga-i-are/startplatser/${sitesItem.slug}`}
+        description={
+          (Array.isArray(description) ? description.join(" ") : (description as unknown as string))
+            ?.slice?.(0, 155) ??
+          `Startplats ${sitesItem.title} i Åre — höjd, väderstreck, risker och åtkomst.`
+        }
+      />
       <HeroBanner
         imageUrl={
           getPlaceholderImage(slug ?? "fallback") ??
           `https://placehold.co/1920x1080?text=${sitesItem?.slug}`
         }
+        alt={`${sitesItem.title} — startplats i Åre`}
       />
       <article className="mx-auto flex w-full max-w-6xl flex-col px-4 gap-8">
         <header className="flex flex-col gap-2">

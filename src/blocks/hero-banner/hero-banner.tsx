@@ -5,6 +5,7 @@ export interface HeroBannerProps {
   imageUrl?: string;
   title?: string;
   subtitle?: string;
+  alt?: string;
   titleField?: string;
   subtitleField?: string;
 }
@@ -13,6 +14,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
   imageUrl = getPlaceholderImage("hero-default"),
   title,
   subtitle,
+  alt,
   titleField,
   subtitleField,
 }) => {
@@ -20,7 +22,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
     <section className="bg-primary text-primary-foreground aspect-[3/1] md:aspect-[4/1] overflow-hidden relative">
       <img
         src={imageUrl}
-        alt={title ?? ""}
+        alt={alt ?? title ?? ""}
         className="w-full h-full object-cover"
       />
       {(title || subtitle) && (

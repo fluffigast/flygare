@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { usePhotos } from "../../hooks/useCMS";
 import { cmsMediaUrl } from "../../lib/cms";
+import SEO from "../../components/seo";
 
 // Bildarkiv sorterat på årtal per pptx. Album grupperas per year → visas
 // nedåt kronologiskt (nyast först). Om ett album saknar year hamnar det
@@ -20,6 +21,11 @@ const FotonView: React.FC = () => {
 
   return (
     <div className="w-full">
+      <SEO
+        title="Foton"
+        path="/ovrigt/foton"
+        description="Bildarkiv från klubbens säsonger, sorterat per årtal — från start- och landningsplatser till tävlingar och klubbresor."
+      />
       <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Övrigt</p>
         <h1
