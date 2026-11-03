@@ -24,5 +24,10 @@ export const membershipInfo = {
     { level: "Pilot 2", requirements: "Minst 10 flygningar + 5 timmars flygtid för förnyelse" },
   ],
   licenseNote:
-    "Om du inte uppfyller kravet kan du ändå förnya din licens, men du erhåller då en lägre licensnivå.",
+    "Om du inte uppfyller kravet kan du ändå förnya din licens, men du erhåller då en lägre licensnivå. Anteckna på inbetalningen vilket krav du inte uppfyller.",
+  licenseRenewal: [
+    "Uppfyller du kravet för en högre licensnivå före 30 juni kan du få licensen uppgraderad vid betalning.",
+    "Uppfyller du inte kravet: notera det på inbetalningen — licensen sänks då ett steg.",
+    "Frågor om försäkring hänvisas till Skärmflygförbundet (paragliding.se).",
+  ],
 };

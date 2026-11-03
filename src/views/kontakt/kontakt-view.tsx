@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { contactInfo as localContact } from "../../data/contact";
 import PageHero from "../../components/page-hero";
 import DataTable from "../../components/data-table";
+import ContactForm from "../../components/contact-form";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
 
@@ -64,6 +65,14 @@ const KontaktView: React.FC = () => {
             </Link>
           </p>
         </div>
+
+        {/* Contact form */}
+        <section className="mb-12" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>
+          <h2 className="font-serif font-bold text-xl md:text-[32px] leading-none mt-6 mb-6" style={{ color: "var(--ink-2, #0f172b)" }}>
+            Skicka ett meddelande
+          </h2>
+          <ContactForm />
+        </section>
 
         {/* Social media */}
         <section className="mb-12" style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}>

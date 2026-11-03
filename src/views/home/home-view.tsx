@@ -5,6 +5,7 @@ import Header from "../../components/header";
 import NewsSlider from "../../blocks/news-slider/news-slider";
 import SafetyBanner from "../../blocks/safety-banner/safety-banner";
 import WindWidget from "../../blocks/wind-widget/wind-widget";
+import HolfuyWidget from "../../blocks/wind-widget/holfuy-widget";
 import Footer from "../../components/footer";
 import SEO from "../../components/seo";
 import { useSiteSettings, useGlobalLivePreview } from "../../hooks/useCMS";
@@ -78,13 +79,17 @@ const HomeView: React.FC = () => {
         className="relative w-full overflow-hidden"
         style={{ height: "clamp(420px, 72vh, 720px)", background: "#1a1e2a" }}
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-transform ease-out"
+        <img
+          src="/assets/hero-paragliding.jpg"
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover object-center transition-transform ease-out"
           style={{
-            backgroundImage: "url(/assets/hero-paragliding.jpg)",
             transform: heroIn ? "scale(1)" : "scale(1.04)",
             transitionDuration: "8000ms",
           }}
+          aria-hidden="true"
         />
         <div
           className="absolute inset-0"
@@ -131,6 +136,17 @@ const HomeView: React.FC = () => {
           Nyheter, Aktuellt väder — placeras direkt efter hero.
           (Berg-silhuetten kommer från global PageBackdrop.) */}
       <section className="relative max-w-[1480px] mx-auto px-4 md:px-14 mt-8 md:mt-12">
+        <div className="mb-8 md:mb-10">
+          <div className="flex items-baseline justify-between mb-4">
+            <h2 className="font-serif font-bold text-xl md:text-2xl tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
+              Vind nu
+            </h2>
+            <Link to="/flyga-i-are/vader" className="text-xs uppercase tracking-wider font-semibold hover:opacity-70" style={{ color: "var(--accent-strong, #2a5c82)" }}>
+              Full prognos →
+            </Link>
+          </div>
+          <HolfuyWidget />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-12">
           <WindWidget />
           <div className="flex flex-col gap-4 h-full">
