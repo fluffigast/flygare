@@ -165,9 +165,12 @@ export interface News {
   id: number;
   title: string;
   slug: string;
-  category: 'Aktiviteter' | 'Aktuellt' | 'Information' | 'Klubben' | 'Säkerhet' | 'Tävlingar' | 'Övrigt';
+  category: 'Aktiviteter' | 'Information' | 'Säkerhet' | 'Tävlingar' | 'Övrigt';
   date: string;
   image?: (number | null) | Media;
+  /**
+   * Kort sammanfattning som visas i listor och nyhetskort.
+   */
   description?: string | null;
   featured?: boolean | null;
   updatedAt: string;
@@ -322,6 +325,14 @@ export interface OtherSite {
 export interface Competition {
   id: number;
   name: string;
+  /**
+   * URL-slug (ex: are-ppc → /tavlingar/are-ppc). Om tom visas tävlingen bara i översikten.
+   */
+  slug?: string | null;
+  /**
+   * Länk till anmälan (valfri).
+   */
+  signupUrl?: string | null;
   status: 'Aktiv' | 'Avslutad';
   subtitle?: string | null;
   description?: {
@@ -412,19 +423,39 @@ export interface User {
 export interface Page {
   id: number;
   title: string;
+  /**
+   * URL-slug (ex: skistar → /flyga-i-are/skistar).
+   */
   slug: string;
+  /**
+   * Vilken menysektion sidan hör till. Används för URL-routing i live-preview.
+   */
+  section?: ('flyga-i-are' | 'aktiviteter' | 'tavlingar' | 'om') | null;
+  /**
+   * Legacy — används för filtrering i CMS-listan. Nya sidor: sätt även "section".
+   */
   category:
     | 'flygregler'
     | 'sakerhet'
     | 'xc'
+    | 'klubbuss'
+    | 'stadgar'
+    | 'klubbprodukter'
+    | 'skistar'
     | 'acro'
     | 'speedrider'
     | 'hangflyg'
     | 'paramotor'
-    | 'klubbuss'
-    | 'stadgar'
-    | 'klubbprodukter';
-  body: {
+    | 'startplatser'
+    | 'vader'
+    | 'aktivitet'
+    | 'tavling'
+    | 'ovrigt';
+  /**
+   * Ingressraden ovanför brödtexten (valfri).
+   */
+  lede?: string | null;
+  body?: {
     root: {
       type: string;
       children: {
@@ -438,7 +469,7 @@ export interface Page {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   order?: number | null;
   image?: (number | null) | Media;
   links?:
@@ -461,6 +492,10 @@ export interface Activity {
   slug: string;
   type: 'kalender' | 'klubbresa' | 'arsmote' | 'ovrigt';
   date: string;
+  /**
+   * Plats/mötesplats (valfri).
+   */
+  location?: string | null;
   body?: {
     root: {
       type: string;
@@ -734,6 +769,8 @@ export interface OtherSitesSelect<T extends boolean = true> {
  */
 export interface CompetitionsSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
+  signupUrl?: T;
   status?: T;
   subtitle?: T;
   description?: T;
@@ -847,7 +884,9 @@ export interface UsersSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  section?: T;
   category?: T;
+  lede?: T;
   body?: T;
   order?: T;
   image?: T;
@@ -870,6 +909,7 @@ export interface ActivitiesSelect<T extends boolean = true> {
   slug?: T;
   type?: T;
   date?: T;
+  location?: T;
   body?: T;
   attachments?:
     | T

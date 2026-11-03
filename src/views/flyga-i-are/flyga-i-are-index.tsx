@@ -125,23 +125,19 @@ const FlyingGuideIndex: React.FC = () => {
                 {topic.title}
               </h2>
               <ul className="list-disc pl-5 flex flex-col gap-2">
-                {topic.items.map((item, i) => (
+                {topic.items.filter((item) => item.to).map((item, i) => (
                   <li
                     key={i}
                     className="text-sm leading-snug"
                     style={{ color: "var(--slate-3, #45556c)" }}
                   >
-                    {item.to ? (
-                      <Link
-                        to={item.to}
-                        className="font-semibold hover:underline"
-                        style={{ color: "var(--hero-accent, #3774a3)" }}
-                      >
-                        {item.text}
-                      </Link>
-                    ) : (
-                      item.text
-                    )}
+                    <Link
+                      to={item.to!}
+                      className="font-semibold hover:underline"
+                      style={{ color: "var(--hero-accent, #3774a3)" }}
+                    >
+                      {item.text}
+                    </Link>
                   </li>
                 ))}
               </ul>

@@ -1,6 +1,7 @@
 import React from "react";
 import { membershipInfo as localMembership } from "../../data/membership";
 import { useMembershipInfo, useGlobalLivePreview } from "../../hooks/useCMS";
+import SEO from "../../components/seo";
 
 const BliMedlemView: React.FC = () => {
   const { data: cmsMembership } = useMembershipInfo(localMembership);
@@ -21,6 +22,11 @@ const BliMedlemView: React.FC = () => {
 
   return (
     <div className="w-full">
+      <SEO
+        title="Bli medlem"
+        path="/bli-medlem"
+        description="Bli medlem i Åre Skärm- och Drakflygklubb. Medlemskap, licenskrav, Draklanda, klubbuss och förmåner."
+      />
       {/* Editorial header */}
       <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p

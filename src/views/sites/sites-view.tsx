@@ -24,7 +24,6 @@ const otherSiteSummary = (site: OtherSiteDoc): string => {
 
 const SitesView: React.FC = () => {
   const { data: cmsLaunches } = useLaunches([]);
-  // Merge CMS over local by slug so production CMS gaps don't hide sites.
   const bySlug = new Map(localSites.map((s) => [s.slug, s]));
   for (const launch of cmsLaunches) {
     const mapped = mapLaunchToSite(launch);
@@ -32,8 +31,6 @@ const SitesView: React.FC = () => {
   }
   const sites = Array.from(bySlug.values());
 
-  // sitesIntro.areas[0..1] = allmän intro (Åreskutan + Andra flygområden).
-  // sitesIntro.areas[2..] = de 4 other-sites som fallback om CMS är tomt.
   const generalAreas = sitesIntro.areas.slice(0, 2);
   const otherSitesFallback: OtherSiteDoc[] = sitesIntro.areas.slice(2).map((a) => ({
     name: a.title,
@@ -42,25 +39,33 @@ const SitesView: React.FC = () => {
   const { data: cmsOtherSites } = useOtherSites(otherSitesFallback);
 
   return (
-    <>
-      <SitesMap sites={sites} />
-      <div className="max-w-2xl px-4 flex gap-16 flex-col w-full">
-        <section className="flex flex-col gap-6">
-          <div>
-            <p className="font-serif italic text-muted-foreground text-sm">Startplatser</p>
-            <h2 className="font-serif text-3xl">{sitesIntro.title}</h2>
-          </div>
-          <div className="flex flex-col gap-4 text-muted-foreground text-sm leading-relaxed">
+    <div className="w-full">
+      <section className="w-full h-[clamp(340px,52vh,560px)]">
+        <SitesMap sites={sites} className="relative bg-muted w-full h-full overflow-hidden border border-border" />
+      </section>
+
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-10 md:pt-12 pb-16 flex flex-col gap-10">
+        <section className="max-w-[720px] flex flex-col gap-4">
+          <p className="font-serif italic text-muted-foreground text-sm">Startplatser</p>
+          <h2 className="font-serif text-3xl tracking-tight" style={{ color: "var(--ink-2, #0f172b)" }}>
+            {sitesIntro.title}
+          </h2>
+          <div className="flex flex-col gap-3 text-sm leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>
             {sitesIntro.rules.map((rule, i) => (
               <p key={i}>{rule}</p>
             ))}
           </div>
+        </section>
+
+        <SitesGrid sites={sites} />
+
+        <section className="max-w-[720px] flex flex-col gap-6">
           {generalAreas.map((area) => (
             <React.Fragment key={area.title}>
               <Separator />
               <div>
-                <h3 className="font-serif text-xl mb-3">{area.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <h3 className="font-serif text-xl mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>{area.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>
                   {area.description}
                 </p>
               </div>
@@ -70,18 +75,16 @@ const SitesView: React.FC = () => {
             <React.Fragment key={site.name}>
               <Separator />
               <div>
-                <h3 className="font-serif text-xl mb-3">{site.name}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <h3 className="font-serif text-xl mb-3" style={{ color: "var(--ink-2, #0f172b)" }}>{site.name}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--slate-3, #45556c)" }}>
                   {otherSiteSummary(site)}
                 </p>
               </div>
             </React.Fragment>
           ))}
-          <Separator />
         </section>
-        <SitesGrid sites={sites} />
       </div>
-    </>
+    </div>
   );
 };
 

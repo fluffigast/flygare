@@ -2,11 +2,17 @@ import React from "react";
 import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
 import { weatherLinks as localWeatherLinks } from "../../data/weather-links";
 import { useWeatherLinks } from "../../hooks/useCMS";
+import SEO from "../../components/seo";
 
 const VaderView: React.FC = () => {
   const { data: weatherLinks } = useWeatherLinks(localWeatherLinks);
   return (
     <div className="w-full">
+      <SEO
+        title="Väder"
+        path="/flyga-i-are/vader"
+        description="Väder- och vindförhållanden i Åre för skärm- och drakflyg. SMHI-prognos, vindmätare och lokala observationer."
+      />
       {/* Editorial header */}
       <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <p
