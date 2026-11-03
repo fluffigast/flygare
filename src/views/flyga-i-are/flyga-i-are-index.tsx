@@ -1,85 +1,88 @@
 import React from "react";
 import { Link } from "react-router";
+import {
+  ShieldAlertIcon,
+  MapIcon,
+  BookOpenIcon,
+  CircleArrowOutUpRightIcon,
+  CloudIcon,
+  ZapIcon,
+  MountainIcon,
+  WavesIcon,
+  BusIcon,
+  WindIcon,
+} from "lucide-react";
 import SEO from "../../components/seo";
 
-type TopicItem = { text: string; to?: string };
-type Topic = { title: string; items: TopicItem[] };
+type Topic = {
+  title: string;
+  lead: string;
+  to: string;
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
+  accent?: "safety" | "default";
+};
 
-// Layout & content per pptx-audit HTML-referens (Downloads/flyga-i-are.html):
-// 10 grå cards i 2-kolumners grid. Blå accent-länkar för kända underlänkar.
 const TOPICS: Topic[] = [
   {
-    title: "Säkerhet / Nödsituation",
-    items: [
-      { text: "Rutiner vid nödsituation", to: "/flyga-i-are/sakerhet" },
-      { text: "Säkerhet & ansvar / etik & hänsyn" },
-    ],
-  },
-  {
-    title: "Cross country flygning",
-    items: [
-      { text: "Info om vad man bör tänka på vid XC", to: "/flyga-i-are/xc" },
-      { text: "Info om luftrum med luftrumskarta" },
-      { text: "Rutiner för flygning i luftrummet" },
-      { text: "Länkar & telefonnummer för flygning i luftrum" },
-      { text: "Radiofrekvens mm" },
-    ],
+    title: "Säkerhet & nödsituation",
+    lead: "Rutiner vid nödsituation, etik och hänsyn — läs före varje start.",
+    to: "/flyga-i-are/sakerhet",
+    icon: ShieldAlertIcon,
+    accent: "safety",
   },
   {
     title: "Flygregler",
-    items: [
-      { text: "Sammanfattning av de viktigaste från reglerna", to: "/flyga-i-are/flygregler" },
-      { text: "Samarbetsavtalet Skistar", to: "/flyga-i-are/skistar" },
-      { text: "Avtalet Kommersiell aktör" },
-    ],
-  },
-  {
-    title: "Acro flygning",
-    items: [
-      { text: "Info om vad man bör tänka på vid acro", to: "/flyga-i-are/acro" },
-      { text: "Räddningsbåt (länk till reglerna)", to: "/flyga-i-are/klubbuss" },
-      { text: "Acrobox" },
-    ],
-  },
-  {
-    title: "Väder",
-    items: [
-      { text: "Allmänt om lokala väderförhållanden", to: "/flyga-i-are/vader" },
-      { text: "Länkar till vädersidor & vindmätare" },
-    ],
-  },
-  {
-    title: "Speedrider",
-    items: [
-      { text: "Info om vad man bör tänka på vid flygning med speedrider", to: "/flyga-i-are/speedrider" },
-    ],
+    lead: "Sammanfattning av de viktigaste reglerna för flygning i Åre.",
+    to: "/flyga-i-are/flygregler",
+    icon: BookOpenIcon,
   },
   {
     title: "Starter & landningar",
-    items: [
-      { text: "Beskrivning av & info om startplatser i Åre med omnejd", to: "/flyga-i-are/startplatser" },
-      { text: "Karta över dessa" },
-    ],
+    lead: "Beskrivning av startplatser med karta, koordinater och väderstreck.",
+    to: "/flyga-i-are/startplatser",
+    icon: MapIcon,
+  },
+  {
+    title: "Cross country flygning",
+    lead: "XC-rutiner, kontrollerat luftrum, ATS-avtal och telefonnummer.",
+    to: "/flyga-i-are/xc",
+    icon: CircleArrowOutUpRightIcon,
+  },
+  {
+    title: "Väder",
+    lead: "Lokala väderförhållanden, SMHI-prognos och länkar till vindmätare.",
+    to: "/flyga-i-are/vader",
+    icon: CloudIcon,
+  },
+  {
+    title: "Acro flygning",
+    lead: "Vad man bör tänka på vid acro, räddningsbåt och Acrobox.",
+    to: "/flyga-i-are/acro",
+    icon: ZapIcon,
   },
   {
     title: "Hängflyg",
-    items: [
-      { text: "Info om vad man bör tänka på vid flygning med hängflyg", to: "/flyga-i-are/hangflyg" },
-    ],
+    lead: "Information om vad man bör tänka på vid flygning med hängflyg.",
+    to: "/flyga-i-are/hangflyg",
+    icon: MountainIcon,
+  },
+  {
+    title: "Speedrider",
+    lead: "Information om vad man bör tänka på vid flygning med speedrider.",
+    to: "/flyga-i-are/speedrider",
+    icon: WavesIcon,
   },
   {
     title: "Klubbuss & räddningsbåt",
-    items: [
-      { text: "Allmänt vad som gäller", to: "/flyga-i-are/klubbuss" },
-      { text: "Regler & avgifter klubbuss (enligt skapat dokument)" },
-      { text: "Regler räddningsbåt (enligt skapat dokument)" },
-    ],
+    lead: "Regler, avgifter och behörighet för klubbuss och räddningsbåt.",
+    to: "/flyga-i-are/klubbuss",
+    icon: BusIcon,
   },
   {
     title: "Paramotor",
-    items: [
-      { text: "Info om vad man bör tänka på vid flygning med paramotor", to: "/flyga-i-are/paramotor" },
-    ],
+    lead: "Information om vad man bör tänka på vid flygning med paramotor.",
+    to: "/flyga-i-are/paramotor",
+    icon: WindIcon,
   },
 ];
 
@@ -93,56 +96,78 @@ const FlyingGuideIndex: React.FC = () => {
       />
       <section className="relative max-w-[1200px] mx-auto px-4 md:px-10 pt-12 md:pt-16 pb-6 md:pb-8">
         <p
-          className="font-serif italic text-base md:text-lg"
-          style={{ color: "var(--slate, #62748e)" }}
-        >
-          Allt du behöver veta innan du startar
-        </p>
-        <h1
-          className="font-serif font-bold mt-1 leading-tight tracking-tight"
-          style={{ fontSize: "clamp(28px, 3.4vw, 44px)", color: "var(--ink-2, #0f172b)" }}
+          className="font-sans uppercase tracking-[0.14em] text-xs font-semibold"
+          style={{ color: "var(--hero-accent, #3774a3)" }}
         >
           Flyga i Åre
+        </p>
+        <h1
+          className="font-serif font-bold mt-2 leading-tight tracking-tight"
+          style={{ fontSize: "clamp(36px, 5vw, 60px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
+        >
+          Allt du behöver veta innan du startar
         </h1>
+        <p
+          className="max-w-2xl mt-6 text-base md:text-lg leading-relaxed"
+          style={{ color: "var(--slate-3, #45556c)" }}
+        >
+          Säkerhet, regler, luftrum, startplatser, väder och lokala rutiner — samlat på ett ställe.
+        </p>
       </section>
 
       <section className="max-w-[1200px] mx-auto px-4 md:px-10 pb-16 md:pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-          {TOPICS.map((topic) => (
-            <article
-              key={topic.title}
-              className="p-6 md:p-7"
-              style={{
-                background: "var(--paper, #fafbfc)",
-                border: "1px solid var(--border, #e2e8f0)",
-                borderRadius: 10,
-              }}
-            >
-              <h2
-                className="font-serif font-bold text-lg mb-3"
-                style={{ color: "var(--ink-2, #0f172b)" }}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+          {TOPICS.map((topic) => {
+            const Icon = topic.icon;
+            const isSafety = topic.accent === "safety";
+            return (
+              <Link
+                key={topic.title}
+                to={topic.to}
+                className="group flex flex-col gap-4 p-6 md:p-7 transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                style={{
+                  background: isSafety ? "var(--hero-accent, #3774a3)" : "var(--paper, #fafbfc)",
+                  border: `1px solid ${isSafety ? "var(--hero-accent, #3774a3)" : "var(--border, #e2e8f0)"}`,
+                  borderRadius: 10,
+                  color: isSafety ? "#fff" : undefined,
+                  // @ts-expect-error — CSS custom property
+                  "--tw-ring-color": "var(--hero-accent, #3774a3)",
+                }}
               >
-                {topic.title}
-              </h2>
-              <ul className="list-disc pl-5 flex flex-col gap-2">
-                {topic.items.filter((item) => item.to).map((item, i) => (
-                  <li
-                    key={i}
-                    className="text-sm leading-snug"
-                    style={{ color: "var(--slate-3, #45556c)" }}
+                <div className="flex items-center justify-between">
+                  <span
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full"
+                    style={{
+                      background: isSafety ? "rgba(255,255,255,0.18)" : "rgba(55,116,163,0.08)",
+                      color: isSafety ? "#fff" : "var(--hero-accent, #3774a3)",
+                    }}
+                    aria-hidden="true"
                   >
-                    <Link
-                      to={item.to!}
-                      className="font-semibold hover:underline"
-                      style={{ color: "var(--hero-accent, #3774a3)" }}
-                    >
-                      {item.text}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+                    <Icon size={20} strokeWidth={1.6} />
+                  </span>
+                  <span
+                    className="text-sm transition-transform duration-200 group-hover:translate-x-1"
+                    style={{ color: isSafety ? "#fff" : "var(--slate, #62748e)" }}
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </div>
+                <h2
+                  className="font-serif font-bold text-xl md:text-[22px] leading-snug tracking-tight"
+                  style={{ color: isSafety ? "#fff" : "var(--ink-2, #0f172b)" }}
+                >
+                  {topic.title}
+                </h2>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: isSafety ? "rgba(255,255,255,0.86)" : "var(--slate-3, #45556c)" }}
+                >
+                  {topic.lead}
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </div>
