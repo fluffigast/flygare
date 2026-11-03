@@ -52,5 +52,19 @@ export async function fetchWithFallback<T>(
   }
 }
 
+/**
+ * Payload returns media URLs relative to the CMS (`/api/media/file/...`)
+ * since `serverURL` is not set. Prefix relative URLs with the same CMS base
+ * as the API calls; absolute URLs pass through untouched.
+ */
+export function joinCmsUrl(base: string, url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  if (!url.startsWith("/") || url.startsWith("//")) return url;
+  return `${base.replace(/\/+$/, "")}${url}`;
+}
+
+export const cmsMediaUrl = (url: string | null | undefined): string | undefined =>
+  joinCmsUrl(CMS_URL, url);
+
 // Re-export for use in hooks
 export { fetchCollection, fetchGlobal, CMS_URL };

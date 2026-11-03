@@ -7,6 +7,7 @@ import { articles } from "../../../data/articles";
 import { getPlaceholderImage } from "../../../utils/placeholder";
 import NewsSlider from "../../../blocks/news-slider/news-slider";
 import { useNews } from "../../../hooks/useCMS";
+import { cmsMediaUrl } from "../../../lib/cms";
 
 function richTextToString(value: any): string {
   if (typeof value === "string") return value;
@@ -46,7 +47,7 @@ const NewsSingleView: React.FC = () => {
     );
   }
 
-  const imageUrl = (newsItem as any).image?.url ?? (newsItem as any).image?.sizes?.hero?.url ?? getPlaceholderImage(slug ?? "fallback");
+  const imageUrl = cmsMediaUrl((newsItem as any).image?.url ?? (newsItem as any).image?.sizes?.hero?.url) ?? getPlaceholderImage(slug ?? "fallback");
 
   return (
     <div className="w-full">
