@@ -65,6 +65,7 @@ jobs:
       # inget container-uppdatering). Prod fortsätter köra föregående image.
       - name: Run Payload migrations
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        timeout-minutes: 5
         env:
           IMAGE_TAG: ${{ github.sha }}
           ACR_HOST: ${{ vars.ACR_LOGIN_SERVER }}
