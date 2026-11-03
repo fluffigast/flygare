@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { contactInfo as localContact } from "../../data/contact";
+import PageHero from "../../components/page-hero";
 import { useContactInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
 
@@ -29,17 +30,9 @@ const KontaktView: React.FC = () => {
         path="/kontakt"
         description="Kontakta Åre Skärm- och Drakflygklubb — mailadress, sociala medier, besöksadress, organisationsnummer och flygradiofrekvens."
       />
-      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
-        <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Kontakt</p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
-        >
-          Kontakta oss
-        </h1>
-      </section>
+      <PageHero eyebrow="Kontakt" title="Kontakta oss" />
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pb-16">
         <div className="flex flex-col gap-3 mb-12" style={{ color: "var(--slate, #62748e)" }}>
           <p className="text-base">
             E-post:{" "}

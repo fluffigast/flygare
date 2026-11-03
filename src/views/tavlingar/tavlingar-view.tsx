@@ -3,6 +3,7 @@ import { competitions as localCompetitions } from "../../data/competitions";
 import { useCompetitions } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
 import SubnavGrid from "../../components/subnav-grid";
+import PageHero from "../../components/page-hero";
 
 /** Extract plain text from a Lexical richText object or return string as-is */
 function richTextToString(value: any): string {
@@ -27,22 +28,15 @@ const TavlingarView: React.FC = () => {
         path="/tavlingar"
         description="Klubbens tävlingar: Åre PPC, Topplandning, Sverige Cup, tävlingsstipendium. Anmälan, resultat och vinnare per år."
       />
-      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
-        <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Tävlingar</p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
-        >
-          Tävla och utmana dig själv
-        </h1>
-        <p className="max-w-2xl mt-6 text-base leading-relaxed" style={{ color: "var(--slate, #62748e)" }}>
-          Från distansrekord till första topplandningen — det finns alltid något att jaga.
-        </p>
-      </section>
+      <PageHero
+        eyebrow="Tävlingar"
+        title="Tävla och utmana dig själv"
+        lead="Från distansrekord till första topplandningen — det finns alltid något att jaga."
+      />
 
       <SubnavGrid sectionPath="/tavlingar" />
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16 pt-4">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pb-16 pt-6">
         {competitions.map((comp: any, i: number) => (
           <section
             key={comp.name}

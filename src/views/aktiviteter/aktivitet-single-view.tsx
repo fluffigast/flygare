@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useActivities } from "../../hooks/useCMS";
+import SEO from "../../components/seo";
 
 function richTextToString(value: any): string {
   if (typeof value === "string") return value;
@@ -47,6 +48,12 @@ const AktivitetSingleView: React.FC = () => {
 
   return (
     <div className="w-full">
+      <SEO
+        title={activity.title}
+        path={`/aktiviteter/${slug ?? ""}`}
+        description={bodyText.slice(0, 155) || `Aktivitet i Åre Skärm- och Drakflygklubb: ${activity.title}.`}
+        type="article"
+      />
       <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
         <Link to="/aktiviteter" className="text-sm mb-4 inline-block hover:underline" style={{ color: "var(--slate, #62748e)" }}>
           &larr; Aktiviteter

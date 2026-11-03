@@ -3,6 +3,7 @@ import WeatherForecast from "../../blocks/weather-forecast/weather-forecast";
 import { weatherLinks as localWeatherLinks } from "../../data/weather-links";
 import { useWeatherLinks } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
+import PageHero from "../../components/page-hero";
 
 const VaderView: React.FC = () => {
   const { data: weatherLinks } = useWeatherLinks(localWeatherLinks);
@@ -13,35 +14,13 @@ const VaderView: React.FC = () => {
         path="/flyga-i-are/vader"
         description="Väder- och vindförhållanden i Åre för skärm- och drakflyg. SMHI-prognos, vindmätare och lokala observationer."
       />
-      {/* Editorial header */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
-        <p
-          className="font-serif italic text-2xl md:text-[40px] leading-none"
-          style={{ color: "var(--ink-2, #0f172b)" }}
-        >
-          Väder
-        </p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{
-            fontSize: "clamp(48px, 6vw, 96px)",
-            color: "var(--ink-2, #0f172b)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Väder i Åre
-        </h1>
-        <p
-          className="max-w-2xl mt-8 text-base md:text-lg leading-relaxed"
-          style={{ color: "var(--slate, #62748e)" }}
-        >
-          Aktuell väderprognos och länkar till vädertjänster relevanta för
-          flygning i Åreområdet.
-        </p>
-      </section>
+      <PageHero
+        eyebrow="Väder"
+        title="Väder i Åre"
+        lead="Aktuell SMHI-prognos för Åreskutan och länkar till vädertjänster relevanta för flygning i området."
+      />
 
-      {/* Weather forecast */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-8 md:mt-12">
+      <section className="max-w-[1200px] mx-auto px-4 md:px-10 mt-8 md:mt-12">
         <div
           className="pt-6"
           style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}
@@ -51,7 +30,7 @@ const VaderView: React.FC = () => {
       </section>
 
       {/* Weather links */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 mt-16 md:mt-24">
+      <section className="max-w-[1200px] mx-auto px-4 md:px-10 mt-16 md:mt-24">
         <div
           className="pt-6"
           style={{ borderTop: "1px solid var(--border, #e2e8f0)" }}

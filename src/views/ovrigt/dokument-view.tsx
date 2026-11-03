@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useDocuments } from "../../hooks/useCMS";
 import { cmsMediaUrl } from "../../lib/cms";
 import SEO from "../../components/seo";
+import PageHero from "../../components/page-hero";
 
 // Dokumentarkiv per pptx. Grupperas per kategori (Årsmöte / Stadgar / Övrigt),
 // sedan sorterat på år (nyast först) inom varje grupp.
@@ -45,23 +46,13 @@ const DokumentView: React.FC = () => {
         path="/ovrigt/dokument"
         description="Dokumentarkiv — stadgar, årsmötesprotokoll och andra PDF-dokument från Åre Skärm- och Drakflygklubb."
       />
-      <section className="max-w-[900px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
-        <p className="font-serif italic text-lg" style={{ color: "var(--slate, #62748e)" }}>Övrigt</p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{ fontSize: "clamp(36px, 4vw, 64px)", color: "var(--ink-2, #0f172b)", letterSpacing: "-0.02em" }}
-        >
-          Dokumentarkiv
-        </h1>
-        <p
-          className="max-w-2xl mt-6 text-base leading-relaxed"
-          style={{ color: "var(--slate-3, #45556c)" }}
-        >
-          Här läggs klubbens dokument som ska vara tillgängliga för alla medlemmar.
-        </p>
-      </section>
+      <PageHero
+        eyebrow="Övrigt"
+        title="Dokumentarkiv"
+        lead="Stadgar, årsmötesprotokoll och andra klubbdokument."
+      />
 
-      <div className="max-w-[900px] mx-auto px-4 md:px-14 pb-16">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pb-16">
         {loading && <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>Laddar…</p>}
         {!loading && (documents as any[]).length === 0 && (
           <p className="text-sm" style={{ color: "var(--slate, #62748e)" }}>Inga dokument uppladdade ännu.</p>

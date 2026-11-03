@@ -2,6 +2,7 @@ import React from "react";
 import { membershipInfo as localMembership } from "../../data/membership";
 import { useMembershipInfo, useGlobalLivePreview } from "../../hooks/useCMS";
 import SEO from "../../components/seo";
+import PageHero from "../../components/page-hero";
 
 const BliMedlemView: React.FC = () => {
   const { data: cmsMembership } = useMembershipInfo(localMembership);
@@ -27,33 +28,9 @@ const BliMedlemView: React.FC = () => {
         path="/bli-medlem"
         description="Bli medlem i Åre Skärm- och Drakflygklubb. Medlemskap, licenskrav, Draklanda, klubbuss och förmåner."
       />
-      {/* Editorial header */}
-      <section className="max-w-[1480px] mx-auto px-4 md:px-14 pt-16 md:pt-24 pb-8">
-        <p
-          className="font-serif italic text-2xl md:text-[40px] leading-none"
-          style={{ color: "var(--ink-2, #0f172b)" }}
-        >
-          Medlemskap
-        </p>
-        <h1
-          className="font-serif font-bold leading-[0.96] tracking-tight mt-1"
-          style={{
-            fontSize: "clamp(48px, 6vw, 96px)",
-            color: "var(--ink-2, #0f172b)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Bli medlem
-        </h1>
-        <p
-          className="max-w-2xl mt-8 text-base md:text-lg leading-relaxed"
-          style={{ color: "var(--slate, #62748e)" }}
-        >
-          {membershipInfo.description}
-        </p>
-      </section>
+      <PageHero eyebrow="Medlemskap" title="Bli medlem" lead={membershipInfo.description} />
 
-      <div className="max-w-[1480px] mx-auto px-4 md:px-14">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10">
         {/* Price card */}
         <section
           className="mt-8 md:mt-12 p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-16"
