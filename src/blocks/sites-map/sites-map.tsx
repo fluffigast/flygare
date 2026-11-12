@@ -61,6 +61,129 @@ function sitesLngLatBounds(sites: Site[]): maplibregl.LngLatBounds {
   return bounds;
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+type AirspaceKind = "restricted" | "danger" | "supplement";
+
+type AirspaceProperties = {
+  designator: string | null;
+  name: string | null;
+  kind: AirspaceKind;
+  kindLabel: string;
+  lower: string | null;
+  upper: string | null;
+  validFrom: string | null;
+  validTo: string | null;
+};
+
+type AirspaceResponse = GeoJSON.FeatureCollection & {
+  coverageNote?: string;
+};
+
+// Speglar --signal-danger, --signal-safety och --accent i index.css.
+// MapLibre-paint kan inte läsa CSS-variabler, därför literalerna här.
+const AIRSPACE_COLOR: Record<AirspaceKind, string> = {
+  restricted: "#dc2626",
+  danger: "#b45309",
+  supplement: "#3774a3",
+};
+
+const AIRSPACE_LEGEND: { kind: AirspaceKind; label: string }[] = [
+  { kind: "restricted", label: "R-område" },
+  { kind: "danger", label: "D-område" },
+  { kind: "supplement", label: "Supplement" },
+];
+
+const airspaceColorExpression = [
+  "match",
+  ["get", "kind"],
+  "restricted",
+  AIRSPACE_COLOR.restricted,
+  "danger",
+  AIRSPACE_COLOR.danger,
+  AIRSPACE_COLOR.supplement,
+];
+
+function airspaceHoverPopupHtml(props: AirspaceProperties): string {
+  const heading = [props.designator, props.name].filter(Boolean).join(" ");
+  const limits =
+    props.lower && props.upper ? `${props.lower} – ${props.upper}` : null;
+  return [
+    '<div class="flex max-w-[18rem] flex-col gap-1">',
+    `<strong class="text-sm font-semibold text-foreground">${escapeHtml(
+      heading || props.kindLabel
+    )}</strong>`,
+    `<p class="text-xs leading-snug text-muted-foreground">${escapeHtml(
+      props.kindLabel
+    )}</p>`,
+    limits
+      ? `<p class="text-xs tabular-nums text-muted-foreground">${escapeHtml(
+          limits
+        )}</p>`
+      : "",
+    "</div>",
+  ].join("");
+}
+
+// "GND"/"SFC" = marknivå, "FL 95" = 9500 fot, rena tal är redan fot.
+function lowerLimitFeet(lower: string | null): number {
+  if (!lower) return Number.POSITIVE_INFINITY;
+  const text = lower.trim().toUpperCase();
+  if (text === "GND" || text === "SFC") return 0;
+  const flightLevel = text.match(/^FL\s*(\d+)$/);
+  if (flightLevel) return Number(flightLevel[1]) * 100;
+  const feet = text.match(/^(\d+)/);
+  return feet ? Number(feet[1]) : Number.POSITIVE_INFINITY;
+}
+
+const FREEFLIGHT_CEILING_FEET = 10000;
+const FREEFLIGHT_RADIUS_KM = 60;
+
+function distanceKm(a: [number, number], b: [number, number]): number {
+  const toRad = Math.PI / 180;
+  const [lonA, latA] = a;
+  const [lonB, latB] = b;
+  const h =
+    Math.sin(((latB - latA) * toRad) / 2) ** 2 +
+    Math.cos(latA * toRad) *
+      Math.cos(latB * toRad) *
+      Math.sin(((lonB - lonA) * toRad) / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+
+function geometryPositions(
+  coordinates: GeoJSON.Position | GeoJSON.Position[] | GeoJSON.Position[][] | GeoJSON.Position[][][],
+  out: GeoJSON.Position[] = []
+): GeoJSON.Position[] {
+  if (typeof coordinates[0] === "number") {
+    out.push(coordinates as GeoJSON.Position);
+    return out;
+  }
+  for (const part of coordinates as GeoJSON.Position[][]) {
+    geometryPositions(part, out);
+  }
+  return out;
+}
+
+function extendBoundsWithGeometry(
+  bounds: maplibregl.LngLatBounds,
+  coordinates: GeoJSON.Position | GeoJSON.Position[] | GeoJSON.Position[][] | GeoJSON.Position[][][]
+): void {
+  if (typeof coordinates[0] === "number") {
+    bounds.extend(coordinates as [number, number]);
+    return;
+  }
+  for (const part of coordinates as GeoJSON.Position[][]) {
+    extendBoundsWithGeometry(bounds, part);
+  }
+}
+
 function sitesToGeoJSON(sites: Site[]): GeoJSON.FeatureCollection {
   return {
     type: "FeatureCollection",
@@ -81,14 +204,6 @@ function sitesToGeoJSON(sites: Site[]): GeoJSON.FeatureCollection {
       },
     })),
   };
-}
-
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 }
 
 function siteHoverPopupHtml(props: {
@@ -122,8 +237,57 @@ const SitesMap: React.FC<SitesMapProps> = ({
   className,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
   const navigate = useNavigate();
   const [basemap, setBasemap] = useState<BasemapId>("liberty");
+  const [airspace, setAirspace] = useState<AirspaceResponse | null>(null);
+  const [showAirspace, setShowAirspace] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/airspace", { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: AirspaceResponse | null) => {
+        if (data?.features?.length) setAirspace(data);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !map.getLayer("airspace-fill")) return;
+    const visibility = showAirspace ? "visible" : "none";
+    for (const id of ["airspace-fill", "airspace-outline"]) {
+      map.setLayoutProperty(id, "visibility", visibility);
+    }
+
+    if (!showAirspace || !airspace) return;
+
+    // Närmaste område ligger långt utanför startplatsernas vy. Utan den här
+    // vidgningen slår man på lagret och ser en tom karta, vilket läser som
+    // "inga restriktioner här".
+    const bounds = sitesLngLatBounds(sites);
+    const centre = bounds.getCenter().toArray() as [number, number];
+
+    // Vidga bara till det som rör skärmflyg. Utan filtret drar ett
+    // korridorområde på FL520 ut vyn över halva Skandinavien, och då syns
+    // inte längre områdena som faktiskt ligger nära startplatserna.
+    for (const feature of airspace.features) {
+      if (!feature.geometry || !("coordinates" in feature.geometry)) continue;
+      const properties = feature.properties as unknown as AirspaceProperties;
+      if (lowerLimitFeet(properties.lower) > FREEFLIGHT_CEILING_FEET) continue;
+
+      const positions = geometryPositions(feature.geometry.coordinates);
+      const near = positions.some(
+        (position) =>
+          distanceKm(centre, position as [number, number]) <=
+          FREEFLIGHT_RADIUS_KM
+      );
+      if (near) extendBoundsWithGeometry(bounds, feature.geometry.coordinates);
+    }
+    map.fitBounds(bounds, { padding: 48, duration: 600 });
+  }, [showAirspace, airspace, sites]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -142,12 +306,56 @@ const SitesMap: React.FC<SitesMapProps> = ({
       bounds,
       fitBoundsOptions: { padding: 56, maxZoom: 13, duration: 0 },
     });
+    mapRef.current = map;
     map.on("style.load", () => map.setProjection({ type: "mercator" }));
 
     map.addControl(new maplibregl.NavigationControl(), "top-right");
 
     let hoverPopup: maplibregl.Popup | null = null;
     let currentHoverFeatureKey: string | undefined;
+
+    const attachAirspaceLayer = () => {
+      if (!airspace || map.getSource("airspace")) return;
+
+      map.addSource("airspace", { type: "geojson", data: airspace });
+
+      map.addLayer({
+        id: "airspace-fill",
+        type: "fill",
+        source: "airspace",
+        layout: { visibility: showAirspace ? "visible" : "none" },
+        paint: {
+          "fill-color": airspaceColorExpression as never,
+          "fill-opacity": 0.12,
+        },
+      });
+
+      map.addLayer({
+        id: "airspace-outline",
+        type: "line",
+        source: "airspace",
+        layout: { visibility: showAirspace ? "visible" : "none" },
+        paint: {
+          "line-color": airspaceColorExpression as never,
+          "line-width": 1.5,
+        },
+      });
+
+      map.on("mousemove", "airspace-fill", (e) => {
+        const feature = e.features?.[0];
+        if (!feature || !hoverPopup) return;
+        hoverPopup
+          .setLngLat(e.lngLat)
+          .setHTML(
+            airspaceHoverPopupHtml(
+              feature.properties as unknown as AirspaceProperties
+            )
+          )
+          .addTo(map);
+      });
+
+      map.on("mouseleave", "airspace-fill", () => hoverPopup?.remove());
+    };
 
     const attachSitesLayer = () => {
       if (map.getSource("sites")) return;
@@ -233,15 +441,17 @@ const SitesMap: React.FC<SitesMapProps> = ({
     // dataType `style` runs once the stylesheet is ready — enough to add GeoJSON.
     map.on("styledata", (e) => {
       if (e.dataType !== "style") return;
+      attachAirspaceLayer();
       attachSitesLayer();
     });
 
     return () => {
       hoverPopup?.remove();
       hoverPopup = null;
+      mapRef.current = null;
       map.remove();
     };
-  }, [sites, navigate, basemap]);
+  }, [sites, navigate, basemap, airspace]);
 
   return (
     <section
@@ -272,6 +482,48 @@ const SitesMap: React.FC<SitesMapProps> = ({
           </RadioGroup.Item>
         ))}
       </RadioGroup.Root>
+      {airspace ? (
+        <div className="absolute top-3 right-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-col items-end gap-2">
+          <button
+            type="button"
+            onClick={() => setShowAirspace((v) => !v)}
+            aria-pressed={showAirspace}
+            className={cn(
+              "rounded-lg border border-border px-2.5 py-1 text-sm shadow-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              showAirspace
+                ? "bg-primary text-primary-foreground"
+                : "bg-card text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Luftrum
+          </button>
+
+          {showAirspace ? (
+            <div className="flex flex-col gap-2 rounded-lg border border-border bg-card p-2.5 shadow-sm">
+              <ul className="flex flex-col gap-1">
+                {AIRSPACE_LEGEND.map((entry) => (
+                  <li
+                    key={entry.kind}
+                    className="flex items-center gap-2 text-xs text-muted-foreground"
+                  >
+                    <span
+                      aria-hidden
+                      className="size-2.5 shrink-0 rounded-xs"
+                      style={{ backgroundColor: AIRSPACE_COLOR[entry.kind] }}
+                    />
+                    {entry.label}
+                  </li>
+                ))}
+              </ul>
+              <p className="max-w-[14rem] text-xs leading-snug text-muted-foreground">
+                {airspace.features.length} områden i Jämtland. Visar AIP per
+                AIRAC-cykel. Områden som utlyses enbart via NOTAM saknas.
+                Kontrollera NOTAM före flygning.
+              </p>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
       <div
         ref={containerRef}
         className="h-full min-h-[min(70vh,28rem)] w-full"

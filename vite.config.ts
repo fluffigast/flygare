@@ -6,7 +6,8 @@ import path from "node:path";
 
 /**
  * Adapts Azure Static Web Apps Functions (`module.exports = async (context, req) => {}`)
- * for the Vite dev server so `/api/smhi` and `/api/wind` resolve instead of returning
+ * for the Vite dev server so `/api/smhi`, `/api/wind` and `/api/airspace` resolve
+ * instead of returning
  * the raw JS source (which causes the "Unexpected token 'm', module.exp..." error).
  */
 function azureFunctionsDevAdapter(): PluginOption {
@@ -14,6 +15,7 @@ function azureFunctionsDevAdapter(): PluginOption {
   const routes: Record<string, string> = {
     "/api/smhi": path.resolve("api/smhi/index.js"),
     "/api/wind": path.resolve("api/wind/index.js"),
+    "/api/airspace": path.resolve("api/airspace/index.js"),
   };
 
   return {
