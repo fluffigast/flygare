@@ -1,26 +1,40 @@
 /**
- * Luftrums-API — hämtar restriktions-, fare- och supplementområden runt Åre.
+ * Luftrums-API — restriktions-, fare- och supplementområden runt Åre.
  *
- * Källa: LFV:s GeoServer bakom DAIM eCharts (daim.lfv.se/geoserver/wfs).
- * Tre lager slås ihop till en FeatureCollection:
- *   mais:RSTA      R-områden, publicerade i AIP
- *   mais:DNGA      D-områden, publicerade i AIP
- *   DAIM_TOPO:SUP  områden från aktuella AIP-supplement, med egna giltighetstider
+ * Två källor, med olika roll:
  *
- * VIKTIGT om täckning: lagren speglar AIP och är synkade mot AIRAC-cykeln.
- * Områden som utlyses enbart via NOTAM finns inte här, och höjdgränser som
- * NOTAM tillfälligt höjt visas med AIP:s värde. Svaret bär därför
- * "coverage": "aip" så att klienten kan säga det rakt ut. Kartan får aldrig
- * påstå att den visar allt luftrum i kraft.
+ *   AIP, via LFV:s GeoServer bakom DAIM eCharts
+ *     mais:RSTA      R-områden
+ *     mais:DNGA      D-områden
+ *     DAIM_TOPO:SUP  områden från aktuella AIP-supplement
+ *
+ *   NOTAM, via förhandsbeskedsbulletinen på aro.lfv.se
+ *     Utlyser tillfälliga områden som aldrig når AIP, höjer tillfälligt
+ *     taket på publicerade områden, och drar in områden som står kvar i AIP.
+ *
+ * AIP ensamt räcker inte. Ett område som bara finns i NOTAM syns inte i
+ * DAIM, och ett område vars tak NOTAM höjt visas där med AIP:s lägre värde.
+ * Därför slås båda ihop här, och varje feature bär "source" så att kartan
+ * kan skilja dem åt. NOTAM som ändrar ett publicerat område fäster sig på
+ * det området som "amendment" i stället för att bli en egen yta.
  *
  * Resiliens:
- *   - Per lager 8s timeout + 1 retry med 1s backoff
- *   - Ett lager som failar ger null för det lagret, övriga returneras
- *   - HTTP cache-control 3600s; AIRAC-cykeln är 28 dygn, supplement ändras sällan
+ *   - Per källa timeout + 1 retry med 1s backoff
+ *   - En källa som failar ger null för den, övriga returneras
+ *   - Faller NOTAM bort sätts "coverage" till "aip" och klienten säger det
+ *   - HTTP cache-control 1800s; NOTAM uppdateras var 30:e minut
  */
 
+const { pdfToText, parseBulletin } = require("./notam");
+
 const WFS = "https://daim.lfv.se/geoserver/wfs";
+const PIB_LIST =
+  "https://aro.lfv.se/Links/Link/ShowFileList?type=AIS&path=%5Cpibsweden%5C&torlinkName=NOTAM%20Sweden";
 const TIMEOUT_MS = 8000;
+const NOTAM_TIMEOUT_MS = 20000;
+
+// Jämtland som lat/lon-gränser, samma ruta som BBOX ovan.
+const BOUNDS = { lonMin: 11.8, latMin: 62.6, lonMax: 15.3, latMax: 63.9 };
 
 // Jämtland. WFS 1.1.0 med explicit EPSG:4326 vill ha lon,lat.
 const BBOX = "11.8,62.6,15.3,63.9,EPSG:4326";
@@ -110,6 +124,142 @@ function normalize(layer, collection) {
     });
 }
 
+async function fetchNotamOnce() {
+  const listing = await (
+    await fetch(PIB_LIST, {
+      headers: { "User-Agent": "Flygare/1.0" },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    })
+  ).text();
+
+  const match = listing.match(/href="([^"]*ESAA[^"]*99days[^"]*\.pdf)"/i);
+  if (!match) throw new Error("ingen 99days-bulletin i fillistan");
+  let url = match[1].replace(/ /g, "%20");
+  if (!url.startsWith("http")) url = "https://aro.lfv.se" + url;
+
+  const res = await fetch(url, {
+    headers: { "User-Agent": "Flygare/1.0" },
+    signal: AbortSignal.timeout(NOTAM_TIMEOUT_MS),
+  });
+  if (!res.ok) throw new Error(`PIB ${res.status}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  return { url, records: parseBulletin(pdfToText(buf)) };
+}
+
+function ringInBounds(ring) {
+  return ring.some(
+    ([lon, lat]) =>
+      lon >= BOUNDS.lonMin &&
+      lon <= BOUNDS.lonMax &&
+      lat >= BOUNDS.latMin &&
+      lat <= BOUNDS.latMax
+  );
+}
+
+function supplementNumber(url) {
+  const m = /SUP%20(\d{1,3})-(\d{4})/.exec(url || "");
+  return m ? m[1] : null;
+}
+
+function mergeNotam(features, records) {
+  const byDesignator = new Map();
+  const bySupplement = new Map();
+  for (const feature of features) {
+    const { designator, url } = feature.properties;
+    if (designator) byDesignator.set(designator, feature);
+    const sup = supplementNumber(url);
+    if (sup) {
+      if (!bySupplement.has(sup)) bySupplement.set(sup, []);
+      bySupplement.get(sup).push(feature);
+    }
+  }
+
+  const added = [];
+  let amendments = 0;
+
+  for (const record of records) {
+    const annotate = (feature) => {
+      const list = feature.properties.notam || [];
+      list.push({
+        id: record.id,
+        kind: record.kind,
+        lower: record.lower,
+        upper: record.upper,
+        validFrom: record.validFrom,
+        validTo: record.validTo,
+        schedule: record.schedule,
+        text: record.text,
+      });
+      feature.properties.notam = list;
+      // Ett indraget område får inte ritas som aktivt. NOTAM:et upphäver
+      // AIP-posten, men AIP-posten ligger kvar och är den kartan utgår från.
+      if (record.kind === "withdrawn") feature.properties.kind = "withdrawn";
+      amendments++;
+    };
+
+    // Egen geometri i NOTAM: ett område som inte finns i AIP alls.
+    if (record.ring && ringInBounds(record.ring)) {
+      const existing = record.designators
+        .map((d) => byDesignator.get(d))
+        .find(Boolean);
+      if (existing) {
+        annotate(existing);
+        continue;
+      }
+      added.push({
+        type: "Feature",
+        geometry: { type: "Polygon", coordinates: [record.ring] },
+        properties: {
+          designator: record.designators[0] || record.id,
+          name: null,
+          kind: record.kind === "withdrawn" ? "withdrawn" : "notam",
+          kindLabel: "NOTAM-område",
+          lower: record.lower,
+          upper: record.upper,
+          validFrom: record.validFrom,
+          validTo: record.validTo,
+          effective: null,
+          schedule: record.schedule,
+          url: null,
+          source: "notam",
+          notam: [
+            {
+              id: record.id,
+              kind: record.kind,
+              lower: record.lower,
+              upper: record.upper,
+              validFrom: record.validFrom,
+              validTo: record.validTo,
+              schedule: record.schedule,
+              text: record.text,
+            },
+          ],
+        },
+      });
+      continue;
+    }
+
+    // Ingen egen geometri: NOTAM ändrar eller drar in ett publicerat område.
+    let attached = false;
+    for (const designator of record.designators) {
+      const feature = byDesignator.get(designator);
+      if (feature) {
+        annotate(feature);
+        attached = true;
+      }
+    }
+    if (attached) continue;
+
+    for (const sup of record.supplements) {
+      for (const feature of bySupplement.get(sup) || []) {
+        annotate(feature);
+      }
+    }
+  }
+
+  return { added, amendments };
+}
+
 module.exports = async function (context) {
   const results = await Promise.all(
     LAYERS.map((layer) =>
@@ -127,6 +277,15 @@ module.exports = async function (context) {
     sources[layer.typename] = data ? items.length : null;
     features.push(...items);
   }
+  for (const feature of features) feature.properties.source = "aip";
+
+  const notam = await tryTwice(fetchNotamOnce);
+  let merged = { added: [], amendments: 0 };
+  if (notam) {
+    merged = mergeNotam(features, notam.records);
+    features.push(...merged.added);
+  }
+  sources.notam = notam ? notam.records.length : null;
 
   const anyOk = Object.values(sources).some((v) => v !== null);
 
@@ -134,15 +293,18 @@ module.exports = async function (context) {
     status: anyOk ? 200 : 502,
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=3600, s-maxage=1800",
+      "Cache-Control": "public, max-age=1800, s-maxage=900",
     },
     body: {
       type: "FeatureCollection",
       features,
       fetchedAt: new Date().toISOString(),
-      coverage: "aip",
-      coverageNote:
-        "Speglar AIP per AIRAC-cykel. Områden som utlyses enbart via NOTAM saknas, och höjdgränser som NOTAM tillfälligt höjt visas med AIP:s värde.",
+      coverage: notam ? "aip+notam" : "aip",
+      coverageNote: notam
+        ? "AIP per AIRAC-cykel, sammanslaget med aktuell NOTAM-bulletin. Kontrollera alltid NOTAM före flygning."
+        : "NOTAM kunde inte hämtas. Visar enbart AIP, vilket saknar områden som utlyses via NOTAM och visar höjdgränser som NOTAM tillfälligt höjt med AIP:s värde.",
+      notamAreas: merged.added.length,
+      notamAmendments: merged.amendments,
       sources,
     },
   };

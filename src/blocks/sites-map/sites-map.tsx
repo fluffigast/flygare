@@ -69,7 +69,19 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-type AirspaceKind = "restricted" | "danger" | "supplement";
+type AirspaceKind =
+  | "restricted"
+  | "danger"
+  | "supplement"
+  | "notam"
+  | "withdrawn";
+
+type AirspaceNotam = {
+  id: string;
+  kind: string;
+  upper: string | null;
+  schedule: string | null;
+};
 
 type AirspaceProperties = {
   designator: string | null;
@@ -80,9 +92,13 @@ type AirspaceProperties = {
   upper: string | null;
   validFrom: string | null;
   validTo: string | null;
+  schedule: string | null;
+  source: "aip" | "notam";
+  notam?: AirspaceNotam[] | string;
 };
 
 type AirspaceResponse = GeoJSON.FeatureCollection & {
+  coverage?: "aip" | "aip+notam";
   coverageNote?: string;
 };
 
@@ -92,12 +108,16 @@ const AIRSPACE_COLOR: Record<AirspaceKind, string> = {
   restricted: "#dc2626",
   danger: "#b45309",
   supplement: "#3774a3",
+  notam: "#dc2626",
+  withdrawn: "#16a34a",
 };
 
 const AIRSPACE_LEGEND: { kind: AirspaceKind; label: string }[] = [
+  { kind: "notam", label: "Utlyst via NOTAM" },
   { kind: "restricted", label: "R-område" },
   { kind: "danger", label: "D-område" },
   { kind: "supplement", label: "Supplement" },
+  { kind: "withdrawn", label: "Indraget" },
 ];
 
 const airspaceColorExpression = [
@@ -107,24 +127,68 @@ const airspaceColorExpression = [
   AIRSPACE_COLOR.restricted,
   "danger",
   AIRSPACE_COLOR.danger,
+  "notam",
+  AIRSPACE_COLOR.notam,
+  "withdrawn",
+  AIRSPACE_COLOR.withdrawn,
   AIRSPACE_COLOR.supplement,
 ];
+
+// NOTAM-utlyst luftrum finns inte i kartunderlaget. Att rita det tunnare än
+// det publicerade vore fel väg: det är just det som saknas någon annanstans.
+const airspaceLineWidthExpression = [
+  "match",
+  ["get", "kind"],
+  "notam",
+  2.5,
+  "withdrawn",
+  1,
+  1.5,
+];
+
+function parseNotam(raw: AirspaceProperties["notam"]): AirspaceNotam[] {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try {
+    return JSON.parse(raw) as AirspaceNotam[];
+  } catch {
+    return [];
+  }
+}
 
 function airspaceHoverPopupHtml(props: AirspaceProperties): string {
   const heading = [props.designator, props.name].filter(Boolean).join(" ");
   const limits =
     props.lower && props.upper ? `${props.lower} – ${props.upper}` : null;
+  const notam = parseNotam(props.notam);
+  const withdrawn = notam.some((n) => n.kind === "withdrawn");
+  const schedule =
+    props.schedule ?? notam.find((n) => n.schedule)?.schedule ?? null;
+
   return [
     '<div class="flex max-w-[18rem] flex-col gap-1">',
     `<strong class="text-sm font-semibold text-foreground">${escapeHtml(
       heading || props.kindLabel
     )}</strong>`,
     `<p class="text-xs leading-snug text-muted-foreground">${escapeHtml(
-      props.kindLabel
+      props.source === "notam" ? "Utlyst via NOTAM" : props.kindLabel
     )}</p>`,
     limits
       ? `<p class="text-xs tabular-nums text-muted-foreground">${escapeHtml(
           limits
+        )}</p>`
+      : "",
+    withdrawn
+      ? '<p class="text-xs leading-snug text-muted-foreground">Indraget av NOTAM. Ingen restriktion gäller.</p>'
+      : "",
+    schedule
+      ? `<p class="text-xs leading-snug text-muted-foreground">Endast enligt tidsschema: ${escapeHtml(
+          schedule
+        )}</p>`
+      : "",
+    notam.length
+      ? `<p class="text-xs tabular-nums text-muted-foreground">${escapeHtml(
+          notam.map((n) => n.id).join(", ")
         )}</p>`
       : "",
     "</div>",
@@ -337,7 +401,7 @@ const SitesMap: React.FC<SitesMapProps> = ({
         layout: { visibility: showAirspace ? "visible" : "none" },
         paint: {
           "line-color": airspaceColorExpression as never,
-          "line-width": 1.5,
+          "line-width": airspaceLineWidthExpression as never,
         },
       });
 
@@ -501,7 +565,13 @@ const SitesMap: React.FC<SitesMapProps> = ({
           {showAirspace ? (
             <div className="flex flex-col gap-2 rounded-lg border border-border bg-card p-2.5 shadow-sm">
               <ul className="flex flex-col gap-1">
-                {AIRSPACE_LEGEND.map((entry) => (
+                {AIRSPACE_LEGEND.filter((entry) =>
+                  airspace.features.some(
+                    (feature) =>
+                      (feature.properties as { kind?: string } | null)?.kind ===
+                      entry.kind
+                  )
+                ).map((entry) => (
                   <li
                     key={entry.kind}
                     className="flex items-center gap-2 text-xs text-muted-foreground"
@@ -516,9 +586,11 @@ const SitesMap: React.FC<SitesMapProps> = ({
                 ))}
               </ul>
               <p className="max-w-[14rem] text-xs leading-snug text-muted-foreground">
-                {airspace.features.length} områden i Jämtland. Visar AIP per
-                AIRAC-cykel. Områden som utlyses enbart via NOTAM saknas.
-                Kontrollera NOTAM före flygning.
+                {airspace.features.length} områden i Jämtland.{" "}
+                {airspace.coverage === "aip+notam"
+                  ? "AIP sammanslaget med aktuell NOTAM-bulletin."
+                  : "NOTAM kunde inte hämtas. Visar enbart AIP, vilket saknar områden som utlyses via NOTAM."}{" "}
+                Kontrollera alltid NOTAM före flygning.
               </p>
             </div>
           ) : null}
