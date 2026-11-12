@@ -98,7 +98,7 @@ type AirspaceProperties = {
 };
 
 type AirspaceResponse = GeoJSON.FeatureCollection & {
-  coverage?: "aip" | "aip+notam";
+  coverage?: "aip" | "notam" | "aip+notam";
   coverageNote?: string;
 };
 
@@ -587,10 +587,8 @@ const SitesMap: React.FC<SitesMapProps> = ({
               </ul>
               <p className="max-w-[14rem] text-xs leading-snug text-muted-foreground">
                 {airspace.features.length} områden i Jämtland.{" "}
-                {airspace.coverage === "aip+notam"
-                  ? "AIP sammanslaget med aktuell NOTAM-bulletin."
-                  : "NOTAM kunde inte hämtas. Visar enbart AIP, vilket saknar områden som utlyses via NOTAM."}{" "}
-                Kontrollera alltid NOTAM före flygning.
+                {airspace.coverageNote ??
+                  "Kontrollera NOTAM före flygning."}
               </p>
             </div>
           ) : null}

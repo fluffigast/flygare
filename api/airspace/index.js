@@ -287,10 +287,30 @@ module.exports = async function (context) {
   }
   sources.notam = notam ? notam.records.length : null;
 
-  const anyOk = Object.values(sources).some((v) => v !== null);
+  // Täckningen måste spegla vad som faktiskt gick fram. Ett svar som säger
+  // "aip+notam" när AIP föll bort är en osanning i vyn, inte bara en etikett.
+  const aipOk = LAYERS.some((layer) => sources[layer.typename] !== null);
+  const notamOk = notam !== null;
+
+  let coverage = "none";
+  let coverageNote =
+    "Varken AIP eller NOTAM kunde hämtas. Inget luftrum visas.";
+  if (aipOk && notamOk) {
+    coverage = "aip+notam";
+    coverageNote =
+      "AIP per AIRAC-cykel, sammanslaget med aktuell NOTAM-bulletin. Kontrollera alltid NOTAM före flygning.";
+  } else if (aipOk) {
+    coverage = "aip";
+    coverageNote =
+      "NOTAM kunde inte hämtas. Visar enbart AIP, vilket saknar områden som utlyses via NOTAM och visar höjdgränser som NOTAM tillfälligt höjt med AIP:s värde.";
+  } else if (notamOk) {
+    coverage = "notam";
+    coverageNote =
+      "Kartunderlaget från AIP kunde inte hämtas. Visar enbart områden utlysta via NOTAM, alltså inte publicerade R- och D-områden.";
+  }
 
   context.res = {
-    status: anyOk ? 200 : 502,
+    status: aipOk || notamOk ? 200 : 502,
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "public, max-age=1800, s-maxage=900",
@@ -299,10 +319,8 @@ module.exports = async function (context) {
       type: "FeatureCollection",
       features,
       fetchedAt: new Date().toISOString(),
-      coverage: notam ? "aip+notam" : "aip",
-      coverageNote: notam
-        ? "AIP per AIRAC-cykel, sammanslaget med aktuell NOTAM-bulletin. Kontrollera alltid NOTAM före flygning."
-        : "NOTAM kunde inte hämtas. Visar enbart AIP, vilket saknar områden som utlyses via NOTAM och visar höjdgränser som NOTAM tillfälligt höjt med AIP:s värde.",
+      coverage,
+      coverageNote,
       notamAreas: merged.added.length,
       notamAmendments: merged.amendments,
       sources,
